@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EEHC — Executor Health Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════
+   TOKENS
+════════════════════════════════════════════════ */
+:root {
+  --bg:        #030303;
+  --surface:   #080808;
+  --panel:     #0d0d0d;
+  --card:      #101010;
+  --border:    #1a1a1a;
+  --border2:   #252525;
+  --text:      #d4d0c8;
+  --muted:     #3a3a3a;
+  --dim:       #555;
+
+  --green:     #00ff41;
+  --green-dim: rgba(0,255,65,.07);
+  --green-glow:rgba(0,255,65,.18);
+  --red:       #ff1744;
+  --red-dim:   rgba(255,23,68,.08);
+  --amber:     #ffab00;
+  --amber-dim: rgba(255,171,0,.08);
+  --blue:      #40c4ff;
+
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-disp: 'Bebas Neue', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ════════════════════════════════════════════════
+   SCANLINE + NOISE OVERLAY
+════════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.08) 2px,
+    rgba(0,0,0,.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: .4;
+}
+
+/* ════════════════════════════════════════════════
+   GRID BACKGROUND
+════════════════════════════════════════════════ */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: .35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ════════════════════════════════════════════════
+   GLOW ORBS
+════════════════════════════════════════════════ */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: rgba(0,255,65,.04);
+  top: -150px; left: -100px;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  background: rgba(64,196,255,.03);
+  bottom: 100px; right: -100px;
+}
+
+/* ════════════════════════════════════════════════
+   WRAPPER
+════════════════════════════════════════════════ */
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ════════════════════════════════════════════════
+   HEADER
+════════════════════════════════════════════════ */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(3,3,3,.92);
+  border-bottom: 1px solid var(--border2);
+  backdrop-filter: blur(12px);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 52px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.logo-mark {
+  width: 28px; height: 28px;
+  border: 1px solid var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.logo-mark::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: var(--green);
+  animation: pulse-mark 2s ease-in-out infinite;
+}
+@keyframes pulse-mark {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .4; }
+}
+.logo-text {
+  font-family: var(--font-disp);
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+.logo-text span { color: var(--green); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.nav-links a {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-tag {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+}
+
+/* ════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════ */
+.hero {
+  padding: 80px 0 60px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-size: 9px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--green);
+}
+.hero-title {
+  font-family: var(--font-disp);
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: .92;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  color: var(--text);
+}
+.hero-title .accent { color: var(--green); }
+.hero-title .dim    { color: var(--muted); }
+.hero-sub {
+  font-size: 11px;
+  color: var(--dim);
+  max-width: 480px;
+  line-height: 1.9;
+  margin-bottom: 36px;
+  letter-spacing: .3px;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: var(--green);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all .15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary:hover { background: #00cc33; box-shadow: 0 0 24px var(--green-glow); }
+.btn-ghost {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--dim);
+  border: 1px solid var(--border2);
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--text); color: var(--text); }
+
+/* ════════════════════════════════════════════════
+   STATS BAR
+════════════════════════════════════════════════ */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 40px 0;
+}
+.stat-item {
+  background: var(--panel);
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s;
+}
+.stat-item:hover::after { transform: scaleX(1); }
+.stat-n {
+  font-family: var(--font-disp);
+  font-size: 36px;
+  line-height: 1;
+  color: var(--green);
+  letter-spacing: 1px;
+}
+.stat-l {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-top: 4px;
+}
+
+/* ════════════════════════════════════════════════
+   SECTION HEADER
+════════════════════════════════════════════════ */
+.sec-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.sec-title {
+  font-family: var(--font-disp);
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+.sec-meta {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ════════════════════════════════════════════════
+   DROP ZONE
+════════════════════════════════════════════════ */
+.drop-zone {
+  border: 1px dashed var(--border2);
+  padding: 48px 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  margin-bottom: 40px;
+  background: var(--panel);
+}
+.drop-zone::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed transparent;
+  transition: border-color .2s;
+  pointer-events: none;
+}
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--green);
+  background: var(--green-dim);
+  box-shadow: inset 0 0 40px rgba(0,255,65,.03), 0 0 40px rgba(0,255,65,.06);
+}
+.drop-zone:hover::before,
+.drop-zone.dragover::before {
+  border-color: rgba(0,255,65,.2);
+}
+.drop-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: .6;
+}
+.drop-title {
+  font-family: var(--font-disp);
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.drop-sub {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+.drop-sub strong { color: var(--green); }
+#file-input { display: none; }
+
+/* ════════════════════════════════════════════════
+   REPORTS GRID
+════════════════════════════════════════════════ */
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+.report-card {
+  background: var(--card);
+  position: relative;
+  overflow: hidden;
+  transition: background .15s;
+  animation: card-in .35s ease both;
+}
+.report-card:hover { background: #141414; }
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* top accent line coloured by security score */
+.report-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.report-card.score-high::before   { background: var(--green); }
+.report-card.score-mid::before    { background: var(--amber); }
+.report-card.score-low::before    { background: var(--red); }
+.report-card.score-none::before   { background: var(--border2); }
+
+.card-inner { padding: 20px 22px 18px; }
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-executor {
+  font-family: var(--font-disp);
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: var(--text);
+  line-height: 1.1;
+  word-break: break-word;
+}
+.card-version {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-top: 3px;
+}
+.score-badge {
+  font-family: var(--font-disp);
+  font-size: 22px;
+  letter-spacing: 1px;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+.score-badge .badge-label {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 2px;
+  text-align: right;
+}
+.score-high .score-badge { color: var(--green); }
+.score-mid  .score-badge { color: var(--amber); }
+.score-low  .score-badge { color: var(--red); }
+.score-none .score-badge { color: var(--dim); }
+.score-high .badge-label { color: rgba(0,255,65,.5); }
+.score-mid  .badge-label { color: rgba(255,171,0,.5); }
+.score-low  .badge-label { color: rgba(255,23,68,.5); }
+.score-none .badge-label { color: var(--muted); }
+
+/* mini stats row */
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.cs-item {
+  background: var(--panel);
+  padding: 8px 10px;
+}
+.cs-val {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+.cs-label {
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-top: 2px;
+}
+.cs-pass { color: var(--green); }
+.cs-fail { color: var(--red);   }
+.cs-warn { color: var(--amber); }
+.cs-info { color: var(--blue);  }
+
+/* tag row */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.ctag {
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+}
+.ctag-green { border-color: rgba(0,255,65,.3);  color: var(--green); background: var(--green-dim); }
+.ctag-red   { border-color: rgba(255,23,68,.3); color: var(--red);   background: var(--red-dim);   }
+.ctag-amber { border-color: rgba(255,171,0,.3); color: var(--amber); background: var(--amber-dim); }
+
+/* bottom row */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.card-ts {
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: .5px;
+}
+.card-actions {
+  display: flex;
+  gap: 6px;
+}
+.act-btn {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all .12s;
+  text-decoration: none;
+  display: inline-block;
+}
+.act-btn:hover      { border-color: var(--text); color: var(--text); }
+.act-btn.open:hover { border-color: var(--green); color: var(--green); }
+.act-btn.del:hover  { border-color: var(--red); color: var(--red); }
+
+/* ════════════════════════════════════════════════
+   EMPTY STATE
+════════════════════════════════════════════════ */
+#empty-state {
+  text-align: center;
+  padding: 64px 32px;
+  border: 1px solid var(--border);
+}
+.empty-ascii {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--border2);
+  white-space: pre;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+.empty-title {
+  font-family: var(--font-disp);
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--dim);
+  margin-bottom: 8px;
+}
+.empty-sub {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ════════════════════════════════════════════════
+   TERMINAL TICKER
+════════════════════════════════════════════════ */
+.ticker {
+  border-top: 1px solid var(--border);
+  padding: 8px 0;
+  overflow: hidden;
+  position: relative;
+}
+.ticker-inner {
+  display: flex;
+  gap: 0;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+.ticker-item {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 32px;
+}
+.ticker-item span { color: var(--green); margin-right: 8px; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ════════════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.footer-left {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.footer-left strong { color: var(--green); }
+.footer-right {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ════════════════════════════════════════════════
+   MODAL (report viewer)
+════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  z-index: 1000;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal-frame-wrap {
+  width: 100%;
+  height: 92vh;
+  background: var(--bg);
+  border-top: 2px solid var(--green);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.modal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 36px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+.modal-title {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.modal-close {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all .12s;
+}
+.modal-close:hover { border-color: var(--red); color: var(--red); }
+#report-frame {
+  flex: 1;
+  border: none;
+  width: 100%;
+  background: #0a0a0a;
+}
+
+/* ════════════════════════════════════════════════
+   UPLOAD PROGRESS
+════════════════════════════════════════════════ */
+.upload-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--panel);
+  border: 1px solid var(--green);
+  border-left: 3px solid var(--green);
+  padding: 12px 18px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--green);
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all .25s;
+  pointer-events: none;
+}
+.upload-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ════════════════════════════════════════════════
+   SEARCH / FILTER BAR
+════════════════════════════════════════════════ */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-input {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 7px 14px;
+  flex: 1;
+  min-width: 200px;
+  outline: none;
+  transition: border-color .12s;
+}
+.filter-input::placeholder { color: var(--muted); }
+.filter-input:focus { border-color: var(--green); }
+.filter-btn {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all .12s;
+  white-space: nowrap;
+}
+.filter-btn:hover        { border-color: var(--text); color: var(--text); }
+.filter-btn.active       { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+.filter-btn.active-red   { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+.filter-btn.active-amber { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+
+/* ════════════════════════════════════════════════
+   ADMIN LOGIN MODAL
+════════════════════════════════════════════════ */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.96);
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.auth-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.auth-box {
+  width: 380px;
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-top: 2px solid var(--green);
+  padding: 32px 28px 28px;
+  position: relative;
+  transform: translateY(12px);
+  transition: transform .2s;
+}
+.auth-overlay.open .auth-box {
+  transform: translateY(0);
+}
+.auth-close {
+  position: absolute;
+  top: 10px; right: 12px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  background: transparent;
+  border: none;
+  color: var(--dim);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color .12s;
+}
+.auth-close:hover { color: var(--red); }
+.auth-title {
+  font-family: var(--font-disp);
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.auth-sub {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 24px;
+}
+.auth-field {
+  margin-bottom: 14px;
+}
+.auth-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 6px;
+  display: block;
+}
+.auth-input {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .12s;
+}
+.auth-input:focus { border-color: var(--green); }
+.auth-input.error { border-color: var(--red); animation: shake .3s ease; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+.auth-submit {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: var(--green);
+  color: #000;
+  border: none;
+  padding: 11px;
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 6px;
+  transition: all .15s;
+}
+.auth-submit:hover { background: #00cc33; box-shadow: 0 0 20px var(--green-glow); }
+.auth-err {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--red);
+  margin-top: 10px;
+  min-height: 14px;
+  text-align: center;
+}
+.auth-attempts {
+  font-size: 9px;
+  color: var(--dim);
+  text-align: center;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* admin indicator in header */
+.admin-badge {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  background: var(--green-dim);
+  cursor: pointer;
+  transition: all .12s;
+  display: none;
+}
+.admin-badge:hover { background: rgba(0,255,65,.15); }
+.admin-badge.visible { display: inline-block; }
+
+/* hidden trigger — tiny dot bottom-right of logo */
+.auth-trigger {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  z-index: 500;
+  transition: border-color .2s, background .2s;
+}
+.auth-trigger:hover { border-color: var(--green); background: var(--green-dim); }
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════ */
+@media (max-width: 700px) {
+  .header-inner { padding: 0 16px; }
+  .wrap { padding: 0 16px; }
+  .hero { padding: 48px 0 36px; }
+  .hero-title { font-size: 52px; }
+  .reports-grid { grid-template-columns: 1fr; }
+  footer { padding: 16px; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND LAYERS -->
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-mark"></div>
+      <div class="logo-text">EEHC<span>.</span>REPORTS</div>
+    </a>
+    <div class="nav-links">
+      <a href="#reports">Results</a>
+      <a href="#about">About</a>
+      <span class="nav-tag">v3.2</span>
+      <span class="admin-badge" id="admin-badge" onclick="logout()" title="Click to log out">✓ ADMIN</span>
+    </div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-track">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-eyebrow">ExecEnvHealthCheck — Results Archive</div>
+    <h1 class="hero-title">
+      EXECUTOR<br>
+      <span class="accent">HEALTH</span><br>
+      <span class="dim">RESULTS</span>
+    </h1>
+    <p class="hero-sub">
+      Upload generated <strong style="color:var(--text)">.html</strong> reports from the 
+      ExecEnvHealthCheck script. Each report is parsed locally — nothing is sent to a server. 
+      All data lives in your browser.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary admin-only" id="hero-upload-btn" onclick="requireAdmin(()=>document.getElementById('file-input').click())" style="display:none">
+        + Upload Reports
+      </button>
+      <a href="#reports" class="btn-ghost">View Results ↓</a>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-item">
+        <div class="stat-n" id="s-total">0</div>
+        <div class="stat-l">Reports Loaded</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-n" id="s-secure" style="color:var(--green)">0</div>
+        <div class="stat-l">Secure (≥80%)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-n" id="s-vuln" style="color:var(--red)">0</div>
+        <div class="stat-l">Vulnerable</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-n" id="s-avg" style="color:var(--amber)">—</div>
+        <div class="stat-l">Avg Security</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-n" id="s-execu" style="color:var(--blue)">0</div>
+        <div class="stat-l">Executors</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- REPORTS SECTION -->
+<div class="wrap" id="reports" style="padding-bottom:80px">
+
+  <div class="sec-header">
+    <div class="sec-title">REPORTS</div>
+    <div class="sec-meta" id="report-count">0 loaded</div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <input class="filter-input" id="search-input" placeholder="Search executor name..." oninput="renderCards()">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter(this,'all')">ALL</button>
+    <button class="filter-btn" data-filter="high"  onclick="setFilter(this,'high')">SECURE</button>
+    <button class="filter-btn" data-filter="mid"   onclick="setFilter(this,'mid')">WARNING</button>
+    <button class="filter-btn" data-filter="low"   onclick="setFilter(this,'low')">VULN</button>
+    <button class="filter-btn admin-only" id="clear-btn" style="margin-left:auto;display:none" onclick="clearAll()">CLEAR ALL</button>
+  </div>
+
+  <!-- DROP ZONE (admin only) -->
+  <div class="drop-zone admin-only" id="drop-zone" style="display:none"
+       onclick="requireAdmin(()=>document.getElementById('file-input').click())"
+       ondragover="handleDragOver(event)"
+       ondragleave="handleDragLeave(event)"
+       ondrop="handleDrop(event)">
+    <div class="drop-icon">⬆</div>
+    <div class="drop-title">DROP REPORT FILES HERE</div>
+    <div class="drop-sub">
+      Accepts <strong>.html</strong> files generated by ExecEnvHealthCheck &nbsp;·&nbsp;
+      Files are read locally — never uploaded
+    </div>
+    <input type="file" id="file-input" accept=".html" multiple onchange="handleFiles(this.files)">
+  </div>
+
+  <!-- CARDS -->
+  <div class="reports-grid" id="grid"></div>
+
+  <!-- EMPTY STATE -->
+  <div id="empty-state">
+    <div class="empty-ascii">
+ ███████╗███████╗██╗  ██╗ ██████╗ 
+ ██╔════╝██╔════╝██║  ██║██╔════╝ 
+ █████╗  █████╗  ███████║██║      
+ ██╔══╝  ██╔══╝  ██╔══██║██║      
+ ███████╗███████╗██║  ██║╚██████╗ 
+ ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ </div>
+    <div class="empty-title">NO REPORTS LOADED</div>
+    <div class="empty-sub">Upload .html files generated by ExecEnvHealthCheck to see results here</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="wrap" id="about" style="padding-bottom:80px">
+  <div class="sec-header">
+    <div class="sec-title">ABOUT</div>
+    <div class="sec-meta">ExecEnvHealthCheck v3.2</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)">
+    <div style="background:var(--panel);padding:24px">
+      <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--green);margin-bottom:10px">WHAT IS THIS</div>
+      <div style="font-size:11px;color:var(--dim);line-height:1.9">
+        ExecEnvHealthCheck is a comprehensive Roblox executor diagnostic suite. 
+        It tests security vectors, function coverage, UI library compatibility, 
+        and raw performance — generating a self-contained HTML report.
+      </div>
+    </div>
+    <div style="background:var(--panel);padding:24px">
+      <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--amber);margin-bottom:10px">HOW IT WORKS</div>
+      <div style="font-size:11px;color:var(--dim);line-height:1.9">
+        Run the script inside any executor. It probes 100+ vulnerability vectors, 
+        benchmarks 50+ executor functions, stress-tests the Lua VM, and computes 
+        big Fibonacci numbers — then writes a detailed .html report.
+      </div>
+    </div>
+    <div style="background:var(--panel);padding:24px">
+      <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--blue);margin-bottom:10px">THIS SITE</div>
+      <div style="font-size:11px;color:var(--dim);line-height:1.9">
+        Drop your generated .html files here to view and compare them. 
+        Reports are stored in your browser's localStorage — fully offline, 
+        no server, no uploads. Your data never leaves your machine.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <strong>EEHC.REPORTS</strong> &nbsp;·&nbsp; ExecEnvHealthCheck v3.2 &nbsp;·&nbsp; All reports are local
+  </div>
+  <div class="footer-right">
+    No data is ever transmitted to a server
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-frame-wrap">
+    <div class="modal-bar">
+      <div class="modal-title" id="modal-title">—</div>
+      <button class="modal-close" onclick="closeModal()">✕ CLOSE</button>
+    </div>
+    <iframe id="report-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="upload-toast" id="toast"></div>
+
+<script>
+/* ─────────────────────────────────────────────
+   DATA STORE
+───────────────────────────────────────────── */
+const STORE_KEY = 'eehc_reports_v1';
+let reports = [];
+let currentFilter = 'all';
+
+function loadStore() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) reports = JSON.parse(raw);
+  } catch(e) { reports = []; }
+}
+
+function saveStore() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(reports));
+  } catch(e) {
+    // If localStorage is full (large HTML files), notify
+    showToast('⚠ Storage full — try clearing old reports');
+  }
+}
+
+/* ─────────────────────────────────────────────
+   FILE PARSING
+   Extract metadata from the generated HTML
+───────────────────────────────────────────── */
+function parseReport(html, filename) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const body = doc.body ? doc.body.innerText : '';
+
+  function grabMeta(label) {
+    // Looks for <strong> adjacent text in meta-grid
+    const els = doc.querySelectorAll('.meta-grid strong');
+    for (const el of els) {
+      const prev = el.previousSibling;
+      if (prev && prev.textContent && prev.textContent.trim() === label) {
+        return el.textContent.trim();
+      }
+    }
+    return null;
+  }
+
+  // Executor name — try meta-grid first, then title, then filename
+  let executor = grabMeta('EXECUTOR')
+    || doc.querySelector('.h-title')?.textContent?.replace(/EXEC\s*HEALTH/i,'').trim()
+    || filename.replace(/HealthCheck_/,'').replace(/_\d{8}_\d{6}\.html$/,'').replace(/_/g,' ')
+    || 'Unknown';
+
+  // Timestamp
+  let timestamp = grabMeta('TIMESTAMP') || grabMeta('DATE') || '—';
+
+  // Version from title or eyebrow
+  let version = '?';
+  const titleEl = doc.querySelector('title');
+  if (titleEl) {
+    const m = titleEl.textContent.match(/v([\d.]+)/);
+    if (m) version = m[1];
+  }
+
+  // Security score — look for stat-card.stat-pass/fail/warn under "SECURITY"
+  let secScore = null;
+  let secMitigated = 0, secVuln = 0, secSkipped = 0;
+
+  // Approach: find all .stat-val elements and their parent .stat-card label
+  const statCards = doc.querySelectorAll('.stat-card');
+  for (const card of statCards) {
+    const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
+    const val   = card.querySelector('.stat-val')?.textContent?.trim();
+    if (!label || !val) continue;
+    if (label === 'SECURITY') {
+      const m = val.match(/(\d+)/);
+      if (m) secScore = parseInt(m[1]);
+      const sub = card.querySelector('.stat-sub')?.textContent || '';
+      const ms = sub.match(/(\d+)\s*mitigated\s*\/\s*(\d+)\s*vuln/i);
+      if (ms) { secMitigated = parseInt(ms[1]); secVuln = parseInt(ms[2]); }
+    }
+  }
+
+  // Fallback: look for banner text
+  if (secScore === null) {
+    const banners = doc.querySelectorAll('.banner');
+    for (const b of banners) {
+      const m = b.textContent.match(/(\d+)\s*VULNERABLE/i);
+      if (m) { secVuln = parseInt(m[1]); }
+    }
+  }
+
+  // Functions coverage
+  let fnPassed = 0, fnTotal = 0, fnScore = null;
+  for (const card of statCards) {
+    const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
+    const val   = card.querySelector('.stat-val')?.textContent?.trim();
+    if (!label || !val) continue;
+    if (label === 'FUNCTIONS') {
+      const m = val.match(/(\d+)/);
+      if (m) fnScore = parseInt(m[1]);
+      const sub = card.querySelector('.stat-sub')?.textContent || '';
+      const ms = sub.match(/(\d+)\s*\/\s*(\d+)/);
+      if (ms) { fnPassed = parseInt(ms[1]); fnTotal = parseInt(ms[2]); }
+    }
+  }
+
+  // UI score
+  let uiScore = null, uiPassed = 0, uiTotal = 0;
+  for (const card of statCards) {
+    const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
+    const val   = card.querySelector('.stat-val')?.textContent?.trim();
+    if (!label || !val) continue;
+    if (label === 'UI LIBS') {
+      const m = val.match(/(\d+)/);
+      if (m) uiScore = parseInt(m[1]);
+      const sub = card.querySelector('.stat-sub')?.textContent || '';
+      const ms = sub.match(/(\d+)\s*\/\s*(\d+)/);
+      if (ms) { uiPassed = parseInt(ms[1]); uiTotal = parseInt(ms[2]); }
+    }
+  }
+
+  // Stress pass count
+  let stressPass = 0, stressTotal = 6;
+  for (const card of statCards) {
+    const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
+    const val   = card.querySelector('.stat-val')?.textContent?.trim();
+    if (label === 'STRESS' && val) {
+      const m = val.match(/(\d+)\/(\d+)/);
+      if (m) { stressPass = parseInt(m[1]); stressTotal = parseInt(m[2]); }
+    }
+  }
+
+  // Fibonacci digits
+  let fibDigits = 0;
+  for (const card of statCards) {
+    const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
+    const val   = card.querySelector('.stat-val')?.textContent?.trim();
+    if (label === 'DIGITS' && val) {
+      fibDigits = parseInt(val.replace(/,/g, '')) || 0;
+    }
+  }
+
+  // Total time
+  let totalTime = '';
+  const mtime = doc.querySelector('footer')?.textContent?.match(/([\d.]+s)\s*total/i);
+  if (mtime) totalTime = mtime[1];
+
+  return {
+    id:          Date.now() + Math.random(),
+    filename,
+    executor:    executor.trim() || filename,
+    timestamp,
+    version,
+    secScore,
+    secMitigated,
+    secVuln,
+    secSkipped,
+    fnScore,
+    fnPassed,
+    fnTotal,
+    uiScore,
+    uiPassed,
+    uiTotal,
+    stressPass,
+    stressTotal,
+    fibDigits,
+    totalTime,
+    html,        // store full HTML for viewer
+    addedAt:     Date.now()
+  };
+}
+
+/* ─────────────────────────────────────────────
+   FILE HANDLING
+───────────────────────────────────────────── */
+function handleFiles(files) {
+  const arr = Array.from(files);
+  let loaded = 0;
+  arr.forEach(file => {
+    if (!file.name.endsWith('.html')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const rep = parseReport(e.target.result, file.name);
+      // Deduplicate by filename
+      reports = reports.filter(r => r.filename !== rep.filename);
+      reports.unshift(rep);
+      loaded++;
+      if (loaded === arr.length) {
+        saveStore();
+        renderCards();
+        updateStats();
+        showToast(`✓ ${loaded} report${loaded > 1 ? 's' : ''} loaded`);
+      }
+    };
+    reader.readAsText(file);
+  });
+  // Reset input so same file can be re-uploaded
+  document.getElementById('file-input').value = '';
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.add('dragover');
+}
+function handleDragLeave(e) {
+  document.getElementById('drop-zone').classList.remove('dragover');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('dragover');
+  if (!adminUnlocked) { openAuthModal(); return; }
+  handleFiles(e.dataTransfer.files);
+}
+
+/* ─────────────────────────────────────────────
+   FILTER
+───────────────────────────────────────────── */
+function setFilter(btn, filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.remove('active','active-red','active-amber');
+  });
+  if (filter === 'high')  btn.classList.add('active');
+  else if (filter === 'low') btn.classList.add('active-red');
+  else if (filter === 'mid') btn.classList.add('active-amber');
+  else btn.classList.add('active');
+  renderCards();
+}
+
+function scoreClass(s) {
+  if (s === null) return 'score-none';
+  if (s >= 80) return 'score-high';
+  if (s >= 50) return 'score-mid';
+  return 'score-low';
+}
+
+function filteredReports() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  return reports.filter(r => {
+    const sc = scoreClass(r.secScore);
+    const filterOk = currentFilter === 'all'
+      || (currentFilter === 'high' && sc === 'score-high')
+      || (currentFilter === 'mid'  && sc === 'score-mid')
+      || (currentFilter === 'low'  && sc === 'score-low');
+    const searchOk = !q || r.executor.toLowerCase().includes(q) || r.filename.toLowerCase().includes(q);
+    return filterOk && searchOk;
+  });
+}
+
+/* ─────────────────────────────────────────────
+   RENDER CARDS
+───────────────────────────────────────────── */
+function fmtScore(s) {
+  return s !== null ? s + '%' : '—';
+}
+function fmtNum(n) {
+  return n ? n.toLocaleString() : '—';
+}
+
+function renderCards() {
+  const grid     = document.getElementById('grid');
+  const empty    = document.getElementById('empty-state');
+  const countEl  = document.getElementById('report-count');
+  const visible  = filteredReports();
+
+  countEl.textContent = visible.length + ' loaded';
+  grid.innerHTML = '';
+
+  if (visible.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  visible.forEach((r, i) => {
+    const sc = scoreClass(r.secScore);
+    const delay = Math.min(i * 0.05, 0.4);
+
+    // Tags
+    let tags = '';
+    if (r.secVuln > 0)
+      tags += `<span class="ctag ctag-red">${r.secVuln} VULN</span>`;
+    if (r.secScore !== null && r.secScore >= 80)
+      tags += `<span class="ctag ctag-green">SECURE</span>`;
+    if (r.stressPass === r.stressTotal && r.stressTotal > 0)
+      tags += `<span class="ctag ctag-green">STRESS OK</span>`;
+    if (r.stressPass < r.stressTotal)
+      tags += `<span class="ctag ctag-amber">STRESS ${r.stressPass}/${r.stressTotal}</span>`;
+    if (r.fnScore !== null && r.fnScore < 50)
+      tags += `<span class="ctag ctag-red">LOW FN COV</span>`;
+    if (r.uiScore !== null)
+      tags += `<span class="ctag">UI ${r.uiPassed}/${r.uiTotal}</span>`;
+
+    const card = document.createElement('div');
+    card.className = `report-card ${sc}`;
+    card.style.animationDelay = delay + 's';
+    card.dataset.id = r.id;
+
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-top">
+          <div>
+            <div class="card-executor">${esc(r.executor)}</div>
+            <div class="card-version">v${esc(r.version)} &nbsp;·&nbsp; ${esc(r.filename)}</div>
+          </div>
+          <div class="score-badge">
+            ${fmtScore(r.secScore)}
+            <span class="badge-label">SECURITY</span>
+          </div>
+        </div>
+        <div class="card-stats">
+          <div class="cs-item">
+            <div class="cs-val cs-pass">${r.secMitigated}</div>
+            <div class="cs-label">Mitigated</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-val cs-fail">${r.secVuln}</div>
+            <div class="cs-label">Vulnerable</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-val cs-info">${r.fnPassed}/${r.fnTotal}</div>
+            <div class="cs-label">Functions</div>
+          </div>
+        </div>
+        <div class="card-tags">${tags}</div>
+        <div class="card-footer">
+          <div class="card-ts">${esc(r.timestamp || r.filename)}</div>
+          <div class="card-actions">
+            <button class="act-btn open" onclick="openReport('${r.id}')">OPEN</button>
+            ${adminUnlocked ? `<button class="act-btn del" onclick="deleteReport('${r.id}', event)">DEL</button>` : ''}
+          </div>
+        </div>
+      </div>`;
+
+    grid.appendChild(card);
+  });
+}
+
+/* ─────────────────────────────────────────────
+   STATS
+───────────────────────────────────────────── */
+function updateStats() {
+  const total   = reports.length;
+  const secure  = reports.filter(r => r.secScore !== null && r.secScore >= 80).length;
+  const vuln    = reports.filter(r => r.secVuln > 0).length;
+  const scores  = reports.filter(r => r.secScore !== null).map(r => r.secScore);
+  const avg     = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : null;
+  const execus  = new Set(reports.map(r => r.executor)).size;
+
+  document.getElementById('s-total').textContent  = total;
+  document.getElementById('s-secure').textContent = secure;
+  document.getElementById('s-vuln').textContent   = vuln;
+  document.getElementById('s-avg').textContent    = avg !== null ? avg + '%' : '—';
+  document.getElementById('s-execu').textContent  = execus;
+}
+
+/* ─────────────────────────────────────────────
+   MODAL VIEWER
+───────────────────────────────────────────── */
+function openReport(id) {
+  const r = reports.find(x => String(x.id) === String(id));
+  if (!r) return;
+  document.getElementById('modal-title').textContent = r.executor + '  ·  ' + r.filename;
+  const frame = document.getElementById('report-frame');
+  // Write HTML into iframe
+  const blob = new Blob([r.html], { type: 'text/html' });
+  frame.src = URL.createObjectURL(blob);
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('report-frame').src = 'about:blank';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ─────────────────────────────────────────────
+   DELETE
+───────────────────────────────────────────── */
+function deleteReport(id, e) {
+  e.stopPropagation();
+  reports = reports.filter(r => String(r.id) !== String(id));
+  saveStore();
+  renderCards();
+  updateStats();
+  showToast('Report removed');
+}
+
+function clearAll() {
+  if (reports.length === 0) return;
+  if (!confirm('Remove all ' + reports.length + ' report(s)? This cannot be undone.')) return;
+  reports = [];
+  saveStore();
+  renderCards();
+  updateStats();
+  showToast('All reports cleared');
+}
+
+/* ─────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────── */
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ─────────────────────────────────────────────
+   TICKER
+───────────────────────────────────────────── */
+function buildTicker() {
+  const items = [
+    ['SYS', 'ExecEnvHealthCheck v3.2'],
+    ['SEC', '100+ vulnerability vectors'],
+    ['FN',  '50+ executor functions'],
+    ['PERF','6-stage stress test'],
+    ['BIG', 'Fibonacci big-integer benchmark'],
+    ['UI',  '13 UI library checks'],
+    ['SAFE','All reports stored locally'],
+    ['PRIV','Zero data transmitted'],
+  ];
+  const full = [...items, ...items]; // duplicate for seamless loop
+  const track = document.getElementById('ticker-track');
+  track.innerHTML = full.map(([k,v]) =>
+    `<span class="ticker-item"><span>${k}</span>${v}</span>`
+  ).join('');
+}
+
+/* ─────────────────────────────────────────────
+   UTILS
+───────────────────────────────────────────── */
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+/* ─────────────────────────────────────────────
+   AUTH SYSTEM
+   Credentials never stored plaintext.
+   SHA-256( password + "|" + key ) compared
+   against a hardcoded digest only.
+   Session lives in sessionStorage (tab-scoped).
+───────────────────────────────────────────── */
+const AUTH_HASH    = '670d819f823b8a9f4aacac66a7fb94b31a4c41f329ac79d92b24d5e3ccc85260';
+const AUTH_SESSION = 'eehc_admin_v1';
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS   = 5 * 60 * 1000; // 5 minutes
+
+let adminUnlocked = false;
+let authAttempts  = 0;
+let lockoutUntil  = 0;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function checkSession() {
+  try {
+    const s = sessionStorage.getItem(AUTH_SESSION);
+    if (s === AUTH_HASH) { adminUnlocked = true; applyAdminUI(); }
+  } catch(e) {}
+}
+
+function applyAdminUI() {
+  document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+  document.getElementById('admin-badge').classList.add('visible');
+  const trig = document.getElementById('auth-trigger');
+  trig.style.opacity = '0';
+  trig.style.pointerEvents = 'none';
+}
+
+function revokeAdminUI() {
+  document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+  document.getElementById('admin-badge').classList.remove('visible');
+  const trig = document.getElementById('auth-trigger');
+  trig.style.opacity = '';
+  trig.style.pointerEvents = '';
+}
+
+function openAuthModal() {
+  if (adminUnlocked) return;
+  document.getElementById('auth-err').textContent = '';
+  document.getElementById('auth-attempts').textContent = '';
+  document.getElementById('auth-pass').value = '';
+  document.getElementById('auth-key').value  = '';
+  if (Date.now() < lockoutUntil) {
+    const left = Math.ceil((lockoutUntil - Date.now()) / 1000);
+    document.getElementById('auth-err').textContent = `Locked out. Wait ${left}s.`;
+  }
+  document.getElementById('auth-modal').classList.add('open');
+  setTimeout(() => document.getElementById('auth-pass').focus(), 150);
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-modal').classList.remove('open');
+}
+
+async function submitAuth() {
+  if (Date.now() < lockoutUntil) {
+    const left = Math.ceil((lockoutUntil - Date.now()) / 1000);
+    document.getElementById('auth-err').textContent = `Locked out. Wait ${left}s.`;
+    return;
+  }
+  const pass   = document.getElementById('auth-pass').value;
+  const key    = document.getElementById('auth-key').value;
+  const submit = document.querySelector('.auth-submit');
+  if (!pass || !key) { showAuthError('Both fields are required.'); return; }
+  submit.textContent = 'VERIFYING...';
+  submit.disabled = true;
+  const digest = await sha256(pass + '|' + key);
+  submit.textContent = 'AUTHENTICATE';
+  submit.disabled = false;
+  if (digest === AUTH_HASH) {
+    adminUnlocked = true;
+    authAttempts  = 0;
+    try { sessionStorage.setItem(AUTH_SESSION, AUTH_HASH); } catch(e) {}
+    closeAuthModal();
+    applyAdminUI();
+    showToast('✓ Admin access granted');
+  } else {
+    authAttempts++;
+    const remaining = MAX_ATTEMPTS - authAttempts;
+    if (authAttempts >= MAX_ATTEMPTS) {
+      lockoutUntil = Date.now() + LOCKOUT_MS;
+      authAttempts = 0;
+      showAuthError('Too many attempts. Locked for 5 minutes.');
+      document.getElementById('auth-attempts').textContent = '';
+    } else {
+      showAuthError('Invalid credentials.');
+      document.getElementById('auth-attempts').textContent =
+        `${remaining} attempt${remaining !== 1 ? 's' : ''} remaining`;
+    }
+    ['auth-pass','auth-key'].forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.add('error');
+      el.value = '';
+      setTimeout(() => el.classList.remove('error'), 400);
+    });
+    setTimeout(() => document.getElementById('auth-pass').focus(), 50);
+  }
+}
+
+function showAuthError(msg) {
+  document.getElementById('auth-err').textContent = msg;
+}
+
+function logout() {
+  if (!confirm('Log out of admin session?')) return;
+  adminUnlocked = false;
+  try { sessionStorage.removeItem(AUTH_SESSION); } catch(e) {}
+  revokeAdminUI();
+  showToast('Logged out');
+}
+
+function requireAdmin(cb) {
+  if (adminUnlocked) { cb(); return; }
+  openAuthModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeAuthModal();
+    closeModal();
+  }
+});
+
+/* ─────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────── */
+loadStore();
+buildTicker();
+checkSession();   // restore admin if tab still open
+renderCards();
+updateStats();
+
+// Auth modal overlay-click close (deferred so element exists)
+document.getElementById('auth-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('auth-modal')) closeAuthModal();
+});
+</script>
+<!-- ADMIN LOGIN MODAL -->
+<div class="auth-overlay" id="auth-modal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuthModal()">✕ CLOSE</button>
+    <div class="auth-title">ADMIN ACCESS</div>
+    <div class="auth-sub">Enter credentials to unlock upload controls</div>
+    <div class="auth-field">
+      <label class="auth-label" for="auth-pass">Password</label>
+      <input class="auth-input" id="auth-pass" type="password" placeholder="••••••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+    </div>
+    <div class="auth-field">
+      <label class="auth-label" for="auth-key">Secret Key</label>
+      <input class="auth-input" id="auth-key" type="password" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+    </div>
+    <button class="auth-submit" onclick="submitAuth()">AUTHENTICATE</button>
+    <div class="auth-err" id="auth-err"></div>
+    <div class="auth-attempts" id="auth-attempts"></div>
+  </div>
+</div>
+
+<!-- HIDDEN ADMIN TRIGGER (bottom-right corner dot) -->
+<div class="auth-trigger" id="auth-trigger" onclick="openAuthModal()" title=""></div>
+
+</body>
+</html>
