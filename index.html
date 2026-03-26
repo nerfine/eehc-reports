@@ -7,9 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-/* ════════════════════════════════════════════════
-   TOKENS
-════════════════════════════════════════════════ */
 :root {
   --bg:        #030303;
   --surface:   #080808;
@@ -48,9 +45,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ════════════════════════════════════════════════
-   SCANLINE + NOISE OVERLAY
-════════════════════════════════════════════════ */
 body::before {
   content: '';
   position: fixed;
@@ -77,9 +71,6 @@ body::after {
   opacity: .4;
 }
 
-/* ════════════════════════════════════════════════
-   GRID BACKGROUND
-════════════════════════════════════════════════ */
 .grid-bg {
   position: fixed;
   inset: 0;
@@ -92,9 +83,6 @@ body::after {
   z-index: 0;
 }
 
-/* ════════════════════════════════════════════════
-   GLOW ORBS
-════════════════════════════════════════════════ */
 .orb {
   position: fixed;
   border-radius: 50%;
@@ -113,9 +101,6 @@ body::after {
   bottom: 100px; right: -100px;
 }
 
-/* ════════════════════════════════════════════════
-   WRAPPER
-════════════════════════════════════════════════ */
 .wrap {
   position: relative;
   z-index: 1;
@@ -124,9 +109,6 @@ body::after {
   padding: 0 40px;
 }
 
-/* ════════════════════════════════════════════════
-   HEADER
-════════════════════════════════════════════════ */
 header {
   position: sticky;
   top: 0;
@@ -199,9 +181,6 @@ header {
   color: var(--dim);
 }
 
-/* ════════════════════════════════════════════════
-   HERO
-════════════════════════════════════════════════ */
 .hero {
   padding: 80px 0 60px;
   border-bottom: 1px solid var(--border);
@@ -277,9 +256,6 @@ header {
 }
 .btn-ghost:hover { border-color: var(--text); color: var(--text); }
 
-/* ════════════════════════════════════════════════
-   STATS BAR
-════════════════════════════════════════════════ */
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -320,9 +296,6 @@ header {
   margin-top: 4px;
 }
 
-/* ════════════════════════════════════════════════
-   SECTION HEADER
-════════════════════════════════════════════════ */
 .sec-header {
   display: flex;
   align-items: baseline;
@@ -344,9 +317,6 @@ header {
   color: var(--dim);
 }
 
-/* ════════════════════════════════════════════════
-   DROP ZONE
-════════════════════════════════════════════════ */
 .drop-zone {
   border: 1px dashed var(--border2);
   padding: 48px 32px;
@@ -395,9 +365,6 @@ header {
 .drop-sub strong { color: var(--green); }
 #file-input { display: none; }
 
-/* ════════════════════════════════════════════════
-   REPORTS GRID
-════════════════════════════════════════════════ */
 .reports-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -418,8 +385,6 @@ header {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-/* top accent line coloured by security score */
 .report-card::before {
   content: '';
   position: absolute;
@@ -480,7 +445,6 @@ header {
 .score-low  .badge-label { color: rgba(255,23,68,.5); }
 .score-none .badge-label { color: var(--muted); }
 
-/* mini stats row */
 .card-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -510,7 +474,6 @@ header {
 .cs-warn { color: var(--amber); }
 .cs-info { color: var(--blue);  }
 
-/* tag row */
 .card-tags {
   display: flex;
   flex-wrap: wrap;
@@ -529,7 +492,6 @@ header {
 .ctag-red   { border-color: rgba(255,23,68,.3); color: var(--red);   background: var(--red-dim);   }
 .ctag-amber { border-color: rgba(255,171,0,.3); color: var(--amber); background: var(--amber-dim); }
 
-/* bottom row */
 .card-footer {
   display: flex;
   align-items: center;
@@ -564,9 +526,6 @@ header {
 .act-btn.open:hover { border-color: var(--green); color: var(--green); }
 .act-btn.del:hover  { border-color: var(--red); color: var(--red); }
 
-/* ════════════════════════════════════════════════
-   EMPTY STATE
-════════════════════════════════════════════════ */
 #empty-state {
   text-align: center;
   padding: 64px 32px;
@@ -593,9 +552,6 @@ header {
   letter-spacing: 1px;
 }
 
-/* ════════════════════════════════════════════════
-   TERMINAL TICKER
-════════════════════════════════════════════════ */
 .ticker {
   border-top: 1px solid var(--border);
   padding: 8px 0;
@@ -621,9 +577,6 @@ header {
   to   { transform: translateX(-50%); }
 }
 
-/* ════════════════════════════════════════════════
-   FOOTER
-════════════════════════════════════════════════ */
 footer {
   border-top: 1px solid var(--border);
   padding: 20px 40px;
@@ -647,9 +600,6 @@ footer {
   letter-spacing: 1px;
 }
 
-/* ════════════════════════════════════════════════
-   MODAL (report viewer)
-════════════════════════════════════════════════ */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -706,9 +656,6 @@ footer {
   background: #0a0a0a;
 }
 
-/* ════════════════════════════════════════════════
-   UPLOAD PROGRESS
-════════════════════════════════════════════════ */
 .upload-toast {
   position: fixed;
   bottom: 24px;
@@ -731,9 +678,6 @@ footer {
   transform: translateY(0);
 }
 
-/* ════════════════════════════════════════════════
-   SEARCH / FILTER BAR
-════════════════════════════════════════════════ */
 .filter-bar {
   display: flex;
   gap: 8px;
@@ -774,9 +718,6 @@ footer {
 .filter-btn.active-red   { border-color: var(--red); color: var(--red); background: var(--red-dim); }
 .filter-btn.active-amber { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
 
-/* ════════════════════════════════════════════════
-   ADMIN LOGIN MODAL
-════════════════════════════════════════════════ */
 .auth-overlay {
   position: fixed;
   inset: 0;
@@ -897,7 +838,6 @@ footer {
   letter-spacing: 1px;
 }
 
-/* admin indicator in header */
 .admin-badge {
   font-size: 8px;
   letter-spacing: 2px;
@@ -913,7 +853,6 @@ footer {
 .admin-badge:hover { background: rgba(0,255,65,.15); }
 .admin-badge.visible { display: inline-block; }
 
-/* hidden trigger — tiny dot bottom-right of logo */
 .auth-trigger {
   position: fixed;
   bottom: 18px;
@@ -928,9 +867,6 @@ footer {
 }
 .auth-trigger:hover { border-color: var(--green); background: var(--green-dim); }
 
-/* ════════════════════════════════════════════════
-   RESPONSIVE
-════════════════════════════════════════════════ */
 @media (max-width: 700px) {
   .header-inner { padding: 0 16px; }
   .wrap { padding: 0 16px; }
@@ -944,12 +880,10 @@ footer {
 </head>
 <body>
 
-<!-- BACKGROUND LAYERS -->
 <div class="grid-bg"></div>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 
-<!-- HEADER -->
 <header>
   <div class="header-inner">
     <a class="logo" href="#">
@@ -965,14 +899,11 @@ footer {
   </div>
 </header>
 
-<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner" id="ticker-track">
-    <!-- populated by JS -->
   </div>
 </div>
 
-<!-- HERO -->
 <div class="wrap">
   <section class="hero">
     <div class="hero-eyebrow">ExecEnvHealthCheck — Results Archive</div>
@@ -982,8 +913,7 @@ footer {
       <span class="dim">RESULTS</span>
     </h1>
     <p class="hero-sub">
-      Upload generated <strong style="color:var(--text)">.html</strong> reports from the 
-      ExecEnvHealthCheck script. Each report is parsed locally — nothing is sent to a server. 
+      Upload generated <strong style="color:var(--text)">.html</strong> reports from nerfine's script. Each report is parsed locally — nothing is sent to a server. 
       All data lives in your browser.
     </p>
     <div class="hero-actions">
@@ -993,7 +923,6 @@ footer {
       <a href="#reports" class="btn-ghost">View Results ↓</a>
     </div>
 
-    <!-- STATS BAR -->
     <div class="stats-bar" id="stats-bar">
       <div class="stat-item">
         <div class="stat-n" id="s-total">0</div>
@@ -1019,7 +948,6 @@ footer {
   </section>
 </div>
 
-<!-- REPORTS SECTION -->
 <div class="wrap" id="reports" style="padding-bottom:80px">
 
   <div class="sec-header">
@@ -1027,7 +955,6 @@ footer {
     <div class="sec-meta" id="report-count">0 loaded</div>
   </div>
 
-  <!-- FILTER BAR -->
   <div class="filter-bar">
     <input class="filter-input" id="search-input" placeholder="Search executor name..." oninput="renderCards()">
     <button class="filter-btn active" data-filter="all" onclick="setFilter(this,'all')">ALL</button>
@@ -1037,7 +964,6 @@ footer {
     <button class="filter-btn admin-only" id="clear-btn" style="margin-left:auto;display:none" onclick="clearAll()">CLEAR ALL</button>
   </div>
 
-  <!-- DROP ZONE (admin only) -->
   <div class="drop-zone admin-only" id="drop-zone" style="display:none"
        onclick="requireAdmin(()=>document.getElementById('file-input').click())"
        ondragover="handleDragOver(event)"
@@ -1046,16 +972,13 @@ footer {
     <div class="drop-icon">⬆</div>
     <div class="drop-title">DROP REPORT FILES HERE</div>
     <div class="drop-sub">
-      Accepts <strong>.html</strong> files generated by ExecEnvHealthCheck &nbsp;·&nbsp;
-      Files are read locally — never uploaded
+      Accepts <strong>.html</strong> files generated by ExecEnvHealthCheck &nbsp;·&nbsp;.
     </div>
     <input type="file" id="file-input" accept=".html" multiple onchange="handleFiles(this.files)">
   </div>
 
-  <!-- CARDS -->
   <div class="reports-grid" id="grid"></div>
 
-  <!-- EMPTY STATE -->
   <div id="empty-state">
     <div class="empty-ascii">
  ███████╗███████╗██╗  ██╗ ██████╗ 
@@ -1069,7 +992,6 @@ footer {
   </div>
 </div>
 
-<!-- ABOUT -->
 <div class="wrap" id="about" style="padding-bottom:80px">
   <div class="sec-header">
     <div class="sec-title">ABOUT</div>
@@ -1103,7 +1025,6 @@ footer {
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-left">
     <strong>EEHC.REPORTS</strong> &nbsp;·&nbsp; ExecEnvHealthCheck v3.2 &nbsp;·&nbsp; All reports are local
@@ -1113,7 +1034,6 @@ footer {
   </div>
 </footer>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal-frame-wrap">
     <div class="modal-bar">
@@ -1124,13 +1044,9 @@ footer {
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="upload-toast" id="toast"></div>
 
 <script>
-/* ─────────────────────────────────────────────
-   DATA STORE
-───────────────────────────────────────────── */
 const STORE_KEY = 'eehc_reports_v1';
 let reports = [];
 let currentFilter = 'all';
@@ -1146,22 +1062,16 @@ function saveStore() {
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify(reports));
   } catch(e) {
-    // If localStorage is full (large HTML files), notify
     showToast('⚠ Storage full — try clearing old reports');
   }
 }
 
-/* ─────────────────────────────────────────────
-   FILE PARSING
-   Extract metadata from the generated HTML
-───────────────────────────────────────────── */
 function parseReport(html, filename) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   const body = doc.body ? doc.body.innerText : '';
 
   function grabMeta(label) {
-    // Looks for <strong> adjacent text in meta-grid
     const els = doc.querySelectorAll('.meta-grid strong');
     for (const el of els) {
       const prev = el.previousSibling;
@@ -1172,16 +1082,13 @@ function parseReport(html, filename) {
     return null;
   }
 
-  // Executor name — try meta-grid first, then title, then filename
   let executor = grabMeta('EXECUTOR')
     || doc.querySelector('.h-title')?.textContent?.replace(/EXEC\s*HEALTH/i,'').trim()
     || filename.replace(/HealthCheck_/,'').replace(/_\d{8}_\d{6}\.html$/,'').replace(/_/g,' ')
     || 'Unknown';
 
-  // Timestamp
   let timestamp = grabMeta('TIMESTAMP') || grabMeta('DATE') || '—';
 
-  // Version from title or eyebrow
   let version = '?';
   const titleEl = doc.querySelector('title');
   if (titleEl) {
@@ -1189,11 +1096,9 @@ function parseReport(html, filename) {
     if (m) version = m[1];
   }
 
-  // Security score — look for stat-card.stat-pass/fail/warn under "SECURITY"
   let secScore = null;
   let secMitigated = 0, secVuln = 0, secSkipped = 0;
 
-  // Approach: find all .stat-val elements and their parent .stat-card label
   const statCards = doc.querySelectorAll('.stat-card');
   for (const card of statCards) {
     const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
@@ -1208,7 +1113,6 @@ function parseReport(html, filename) {
     }
   }
 
-  // Fallback: look for banner text
   if (secScore === null) {
     const banners = doc.querySelectorAll('.banner');
     for (const b of banners) {
@@ -1217,7 +1121,6 @@ function parseReport(html, filename) {
     }
   }
 
-  // Functions coverage
   let fnPassed = 0, fnTotal = 0, fnScore = null;
   for (const card of statCards) {
     const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
@@ -1232,7 +1135,6 @@ function parseReport(html, filename) {
     }
   }
 
-  // UI score
   let uiScore = null, uiPassed = 0, uiTotal = 0;
   for (const card of statCards) {
     const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
@@ -1247,7 +1149,6 @@ function parseReport(html, filename) {
     }
   }
 
-  // Stress pass count
   let stressPass = 0, stressTotal = 6;
   for (const card of statCards) {
     const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
@@ -1258,7 +1159,6 @@ function parseReport(html, filename) {
     }
   }
 
-  // Fibonacci digits
   let fibDigits = 0;
   for (const card of statCards) {
     const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
@@ -1268,7 +1168,6 @@ function parseReport(html, filename) {
     }
   }
 
-  // Total time
   let totalTime = '';
   const mtime = doc.querySelector('footer')?.textContent?.match(/([\d.]+s)\s*total/i);
   if (mtime) totalTime = mtime[1];
@@ -1293,14 +1192,11 @@ function parseReport(html, filename) {
     stressTotal,
     fibDigits,
     totalTime,
-    html,        // store full HTML for viewer
+    html,
     addedAt:     Date.now()
   };
 }
 
-/* ─────────────────────────────────────────────
-   FILE HANDLING
-───────────────────────────────────────────── */
 function handleFiles(files) {
   const arr = Array.from(files);
   let loaded = 0;
@@ -1309,7 +1205,6 @@ function handleFiles(files) {
     const reader = new FileReader();
     reader.onload = e => {
       const rep = parseReport(e.target.result, file.name);
-      // Deduplicate by filename
       reports = reports.filter(r => r.filename !== rep.filename);
       reports.unshift(rep);
       loaded++;
@@ -1322,7 +1217,6 @@ function handleFiles(files) {
     };
     reader.readAsText(file);
   });
-  // Reset input so same file can be re-uploaded
   document.getElementById('file-input').value = '';
 }
 
@@ -1340,9 +1234,6 @@ function handleDrop(e) {
   handleFiles(e.dataTransfer.files);
 }
 
-/* ─────────────────────────────────────────────
-   FILTER
-───────────────────────────────────────────── */
 function setFilter(btn, filter) {
   currentFilter = filter;
   document.querySelectorAll('.filter-btn').forEach(b => {
@@ -1375,9 +1266,6 @@ function filteredReports() {
   });
 }
 
-/* ─────────────────────────────────────────────
-   RENDER CARDS
-───────────────────────────────────────────── */
 function fmtScore(s) {
   return s !== null ? s + '%' : '—';
 }
@@ -1404,7 +1292,6 @@ function renderCards() {
     const sc = scoreClass(r.secScore);
     const delay = Math.min(i * 0.05, 0.4);
 
-    // Tags
     let tags = '';
     if (r.secVuln > 0)
       tags += `<span class="ctag ctag-red">${r.secVuln} VULN</span>`;
@@ -1464,9 +1351,6 @@ function renderCards() {
   });
 }
 
-/* ─────────────────────────────────────────────
-   STATS
-───────────────────────────────────────────── */
 function updateStats() {
   const total   = reports.length;
   const secure  = reports.filter(r => r.secScore !== null && r.secScore >= 80).length;
@@ -1482,15 +1366,11 @@ function updateStats() {
   document.getElementById('s-execu').textContent  = execus;
 }
 
-/* ─────────────────────────────────────────────
-   MODAL VIEWER
-───────────────────────────────────────────── */
 function openReport(id) {
   const r = reports.find(x => String(x.id) === String(id));
   if (!r) return;
   document.getElementById('modal-title').textContent = r.executor + '  ·  ' + r.filename;
   const frame = document.getElementById('report-frame');
-  // Write HTML into iframe
   const blob = new Blob([r.html], { type: 'text/html' });
   frame.src = URL.createObjectURL(blob);
   document.getElementById('modal').classList.add('open');
@@ -1511,9 +1391,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
 
-/* ─────────────────────────────────────────────
-   DELETE
-───────────────────────────────────────────── */
 function deleteReport(id, e) {
   e.stopPropagation();
   reports = reports.filter(r => String(r.id) !== String(id));
@@ -1533,9 +1410,6 @@ function clearAll() {
   showToast('All reports cleared');
 }
 
-/* ─────────────────────────────────────────────
-   TOAST
-───────────────────────────────────────────── */
 let toastTimer = null;
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -1545,9 +1419,6 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-/* ─────────────────────────────────────────────
-   TICKER
-───────────────────────────────────────────── */
 function buildTicker() {
   const items = [
     ['SYS', 'ExecEnvHealthCheck v3.2'],
@@ -1559,16 +1430,13 @@ function buildTicker() {
     ['SAFE','All reports stored locally'],
     ['PRIV','Zero data transmitted'],
   ];
-  const full = [...items, ...items]; // duplicate for seamless loop
+  const full = [...items, ...items];
   const track = document.getElementById('ticker-track');
   track.innerHTML = full.map(([k,v]) =>
     `<span class="ticker-item"><span>${k}</span>${v}</span>`
   ).join('');
 }
 
-/* ─────────────────────────────────────────────
-   UTILS
-───────────────────────────────────────────── */
 function esc(s) {
   return String(s)
     .replace(/&/g,'&amp;')
@@ -1577,17 +1445,10 @@ function esc(s) {
     .replace(/"/g,'&quot;');
 }
 
-/* ─────────────────────────────────────────────
-   AUTH SYSTEM
-   Credentials never stored plaintext.
-   SHA-256( password + "|" + key ) compared
-   against a hardcoded digest only.
-   Session lives in sessionStorage (tab-scoped).
-───────────────────────────────────────────── */
 const AUTH_HASH    = '670d819f823b8a9f4aacac66a7fb94b31a4c41f329ac79d92b24d5e3ccc85260';
 const AUTH_SESSION = 'eehc_admin_v1';
 const MAX_ATTEMPTS = 5;
-const LOCKOUT_MS   = 5 * 60 * 1000; // 5 minutes
+const LOCKOUT_MS   = 5 * 60 * 1000;
 
 let adminUnlocked = false;
 let authAttempts  = 0;
@@ -1708,21 +1569,16 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* ─────────────────────────────────────────────
-   INIT
-───────────────────────────────────────────── */
 loadStore();
 buildTicker();
-checkSession();   // restore admin if tab still open
+checkSession();
 renderCards();
 updateStats();
 
-// Auth modal overlay-click close (deferred so element exists)
 document.getElementById('auth-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('auth-modal')) closeAuthModal();
 });
 </script>
-<!-- ADMIN LOGIN MODAL -->
 <div class="auth-overlay" id="auth-modal">
   <div class="auth-box">
     <button class="auth-close" onclick="closeAuthModal()">✕ CLOSE</button>
@@ -1742,7 +1598,6 @@ document.getElementById('auth-modal').addEventListener('click', e => {
   </div>
 </div>
 
-<!-- HIDDEN ADMIN TRIGGER (bottom-right corner dot) -->
 <div class="auth-trigger" id="auth-trigger" onclick="openAuthModal()" title=""></div>
 
 </body>
