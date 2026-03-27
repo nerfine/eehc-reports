@@ -17,7 +17,6 @@
   --text:      #e8e4dc;
   --muted:     #6a6a6a;
   --dim:       #8a8a8a;
-
   --green:     #00ff41;
   --green-dim: rgba(0,255,65,.07);
   --green-glow:rgba(0,255,65,.18);
@@ -26,7 +25,6 @@
   --amber:     #ffab00;
   --amber-dim: rgba(255,171,0,.08);
   --blue:      #40c4ff;
-
   --font-mono: 'IBM Plex Mono', monospace;
   --font-disp: 'Bebas Neue', sans-serif;
 }
@@ -48,13 +46,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,.06) 2px,
-    rgba(0,0,0,.06) 4px
-  );
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.06) 2px, rgba(0,0,0,.06) 4px);
   pointer-events: none;
   z-index: 9999;
 }
@@ -73,75 +65,54 @@ body::after {
 .grid-bg {
   position: fixed;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
 }
 
-.orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  z-index: 0;
-}
+.orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
 .orb-1 { width:500px;height:500px;background:rgba(0,255,65,.04);top:-150px;left:-100px; }
 .orb-2 { width:400px;height:400px;background:rgba(64,196,255,.03);bottom:100px;right:-100px; }
 
-.wrap {
-  position: relative;
-  z-index: 1;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
+.wrap { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 40px; }
 
 header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: sticky; top: 0; z-index: 100;
   background: rgba(3,3,3,.94);
   border-bottom: 1px solid var(--border2);
   backdrop-filter: blur(12px);
 }
 .header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  height: 52px;
-  max-width: 1280px;
-  margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 52px; max-width: 1280px; margin: 0 auto;
 }
 .logo { display:flex;align-items:center;gap:12px;text-decoration:none; }
 .logo-mark {
-  width:28px;height:28px;
-  border:1px solid var(--green);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
+  width:28px;height:28px;border:1px solid var(--green);
+  display:flex;align-items:center;justify-content:center;position:relative;
 }
 .logo-mark::before {
-  content:'';
-  position:absolute;inset:3px;
-  background:var(--green);
+  content:'';position:absolute;inset:3px;background:var(--green);
   animation:pulse-mark 2s ease-in-out infinite;
 }
 @keyframes pulse-mark { 0%,100%{opacity:1} 50%{opacity:.4} }
 .logo-text { font-family:var(--font-disp);font-size:20px;letter-spacing:2px;color:var(--text); }
 .logo-text span { color:var(--green); }
 .nav-links { display:flex;align-items:center;gap:24px; }
-.nav-links a {
-  font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--dim);text-decoration:none;transition:color .15s;
-}
+.nav-links a { font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .15s; }
 .nav-links a:hover { color:var(--text); }
-.nav-tag {
-  font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  padding:3px 8px;border:1px solid var(--border2);color:var(--dim);
+.nav-tag { font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border:1px solid var(--border2);color:var(--dim); }
+
+.live-dot {
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);
 }
+.live-dot::before {
+  content:'';width:6px;height:6px;background:var(--green);
+  animation:blink 1.4s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
 .ticker { border-top:1px solid var(--border);padding:8px 0;overflow:hidden; }
 .ticker-inner { display:flex;animation:ticker 30s linear infinite;white-space:nowrap; }
@@ -152,38 +123,30 @@ header {
 .hero { padding:80px 0 60px;border-bottom:1px solid var(--border); }
 .hero-eyebrow {
   font-size:10px;letter-spacing:4px;text-transform:uppercase;
-  color:var(--green);margin-bottom:20px;
-  display:flex;align-items:center;gap:10px;
+  color:var(--green);margin-bottom:20px;display:flex;align-items:center;gap:10px;
 }
 .hero-eyebrow::before { content:'';width:24px;height:1px;background:var(--green); }
 .hero-title {
-  font-family:var(--font-disp);
-  font-size:clamp(52px,8vw,96px);
-  line-height:.92;letter-spacing:2px;
-  margin-bottom:24px;color:var(--text);
+  font-family:var(--font-disp);font-size:clamp(52px,8vw,96px);
+  line-height:.92;letter-spacing:2px;margin-bottom:24px;color:var(--text);
 }
 .hero-title .accent { color:var(--green); }
 .hero-title .dim    { color:var(--muted); }
-.hero-sub {
-  font-size:12px;color:var(--dim);
-  max-width:480px;line-height:2;
-  margin-bottom:36px;letter-spacing:.3px;
-}
+.hero-sub { font-size:12px;color:var(--dim);max-width:480px;line-height:2;margin-bottom:36px;letter-spacing:.3px; }
 .hero-actions { display:flex;align-items:center;gap:16px;flex-wrap:wrap; }
 
 .btn-primary {
   font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  background:var(--green);color:#000;border:none;
-  padding:11px 22px;cursor:pointer;font-weight:700;
-  transition:all .15s;text-decoration:none;display:inline-block;
+  background:var(--green);color:#000;border:none;padding:11px 22px;
+  cursor:pointer;font-weight:700;transition:all .15s;text-decoration:none;display:inline-block;
 }
 .btn-primary:hover { background:#00cc33;box-shadow:0 0 24px var(--green-glow); }
+.btn-primary:disabled { opacity:.5;cursor:not-allowed; }
 
 .btn-ghost {
   font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
   background:transparent;color:var(--dim);border:1px solid var(--border2);
-  padding:11px 22px;cursor:pointer;transition:all .15s;
-  text-decoration:none;display:inline-block;
+  padding:11px 22px;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block;
 }
 .btn-ghost:hover { border-color:var(--text);color:var(--text); }
 
@@ -208,8 +171,7 @@ header {
 .sec-meta  { font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim); }
 
 .drop-zone {
-  border:1px dashed var(--border2);
-  padding:48px 32px;text-align:center;cursor:pointer;
+  border:1px dashed var(--border2);padding:48px 32px;text-align:center;cursor:pointer;
   transition:all .2s;position:relative;margin-bottom:40px;background:var(--panel);
 }
 .drop-zone::before {
@@ -227,10 +189,7 @@ header {
 .drop-sub strong { color:var(--green); }
 #file-input { display:none; }
 
-.reports-grid {
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:1px;background:var(--border);
-}
+.reports-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--border); }
 .report-card {
   background:var(--card);position:relative;overflow:hidden;
   transition:background .15s;animation:card-in .35s ease both;
@@ -249,10 +208,7 @@ header {
 .card-version  { font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-top:4px; }
 
 .score-badge { font-family:var(--font-disp);font-size:22px;letter-spacing:1px;text-align:right;flex-shrink:0;margin-left:12px; }
-.score-badge .badge-label {
-  font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;
-  display:block;margin-top:2px;text-align:right;
-}
+.score-badge .badge-label { font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;display:block;margin-top:2px;text-align:right; }
 .score-high .score-badge { color:var(--green); }
 .score-mid  .score-badge { color:var(--amber); }
 .score-low  .score-badge { color:var(--red); }
@@ -262,11 +218,8 @@ header {
 .score-low  .badge-label { color:rgba(255,23,68,.6); }
 .score-none .badge-label { color:var(--muted); }
 
-.card-stats {
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:14px;
-}
-.cs-item { background:var(--panel);padding:8px 10px; }
+.card-stats { display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:14px; }
+.cs-item  { background:var(--panel);padding:8px 10px; }
 .cs-val   { font-size:14px;font-weight:700;line-height:1; }
 .cs-label { font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:3px; }
 .cs-pass  { color:var(--green); }
@@ -275,21 +228,17 @@ header {
 
 .card-tags { display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px; }
 .ctag       { font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid var(--border2);color:var(--dim); }
-.ctag-green { border-color:rgba(0,255,65,.35); color:var(--green);background:var(--green-dim); }
-.ctag-red   { border-color:rgba(255,23,68,.35);color:var(--red);  background:var(--red-dim); }
+.ctag-green { border-color:rgba(0,255,65,.35);color:var(--green);background:var(--green-dim); }
+.ctag-red   { border-color:rgba(255,23,68,.35);color:var(--red);background:var(--red-dim); }
 .ctag-amber { border-color:rgba(255,171,0,.35);color:var(--amber);background:var(--amber-dim); }
 
-.card-footer {
-  display:flex;align-items:center;justify-content:space-between;
-  padding-top:12px;border-top:1px solid var(--border);
-}
+.card-footer { display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border); }
 .card-ts      { font-size:10px;color:var(--dim);letter-spacing:.3px; }
 .card-actions { display:flex;gap:6px; }
 .act-btn {
   font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;
   background:transparent;border:1px solid var(--border2);color:var(--dim);
-  padding:5px 12px;cursor:pointer;transition:all .12s;
-  text-decoration:none;display:inline-block;
+  padding:5px 12px;cursor:pointer;transition:all .12s;text-decoration:none;display:inline-block;
 }
 .act-btn:hover      { border-color:var(--text);color:var(--text); }
 .act-btn.open:hover { border-color:var(--green);color:var(--green); }
@@ -320,24 +269,15 @@ header {
 
 .modal-overlay {
   position:fixed;inset:0;background:rgba(0,0,0,.85);
-  z-index:1000;display:none;align-items:flex-end;justify-content:center;
-  backdrop-filter:blur(4px);
+  z-index:1000;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);
 }
 .modal-overlay.open { display:flex; }
-.modal-frame-wrap {
-  width:100%;height:92vh;background:var(--bg);
-  border-top:2px solid var(--green);display:flex;flex-direction:column;
-}
-.modal-bar {
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;height:36px;border-bottom:1px solid var(--border);
-  background:var(--surface);flex-shrink:0;
-}
+.modal-frame-wrap { width:100%;height:92vh;background:var(--bg);border-top:2px solid var(--green);display:flex;flex-direction:column; }
+.modal-bar { display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:36px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0; }
 .modal-title { font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim); }
 .modal-close {
   font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  background:transparent;border:1px solid var(--border2);color:var(--dim);
-  padding:4px 12px;cursor:pointer;transition:all .12s;
+  background:transparent;border:1px solid var(--border2);color:var(--dim);padding:4px 12px;cursor:pointer;transition:all .12s;
 }
 .modal-close:hover { border-color:var(--red);color:var(--red); }
 #report-frame { flex:1;border:none;width:100%;background:#0a0a0a; }
@@ -350,6 +290,13 @@ header {
 }
 .upload-toast.show { opacity:1;transform:translateY(0); }
 
+.progress-bar-wrap {
+  position:fixed;top:0;left:0;right:0;height:2px;z-index:9997;
+  background:transparent;opacity:0;transition:opacity .2s;
+}
+.progress-bar-wrap.active { opacity:1; }
+.progress-bar { height:100%;background:var(--green);width:0%;transition:width .3s ease; }
+
 .auth-overlay {
   position:fixed;inset:0;background:rgba(0,0,0,.96);
   z-index:5000;display:flex;align-items:center;justify-content:center;
@@ -357,26 +304,20 @@ header {
 }
 .auth-overlay.open { opacity:1;pointer-events:all; }
 .auth-box {
-  width:380px;background:var(--panel);
-  border:1px solid var(--border2);border-top:2px solid var(--green);
-  padding:32px 28px 28px;position:relative;
-  transform:translateY(12px);transition:transform .2s;
+  width:380px;background:var(--panel);border:1px solid var(--border2);border-top:2px solid var(--green);
+  padding:32px 28px 28px;position:relative;transform:translateY(12px);transition:transform .2s;
 }
 .auth-overlay.open .auth-box { transform:translateY(0); }
 .auth-close {
   position:absolute;top:10px;right:12px;
   font-family:var(--font-mono);font-size:9px;letter-spacing:2px;
-  background:transparent;border:none;color:var(--dim);cursor:pointer;
-  padding:4px 8px;transition:color .12s;
+  background:transparent;border:none;color:var(--dim);cursor:pointer;padding:4px 8px;transition:color .12s;
 }
 .auth-close:hover { color:var(--red); }
 .auth-title { font-family:var(--font-disp);font-size:22px;letter-spacing:2px;color:var(--green);margin-bottom:6px; }
 .auth-sub   { font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:24px; }
 .auth-field { margin-bottom:14px; }
-.auth-label {
-  font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--dim);margin-bottom:6px;display:block;
-}
+.auth-label { font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:6px;display:block; }
 .auth-input {
   width:100%;font-family:var(--font-mono);font-size:13px;letter-spacing:1px;
   background:var(--surface);border:1px solid var(--border2);color:var(--text);
@@ -387,14 +328,12 @@ header {
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 .auth-submit {
   width:100%;font-family:var(--font-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;
-  background:var(--green);color:#000;border:none;padding:12px;
-  cursor:pointer;font-weight:700;margin-top:6px;transition:all .15s;
+  background:var(--green);color:#000;border:none;padding:12px;cursor:pointer;font-weight:700;margin-top:6px;transition:all .15s;
 }
 .auth-submit:hover { background:#00cc33;box-shadow:0 0 20px var(--green-glow); }
 .auth-err      { font-size:10px;letter-spacing:.5px;color:var(--red);margin-top:10px;min-height:16px;text-align:center; }
 .auth-attempts { font-size:10px;color:var(--dim);text-align:center;margin-top:6px;letter-spacing:.5px; }
 
-/* ── ADMIN BADGE + TRIGGER ── */
 .admin-badge {
   font-size:9px;letter-spacing:2px;text-transform:uppercase;
   padding:3px 8px;border:1px solid var(--green);color:var(--green);
@@ -402,15 +341,14 @@ header {
 }
 .admin-badge:hover { background:rgba(0,255,65,.15); }
 .admin-badge.visible { display:inline-block; }
+
 .auth-trigger {
-  position:fixed;bottom:18px;right:18px;
-  width:10px;height:10px;background:transparent;
-  border:1px solid var(--border);cursor:pointer;z-index:500;
+  position:fixed;bottom:18px;right:18px;width:10px;height:10px;
+  background:transparent;border:1px solid var(--border);cursor:pointer;z-index:500;
   transition:border-color .2s,background .2s;
 }
 .auth-trigger:hover { border-color:var(--green);background:var(--green-dim); }
 
-  
 footer {
   border-top:1px solid var(--border);padding:20px 40px;
   display:flex;justify-content:space-between;align-items:center;
@@ -421,7 +359,7 @@ footer {
 .footer-right { font-size:10px;color:var(--muted);letter-spacing:.5px; }
 
 @media (max-width:700px) {
-  .header-inner,.footer { padding-left:16px;padding-right:16px; }
+  .header-inner, footer { padding-left:16px;padding-right:16px; }
   .wrap { padding:0 16px; }
   .hero { padding:48px 0 36px; }
   .hero-title { font-size:52px; }
@@ -432,6 +370,7 @@ footer {
 </head>
 <body>
 
+<div class="progress-bar-wrap" id="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
 <div class="grid-bg"></div>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
@@ -446,6 +385,7 @@ footer {
       <a href="#reports">Results</a>
       <a href="#about">About</a>
       <span class="nav-tag">v3.2</span>
+      <span class="live-dot">LIVE</span>
       <span class="admin-badge" id="admin-badge" onclick="logout()" title="Click to log out">✓ ADMIN</span>
     </div>
   </div>
@@ -476,26 +416,11 @@ footer {
     </div>
 
     <div class="stats-bar">
-      <div class="stat-item">
-        <div class="stat-n" id="s-total">0</div>
-        <div class="stat-l">Reports Loaded</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-n" id="s-secure" style="color:var(--green)">0</div>
-        <div class="stat-l">Secure (≥80%)</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-n" id="s-vuln" style="color:var(--red)">0</div>
-        <div class="stat-l">Vulnerable</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-n" id="s-avg" style="color:var(--amber)">—</div>
-        <div class="stat-l">Avg Security</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-n" id="s-execu" style="color:var(--blue)">0</div>
-        <div class="stat-l">Executors</div>
-      </div>
+      <div class="stat-item"><div class="stat-n" id="s-total">0</div><div class="stat-l">Reports Loaded</div></div>
+      <div class="stat-item"><div class="stat-n" id="s-secure" style="color:var(--green)">0</div><div class="stat-l">Secure (≥80%)</div></div>
+      <div class="stat-item"><div class="stat-n" id="s-vuln" style="color:var(--red)">0</div><div class="stat-l">Vulnerable</div></div>
+      <div class="stat-item"><div class="stat-n" id="s-avg" style="color:var(--amber)">—</div><div class="stat-l">Avg Security</div></div>
+      <div class="stat-item"><div class="stat-n" id="s-execu" style="color:var(--blue)">0</div><div class="stat-l">Executors</div></div>
     </div>
   </section>
 </div>
@@ -512,8 +437,7 @@ footer {
     <button class="filter-btn" data-filter="high" onclick="setFilter(this,'high')">SECURE</button>
     <button class="filter-btn" data-filter="mid"  onclick="setFilter(this,'mid')">WARNING</button>
     <button class="filter-btn" data-filter="low"  onclick="setFilter(this,'low')">VULN</button>
-    <button class="filter-btn admin-only" id="clear-btn"
-            style="margin-left:auto;display:none" onclick="clearAll()">CLEAR ALL</button>
+    <button class="filter-btn admin-only" id="clear-btn" style="margin-left:auto;display:none" onclick="clearAll()">CLEAR ALL</button>
   </div>
 
   <div class="drop-zone admin-only" id="drop-zone" style="display:none"
@@ -538,7 +462,7 @@ footer {
  ███████╗███████╗██║  ██║╚██████╗ 
  ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ </div>
     <div class="empty-title">NO REPORTS LOADED</div>
-    <div class="empty-sub">No  files generated by nerfine has been uploaded</div>
+    <div class="empty-sub">No files generated by nerfine have been uploaded yet</div>
   </div>
 </div>
 
@@ -550,33 +474,21 @@ footer {
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)">
     <div style="background:var(--panel);padding:24px">
       <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--green);margin-bottom:10px">WHAT IS THIS</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.9">
-        ExecEnvHealthCheck is a comprehensive Roblox executor diagnostic suite.
-        It tests security vectors, function coverage, UI library compatibility,
-        and raw performance — generating a self-contained HTML report.
-      </div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.9">ExecEnvHealthCheck is a comprehensive Roblox executor diagnostic suite. It tests security vectors, function coverage, UI library compatibility, and raw performance — generating a self-contained HTML report.</div>
     </div>
     <div style="background:var(--panel);padding:24px">
       <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--amber);margin-bottom:10px">HOW IT WORKS</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.9">
-        The script is ran inside any executor. It probes 100+ vulnerability vectors,
-        benchmarks 50+ executor functions, stress-tests the Lua VM, and computes
-        big Fibonacci numbers; then writes a detailed .html report.
-      </div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.9">The script is ran inside any executor. It probes 100+ vulnerability vectors, benchmarks 50+ executor functions, stress-tests the Lua VM, and computes big Fibonacci numbers; then writes a detailed .html report.</div>
     </div>
     <div style="background:var(--panel);padding:24px">
       <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--blue);margin-bottom:10px">THIS SITE</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.9">
-        The site contains all the latest official reports of nerifne's tests.
-      </div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.9">The site contains all the latest official reports of nerfine's tests. Reports update live — no refresh needed.</div>
     </div>
   </div>
 </div>
 
 <footer>
-  <div class="footer-left">
-    <strong>EEHC.REPORT</strong> &nbsp;·&nbsp; ExecEnvHealthCheck v3.2 &nbsp;·&nbsp;
-  </div>
+  <div class="footer-left"><strong>EEHC.REPORT</strong> &nbsp;·&nbsp; ExecEnvHealthCheck v3.2</div>
   <div class="footer-right">No private data is ever stored</div>
 </footer>
 
@@ -599,13 +511,11 @@ footer {
     <div class="auth-sub">Enter credentials to unlock upload controls</div>
     <div class="auth-field">
       <label class="auth-label" for="auth-pass">Password</label>
-      <input class="auth-input" id="auth-pass" type="password" placeholder="••••••••••••"
-             autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+      <input class="auth-input" id="auth-pass" type="password" placeholder="••••••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
     </div>
     <div class="auth-field">
       <label class="auth-label" for="auth-key">Secret Key</label>
-      <input class="auth-input" id="auth-key" type="password" placeholder="••••••••"
-             autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+      <input class="auth-input" id="auth-key" type="password" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
     </div>
     <button class="auth-submit" onclick="submitAuth()">AUTHENTICATE</button>
     <div class="auth-err" id="auth-err"></div>
@@ -615,8 +525,23 @@ footer {
 
 <div class="auth-trigger" id="auth-trigger" onclick="openAuthModal()" title=""></div>
 
-<script>
-const STORE_KEY    = 'eehc_reports_v1';
+<script type="module">
+import { initializeApp }                                           from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc,
+         onSnapshot, orderBy, query, serverTimestamp }            from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey:            'AIzaSyAW86MDa3yaNAq4WyCA_UXIsjHqqWQUswc',
+  authDomain:        'eehc-e9623.firebaseapp.com',
+  projectId:         'eehc-e9623',
+  storageBucket:     'eehc-e9623.firebasestorage.app',
+  messagingSenderId: '732329897433',
+  appId:             '1:732329897433:web:d6080fc4043846d8647dc8'
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
 const AUTH_HASH    = '670d819f823b8a9f4aacac66a7fb94b31a4c41f329ac79d92b24d5e3ccc85260';
 const AUTH_SESSION = 'eehc_admin_v1';
 const MAX_ATTEMPTS = 5;
@@ -629,24 +554,23 @@ let authAttempts  = 0;
 let lockoutUntil  = 0;
 let toastTimer    = null;
 
-function loadStore() {
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (raw) reports = JSON.parse(raw);
-  } catch(e) { reports = []; }
-}
-
-function saveStore() {
-  try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(reports));
-  } catch(e) { showToast('⚠ Storage full — try clearing old reports'); }
+function setProgress(pct) {
+  const wrap = document.getElementById('progress-wrap');
+  const bar  = document.getElementById('progress-bar');
+  if (pct >= 100) {
+    bar.style.width = '100%';
+    setTimeout(() => { wrap.classList.remove('active'); bar.style.width = '0%'; }, 400);
+  } else {
+    wrap.classList.add('active');
+    bar.style.width = pct + '%';
+  }
 }
 
 function parseReport(html, filename) {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const d = new DOMParser().parseFromString(html, 'text/html');
 
   function grabMeta(label) {
-    for (const el of doc.querySelectorAll('.meta-grid strong')) {
+    for (const el of d.querySelectorAll('.meta-grid strong')) {
       const prev = el.previousSibling;
       if (prev?.textContent?.trim() === label) return el.textContent.trim();
     }
@@ -655,94 +579,75 @@ function parseReport(html, filename) {
 
   const executor = (
     grabMeta('EXECUTOR') ||
-    doc.querySelector('.h-title')?.textContent?.replace(/EXEC\s*HEALTH/i,'').trim() ||
+    d.querySelector('.h-title')?.textContent?.replace(/EXEC\s*HEALTH/i,'').trim() ||
     filename.replace(/HealthCheck_/,'').replace(/_\d{8}_\d{6}\.html$/,'').replace(/_/g,' ') ||
     'Unknown'
   ).trim();
 
   const timestamp = grabMeta('TIMESTAMP') || grabMeta('DATE') || '—';
-
   let version = '?';
-  const vm = doc.querySelector('title')?.textContent?.match(/v([\d.]+)/);
+  const vm = d.querySelector('title')?.textContent?.match(/v([\d.]+)/);
   if (vm) version = vm[1];
 
   let secScore = null, secMitigated = 0, secVuln = 0;
-  let fnPassed = 0, fnTotal = 0;
-  let uiPassed = 0, uiTotal = 0;
-  let stressPass = 0, stressTotal = 6;
-  let fibDigits = 0;
+  let fnPassed = 0, fnTotal = 0, uiPassed = 0, uiTotal = 0;
+  let stressPass = 0, stressTotal = 6, fibDigits = 0;
 
-  for (const card of doc.querySelectorAll('.stat-card')) {
+  for (const card of d.querySelectorAll('.stat-card')) {
     const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
     const val   = card.querySelector('.stat-val')?.textContent?.trim();
     const sub   = card.querySelector('.stat-sub')?.textContent || '';
     if (!label || !val) continue;
-
     if (label === 'SECURITY') {
       const m = val.match(/(\d+)/);
       if (m) secScore = parseInt(m[1]);
       const ms = sub.match(/(\d+)\s*mitigated\s*\/\s*(\d+)\s*vuln/i);
       if (ms) { secMitigated = parseInt(ms[1]); secVuln = parseInt(ms[2]); }
     }
-    if (label === 'FUNCTIONS') {
-      const ms = sub.match(/(\d+)\s*\/\s*(\d+)/);
-      if (ms) { fnPassed = parseInt(ms[1]); fnTotal = parseInt(ms[2]); }
-    }
-    if (label === 'UI LIBS') {
-      const ms = sub.match(/(\d+)\s*\/\s*(\d+)/);
-      if (ms) { uiPassed = parseInt(ms[1]); uiTotal = parseInt(ms[2]); }
-    }
-    if (label === 'STRESS') {
-      const m = val.match(/(\d+)\/(\d+)/);
-      if (m) { stressPass = parseInt(m[1]); stressTotal = parseInt(m[2]); }
-    }
-    if (label === 'DIGITS') {
-      fibDigits = parseInt(val.replace(/,/g,'')) || 0;
-    }
+    if (label === 'FUNCTIONS') { const ms = sub.match(/(\d+)\s*\/\s*(\d+)/); if (ms) { fnPassed = parseInt(ms[1]); fnTotal = parseInt(ms[2]); } }
+    if (label === 'UI LIBS')   { const ms = sub.match(/(\d+)\s*\/\s*(\d+)/); if (ms) { uiPassed = parseInt(ms[1]); uiTotal = parseInt(ms[2]); } }
+    if (label === 'STRESS')    { const m  = val.match(/(\d+)\/(\d+)/);        if (m)  { stressPass = parseInt(m[1]); stressTotal = parseInt(m[2]); } }
+    if (label === 'DIGITS')    { fibDigits = parseInt(val.replace(/,/g,'')) || 0; }
   }
 
   if (secScore === null) {
-    for (const b of doc.querySelectorAll('.banner')) {
+    for (const b of d.querySelectorAll('.banner')) {
       const m = b.textContent.match(/(\d+)\s*VULNERABLE/i);
       if (m) { secVuln = parseInt(m[1]); break; }
     }
   }
 
-  return {
-    id: Date.now() + Math.random(), filename, executor, timestamp, version,
-    secScore, secMitigated, secVuln,
-    fnPassed, fnTotal, uiPassed, uiTotal,
-    stressPass, stressTotal, fibDigits,
-    html, addedAt: Date.now()
-  };
+  return { filename, executor, timestamp, version, secScore, secMitigated, secVuln, fnPassed, fnTotal, uiPassed, uiTotal, stressPass, stressTotal, fibDigits, html };
 }
 
-function handleFiles(files) {
+async function handleFiles(files) {
   const arr = Array.from(files).filter(f => f.name.endsWith('.html'));
-  let loaded = 0;
-  arr.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const rep = parseReport(e.target.result, file.name);
-      reports = reports.filter(r => r.filename !== rep.filename);
-      reports.unshift(rep);
-      if (++loaded === arr.length) {
-        saveStore(); renderCards(); updateStats();
-        showToast(`✓ ${loaded} report${loaded > 1 ? 's' : ''} loaded`);
-      }
-    };
-    reader.readAsText(file);
-  });
+  if (!arr.length) return;
+
+  const uploadBtn = document.getElementById('hero-upload-btn');
+  uploadBtn.disabled = true;
+  uploadBtn.textContent = 'UPLOADING...';
+  setProgress(10);
+
+  let done = 0;
+  for (const file of arr) {
+    const html = await file.text();
+    const rep  = parseReport(html, file.name);
+    const id   = file.name.replace(/[^a-zA-Z0-9_-]/g, '_');
+    await setDoc(doc(db, 'reports', id), { ...rep, addedAt: serverTimestamp() });
+    done++;
+    setProgress(10 + (done / arr.length) * 88);
+  }
+
+  setProgress(100);
+  uploadBtn.disabled = false;
+  uploadBtn.textContent = '+ Upload Reports';
   document.getElementById('file-input').value = '';
+  showToast(`✓ ${arr.length} report${arr.length > 1 ? 's' : ''} published live`);
 }
 
-function handleDragOver(e) {
-  e.preventDefault();
-  document.getElementById('drop-zone').classList.add('dragover');
-}
-function handleDragLeave() {
-  document.getElementById('drop-zone').classList.remove('dragover');
-}
+function handleDragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('dragover'); }
+function handleDragLeave()  { document.getElementById('drop-zone').classList.remove('dragover'); }
 function handleDrop(e) {
   e.preventDefault();
   document.getElementById('drop-zone').classList.remove('dragover');
@@ -752,9 +657,7 @@ function handleDrop(e) {
 
 function setFilter(btn, filter) {
   currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(b =>
-    b.classList.remove('active','active-red','active-amber')
-  );
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active','active-red','active-amber'));
   if      (filter === 'high') btn.classList.add('active');
   else if (filter === 'low')  btn.classList.add('active-red');
   else if (filter === 'mid')  btn.classList.add('active-amber');
@@ -773,16 +676,20 @@ function filteredReports() {
   const q = document.getElementById('search-input').value.toLowerCase().trim();
   return reports.filter(r => {
     const sc = scoreClass(r.secScore);
-    const filterOk =
+    const ok =
       currentFilter === 'all' ||
       (currentFilter === 'high' && sc === 'score-high') ||
       (currentFilter === 'mid'  && sc === 'score-mid')  ||
       (currentFilter === 'low'  && sc === 'score-low');
-    return filterOk && (!q || r.executor.toLowerCase().includes(q) || r.filename.toLowerCase().includes(q));
+    return ok && (!q || r.executor.toLowerCase().includes(q) || r.filename.toLowerCase().includes(q));
   });
 }
 
 function fmtScore(s) { return s !== null ? s + '%' : '—'; }
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 function renderCards() {
   const grid    = document.getElementById('grid');
@@ -798,18 +705,12 @@ function renderCards() {
   visible.forEach((r, i) => {
     const sc = scoreClass(r.secScore);
     let tags = '';
-    if (r.secVuln > 0)
-      tags += `<span class="ctag ctag-red">${r.secVuln} VULN</span>`;
-    if (r.secScore !== null && r.secScore >= 80)
-      tags += `<span class="ctag ctag-green">SECURE</span>`;
-    if (r.stressPass === r.stressTotal && r.stressTotal > 0)
-      tags += `<span class="ctag ctag-green">STRESS OK</span>`;
-    if (r.stressPass < r.stressTotal)
-      tags += `<span class="ctag ctag-amber">STRESS ${r.stressPass}/${r.stressTotal}</span>`;
-    if (r.fnTotal > 0 && r.fnPassed / r.fnTotal < 0.5)
-      tags += `<span class="ctag ctag-red">LOW FN COV</span>`;
-    if (r.uiTotal > 0)
-      tags += `<span class="ctag">UI ${r.uiPassed}/${r.uiTotal}</span>`;
+    if (r.secVuln > 0)                                      tags += `<span class="ctag ctag-red">${r.secVuln} VULN</span>`;
+    if (r.secScore !== null && r.secScore >= 80)             tags += `<span class="ctag ctag-green">SECURE</span>`;
+    if (r.stressPass === r.stressTotal && r.stressTotal > 0) tags += `<span class="ctag ctag-green">STRESS OK</span>`;
+    if (r.stressPass < r.stressTotal)                        tags += `<span class="ctag ctag-amber">STRESS ${r.stressPass}/${r.stressTotal}</span>`;
+    if (r.fnTotal > 0 && r.fnPassed / r.fnTotal < 0.5)      tags += `<span class="ctag ctag-red">LOW FN COV</span>`;
+    if (r.uiTotal > 0)                                       tags += `<span class="ctag">UI ${r.uiPassed}/${r.uiTotal}</span>`;
 
     const card = document.createElement('div');
     card.className = `report-card ${sc}`;
@@ -821,10 +722,7 @@ function renderCards() {
             <div class="card-executor">${esc(r.executor)}</div>
             <div class="card-version">v${esc(r.version)} &nbsp;·&nbsp; ${esc(r.filename)}</div>
           </div>
-          <div class="score-badge">
-            ${fmtScore(r.secScore)}
-            <span class="badge-label">SECURITY</span>
-          </div>
+          <div class="score-badge">${fmtScore(r.secScore)}<span class="badge-label">SECURITY</span></div>
         </div>
         <div class="card-stats">
           <div class="cs-item"><div class="cs-val cs-pass">${r.secMitigated}</div><div class="cs-label">Mitigated</div></div>
@@ -835,8 +733,8 @@ function renderCards() {
         <div class="card-footer">
           <div class="card-ts">${esc(r.timestamp || r.filename)}</div>
           <div class="card-actions">
-            <button class="act-btn open" onclick="openReport('${r.id}')">OPEN</button>
-            ${adminUnlocked ? `<button class="act-btn del" onclick="deleteReport('${r.id}',event)">DEL</button>` : ''}
+            <button class="act-btn open" onclick="window._openReport('${esc(r.id)}')">OPEN</button>
+            ${adminUnlocked ? `<button class="act-btn del" onclick="window._deleteReport('${esc(r.id)}',event)">DEL</button>` : ''}
           </div>
         </div>
       </div>`;
@@ -846,7 +744,7 @@ function renderCards() {
 
 function updateStats() {
   const total  = reports.length;
-  const secure = reports.filter(r => r.secScore >= 80).length;
+  const secure = reports.filter(r => r.secScore !== null && r.secScore >= 80).length;
   const vuln   = reports.filter(r => r.secVuln > 0).length;
   const scores = reports.filter(r => r.secScore !== null).map(r => r.secScore);
   const avg    = scores.length ? Math.round(scores.reduce((a,b) => a+b,0) / scores.length) : null;
@@ -858,14 +756,14 @@ function updateStats() {
   document.getElementById('s-execu').textContent  = execus;
 }
 
-function openReport(id) {
-  const r = reports.find(x => String(x.id) === String(id));
+window._openReport = function(id) {
+  const r = reports.find(x => x.id === id);
   if (!r) return;
   document.getElementById('modal-title').textContent = r.executor + '  ·  ' + r.filename;
   document.getElementById('report-frame').src = URL.createObjectURL(new Blob([r.html], {type:'text/html'}));
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
-}
+};
 
 function closeModal() {
   document.getElementById('modal').classList.remove('open');
@@ -873,19 +771,18 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-function deleteReport(id, e) {
+window._deleteReport = async function(id, e) {
   e.stopPropagation();
-  reports = reports.filter(r => String(r.id) !== String(id));
-  saveStore(); renderCards(); updateStats();
-  showToast('Report removed');
-}
+  if (!adminUnlocked) return;
+  await deleteDoc(doc(db, 'reports', id));
+  showToast('Report deleted');
+};
 
-function clearAll() {
-  if (!reports.length) return;
-  if (!confirm('Remove all ' + reports.length + ' report(s)?')) return;
-  reports = [];
-  saveStore(); renderCards(); updateStats();
-  showToast('All reports cleared');
+async function clearAll() {
+  if (!reports.length || !adminUnlocked) return;
+  if (!confirm('Delete all ' + reports.length + ' report(s) from Firestore? This cannot be undone.')) return;
+  for (const r of reports) await deleteDoc(doc(db, 'reports', r.id));
+  showToast('All reports deleted');
 }
 
 function showToast(msg) {
@@ -898,17 +795,13 @@ function showToast(msg) {
 
 function buildTicker() {
   const items = [
-    ['SYS','ExecEnvHealthCheck v3.2'],['SEC','100+ vulnerability vectors'],
-    ['FN','50+ executor functions'],  ['PERF','6-stage stress test'],
-    ['BIG','Fibonacci big-integer benchmark'],['UI','13 UI library checks'],
-    ['SAFE','All reports stored locally'],['PRIV','Zero data transmitted'],
+    ['SYS','ExecEnvHealthCheck v3.2'], ['SEC','100+ vulnerability vectors'],
+    ['FN','50+ executor functions'],   ['PERF','6-stage stress test'],
+    ['BIG','Fibonacci big-integer benchmark'], ['UI','13 UI library checks'],
+    ['LIVE','Real-time Firestore sync'], ['PRIV','No private data stored'],
   ];
   document.getElementById('ticker-track').innerHTML = [...items,...items]
     .map(([k,v]) => `<span class="ticker-item"><span>${k}</span>${v}</span>`).join('');
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 async function sha256(str) {
@@ -918,9 +811,7 @@ async function sha256(str) {
 
 function checkSession() {
   try {
-    if (sessionStorage.getItem(AUTH_SESSION) === AUTH_HASH) {
-      adminUnlocked = true; applyAdminUI();
-    }
+    if (sessionStorage.getItem(AUTH_SESSION) === AUTH_HASH) { adminUnlocked = true; applyAdminUI(); }
   } catch(e) {}
 }
 
@@ -965,10 +856,7 @@ async function submitAuth() {
   const pass   = document.getElementById('auth-pass').value;
   const key    = document.getElementById('auth-key').value;
   const submit = document.querySelector('.auth-submit');
-  if (!pass || !key) {
-    document.getElementById('auth-err').textContent = 'Both fields are required.';
-    return;
-  }
+  if (!pass || !key) { document.getElementById('auth-err').textContent = 'Both fields are required.'; return; }
   submit.textContent = 'VERIFYING...'; submit.disabled = true;
   const digest = await sha256(pass + '|' + key);
   submit.textContent = 'AUTHENTICATE'; submit.disabled = false;
@@ -987,8 +875,7 @@ async function submitAuth() {
       document.getElementById('auth-attempts').textContent = '';
     } else {
       document.getElementById('auth-err').textContent = 'Invalid credentials.';
-      document.getElementById('auth-attempts').textContent =
-        `${remaining} attempt${remaining !== 1 ? 's' : ''} remaining`;
+      document.getElementById('auth-attempts').textContent = `${remaining} attempt${remaining !== 1 ? 's' : ''} remaining`;
     }
     ['auth-pass','auth-key'].forEach(id => {
       const el = document.getElementById(id);
@@ -1013,7 +900,29 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuthM
 document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeModal(); });
 document.getElementById('auth-modal').addEventListener('click', e => { if (e.target === document.getElementById('auth-modal')) closeAuthModal(); });
 
-loadStore(); buildTicker(); checkSession(); renderCards(); updateStats();
+window.setFilter     = setFilter;
+window.renderCards   = renderCards;
+window.handleFiles   = handleFiles;
+window.handleDragOver= handleDragOver;
+window.handleDragLeave=handleDragLeave;
+window.handleDrop    = handleDrop;
+window.clearAll      = clearAll;
+window.closeModal    = closeModal;
+window.openAuthModal = openAuthModal;
+window.closeAuthModal= closeAuthModal;
+window.submitAuth    = submitAuth;
+window.logout        = logout;
+window.requireAdmin  = requireAdmin;
+
+buildTicker();
+checkSession();
+
+const q = query(collection(db, 'reports'), orderBy('addedAt', 'desc'));
+onSnapshot(q, snapshot => {
+  reports = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderCards();
+  updateStats();
+});
 </script>
 </body>
 </html>
