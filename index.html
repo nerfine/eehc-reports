@@ -42,9 +42,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 header{position:sticky;top:0;z-index:100;background:rgba(3,3,3,.94);border-bottom:1px solid var(--border2);backdrop-filter:blur(12px)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;max-width:1280px;margin:0 auto}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-mark{width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;position:relative}
-.logo-mark::before{content:'';position:absolute;inset:3px;background:var(--green);animation:pulse-mark 2s ease-in-out infinite}
 @keyframes pulse-mark{0%,100%{opacity:1}50%{opacity:.4}}
 .logo-text{font-family:var(--font-disp);font-size:20px;letter-spacing:2px;color:var(--text)}
 .logo-text span{color:var(--green)}
@@ -230,7 +227,6 @@ footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify
 <header>
   <div class="header-inner">
     <a class="logo" href="#">
-      <div class="logo-mark"></div>
       <div class="logo-text">EEHC<span>.</span>REPORT</div>
     </a>
     <div class="nav-links">
