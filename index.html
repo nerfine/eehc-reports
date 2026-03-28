@@ -49,8 +49,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(3,3,3,.94);border-botto
 .nav-links a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .15s}
 .nav-links a:hover{color:var(--text)}
 .nav-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border:1px solid var(--border2);color:var(--dim)}
-.live-dot{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
-.live-dot::before{content:'';width:6px;height:6px;background:var(--green);animation:blink 1.4s ease-in-out infinite}
+
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 .ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;height:30px;display:flex;align-items:center}
@@ -233,7 +232,6 @@ footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify
       <a href="#reports">Results</a>
       <a href="#about">About</a>
       <span class="nav-tag">v3.2</span>
-      <span class="live-dot">LIVE</span>
       <span class="admin-badge" id="admin-badge" onclick="logout()" title="Click to log out">✓ ADMIN</span>
     </div>
   </div>
