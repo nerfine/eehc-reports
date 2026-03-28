@@ -3,297 +3,983 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eehc_theme')||'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
 <title>EEHC — Executor Health Results</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Playfair+Display:wght@400;700;900&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:        #030303;
-  --surface:   #080808;
-  --panel:     #0d0d0d;
-  --card:      #101010;
-  --border:    #1f1f1f;
-  --border2:   #2d2d2d;
-  --text:      #e8e4dc;
-  --muted:     #6a6a6a;
-  --dim:       #8a8a8a;
-  --green:     #00ff41;
-  --green-dim: rgba(0,255,65,.07);
-  --green-glow:rgba(0,255,65,.18);
-  --red:       #ff1744;
-  --red-dim:   rgba(255,23,68,.08);
-  --amber:     #ffab00;
-  --amber-dim: rgba(255,171,0,.08);
-  --blue:      #40c4ff;
-  --blue-dim:  rgba(64,196,255,.07);
-  --font-mono: 'IBM Plex Mono', monospace;
-  --font-disp: 'Bebas Neue', sans-serif;
+  --ink:       #e8e4dc;
+  --ink2:      #141210;
+  --ink3:      #9a9488;
+  --rule:      #2e2b26;
+  --rule2:     #1e1c18;
+  --paper:     #0e0c0a;
+  --paper2:    #141210;
+  --paper3:    #1a1814;
+  --red:       #e05055;
+  --red-dim:   rgba(224,80,85,.12);
+  --amber:     #d4882a;
+  --amber-dim: rgba(212,136,42,.12);
+  --green:     #3a9e5a;
+  --green-dim: rgba(58,158,90,.12);
+  --blue:      #4a8fd4;
+  --stamp-red: #e05055;
+  --font-body: 'DM Mono', monospace;
+  --font-disp: 'Barlow Condensed', sans-serif;
+  --font-serif:'Playfair Display', serif;
 }
+
+[data-theme="light"] {
+  --ink:       #0e0c0a;
+  --ink2:      #1c1a17;
+  --ink3:      #2e2b26;
+  --rule:      #c8c0b4;
+  --rule2:     #e8e2d8;
+  --paper:     #f5f0e8;
+  --paper2:    #ede7da;
+  --paper3:    #e4ddd0;
+  --red:       #c0272d;
+  --red-dim:   rgba(192,39,45,.08);
+  --amber:     #c97a12;
+  --amber-dim: rgba(201,122,18,.1);
+  --green:     #2a6e3f;
+  --green-dim: rgba(42,110,63,.08);
+  --blue:      #1a4a7a;
+  --stamp-red: #c0272d;
+}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-mono);font-size:12px;line-height:1.6;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);pointer-events:none;z-index:9999}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-size:200px 200px;pointer-events:none;z-index:9998;opacity:.3}
-.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
-.orb-1{width:500px;height:500px;background:rgba(0,255,65,.04);top:-150px;left:-100px}
-.orb-2{width:400px;height:400px;background:rgba(64,196,255,.03);bottom:100px;right:-100px}
-.wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 40px}
 
-header{position:sticky;top:0;z-index:100;background:rgba(3,3,3,.94);border-bottom:1px solid var(--border2);backdrop-filter:blur(12px)}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;max-width:1280px;margin:0 auto}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-mark{width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;position:relative}
-.logo-mark::before{content:'';position:absolute;inset:3px;background:var(--green);animation:pulse-mark 2s ease-in-out infinite}
-@keyframes pulse-mark{0%,100%{opacity:1}50%{opacity:.4}}
-.logo-text{font-family:var(--font-disp);font-size:20px;letter-spacing:2px;color:var(--text)}
-.logo-text span{color:var(--green)}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-links a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .15s}
-.nav-links a:hover{color:var(--text)}
-.nav-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border:1px solid var(--border2);color:var(--dim)}
-.live-dot{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
-.live-dot::before{content:'';width:6px;height:6px;background:var(--green);animation:blink 1.4s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-.ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;height:30px;display:flex;align-items:center}
-.ticker-inner{display:inline-flex;align-items:center;animation:ticker-scroll 40s linear infinite;white-space:nowrap}
-.ticker-item{display:inline-flex;align-items:center;gap:8px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 32px}
-.ticker-item::after{content:'·';color:var(--border2);padding-left:32px}
-.ticker-key{color:var(--green)}
-@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* ── PAPER TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(255,255,255,.025) 23px, rgba(255,255,255,.025) 24px),
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01) 79px, rgba(255,255,255,.01) 80px);
+  pointer-events: none;
+  z-index: 9999;
+}
+[data-theme="light"] body::before,
+[data-theme="light"]body::before {
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(14,12,10,.04) 23px, rgba(14,12,10,.04) 24px),
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(14,12,10,.015) 79px, rgba(14,12,10,.015) 80px);
+}
 
-.hero{padding:80px 0 60px;border-bottom:1px solid var(--border)}
-.hero-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--green)}
-.hero-title{font-family:var(--font-disp);font-size:clamp(52px,8vw,96px);line-height:.92;letter-spacing:2px;margin-bottom:24px;color:var(--text)}
-.hero-title .accent{color:var(--green)}
-.hero-title .dim{color:var(--muted)}
-.hero-sub{font-size:12px;color:var(--dim);max-width:480px;line-height:2;margin-bottom:36px;letter-spacing:.3px}
-.hero-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.btn-primary{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;background:var(--green);color:#000;border:none;padding:11px 22px;cursor:pointer;font-weight:700;transition:all .15s;text-decoration:none;display:inline-block}
-.btn-primary:hover{background:#00cc33;box-shadow:0 0 24px var(--green-glow)}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--dim);border:1px solid var(--border2);padding:11px 22px;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block}
-.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+/* ── TOP CLASSIFICATION BAR ── */
+.classbar {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-disp);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 5px 0;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.classbar span { color: var(--stamp-red); margin: 0 16px; }
 
-.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin:40px 0}
-.stat-item{background:var(--panel);padding:16px 18px;position:relative;overflow:hidden}
-.stat-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .3s}
-.stat-item:hover::after{transform:scaleX(1)}
-.stat-n{font-family:var(--font-disp);font-size:36px;line-height:1;color:var(--green);letter-spacing:1px}
-.stat-l{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:6px}
+/* ── HEADER ── */
+header {
+  border-bottom: 3px solid var(--ink);
+  background: var(--paper);
+  position: sticky;
+  top: 28px;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  align-items: stretch;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+.logo-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14px 32px 14px 24px;
+  border-right: 2px solid var(--ink);
+  gap: 0;
+}
+.logo-eyebrow {
+  font-family: var(--font-body);
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.logo-main {
+  font-family: var(--font-disp);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  color: var(--ink);
+}
+.logo-main em {
+  font-style: normal;
+  color: var(--stamp-red);
+}
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+  padding: 0 24px;
+}
+.hm-item {
+  padding: 0 20px;
+  border-right: 1px solid var(--rule);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  text-decoration: none;
+  transition: color .12s;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.hm-item:first-child { padding-left: 0; }
+.hm-item:hover { color: var(--stamp-red); }
+.hm-item.live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hm-item.live::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-.sec-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.sec-title{font-family:var(--font-disp);font-size:22px;letter-spacing:2px;color:var(--text)}
-.sec-meta{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  margin-left: auto;
+  border-left: 1px solid var(--rule);
+}
+.admin-badge {
+  font-family: var(--font-disp);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--green);
+  padding: 4px 10px;
+  cursor: pointer;
+  display: none;
+  border: 1px solid var(--green);
+  transition: all .12s;
+}
+.admin-badge:hover { background: transparent; color: var(--green); }
+.admin-badge.visible { display: block; }
 
-.drop-zone{border:1px dashed var(--border2);padding:48px 32px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:40px;background:var(--panel)}
-.drop-zone::before{content:'';position:absolute;inset:4px;border:1px dashed transparent;transition:border-color .2s;pointer-events:none}
-.drop-zone:hover,.drop-zone.dragover{border-color:var(--green);background:var(--green-dim);box-shadow:inset 0 0 40px rgba(0,255,65,.03),0 0 40px rgba(0,255,65,.06)}
-.drop-zone:hover::before,.drop-zone.dragover::before{border-color:rgba(0,255,65,.2)}
-.drop-icon{font-size:32px;margin-bottom:12px;opacity:.6}
-.drop-title{font-family:var(--font-disp);font-size:20px;letter-spacing:2px;color:var(--text);margin-bottom:8px}
-.drop-sub{font-size:11px;color:var(--dim);letter-spacing:.5px}
-.drop-sub strong{color:var(--green)}
-#file-input{display:none}
+/* ── TICKER ── */
+.ticker {
+  border-bottom: 1px solid var(--ink);
+  background: var(--ink2);
+  overflow: hidden;
+  height: 26px;
+  display: flex;
+  align-items: center;
+}
+.ticker-inner {
+  display: inline-flex;
+  align-items: center;
+  animation: tick 50s linear infinite;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(245,240,232,.5);
+  padding: 0 28px;
+}
+.ticker-item::after { content: '//'; color: rgba(245,240,232,.2); padding-left: 28px; }
+.ticker-key { color: var(--paper); font-weight: 500; }
+@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-.filter-bar{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
-.filter-input{font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;background:var(--panel);border:1px solid var(--border2);color:var(--text);padding:8px 14px;flex:1;min-width:180px;outline:none;transition:border-color .12s}
-.filter-input::placeholder{color:var(--muted)}
-.filter-input:focus{border-color:var(--green)}
-.filter-sep{width:1px;background:var(--border2);align-self:stretch;margin:0 2px}
-.filter-btn{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid var(--border2);color:var(--dim);padding:8px 12px;cursor:pointer;transition:all .12s;white-space:nowrap}
-.filter-btn:hover{border-color:var(--text);color:var(--text)}
-.filter-btn.active{border-color:var(--green);color:var(--green);background:var(--green-dim)}
-.filter-btn.active-red{border-color:var(--red);color:var(--red);background:var(--red-dim)}
-.filter-btn.active-amber{border-color:var(--amber);color:var(--amber);background:var(--amber-dim)}
-.filter-btn.sort-on{border-color:var(--blue);color:var(--blue);background:var(--blue-dim)}
-.filter-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 4px;white-space:nowrap}
+/* ── WRAP ── */
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
 
-.reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--border)}
-.report-card{background:var(--card);position:relative;overflow:hidden;transition:background .15s;animation:card-in .35s ease both}
-.report-card:hover{background:#161616}
-@keyframes card-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.report-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.report-card.score-high::before{background:var(--green)}
-.report-card.score-mid::before{background:var(--amber)}
-.report-card.score-low::before{background:var(--red)}
-.report-card.score-none::before{background:var(--border2)}
+/* ── HERO ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  border-bottom: 2px solid var(--ink);
+  min-height: 380px;
+}
+.hero-left {
+  padding: 48px 40px 40px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.hero-divider { background: var(--ink); }
+.hero-right {
+  padding: 48px 0 40px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-.card-inner{padding:20px 22px 18px}
-.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
-.card-executor{font-family:var(--font-disp);font-size:18px;letter-spacing:1px;color:var(--text);line-height:1.1;word-break:break-word}
-.card-version{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-top:4px}
-.score-badge{font-family:var(--font-disp);font-size:22px;letter-spacing:1px;text-align:right;flex-shrink:0;margin-left:12px}
-.score-badge .badge-label{font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;display:block;margin-top:2px;text-align:right}
-.score-high .score-badge{color:var(--green)}
-.score-mid  .score-badge{color:var(--amber)}
-.score-low  .score-badge{color:var(--red)}
-.score-none .score-badge{color:var(--dim)}
-.score-high .badge-label{color:rgba(0,255,65,.6)}
-.score-mid  .badge-label{color:rgba(255,171,0,.6)}
-.score-low  .badge-label{color:rgba(255,23,68,.6)}
-.score-none .badge-label{color:var(--muted)}
+.hero-issue {
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 16px;
+}
+.hero-title {
+  font-family: var(--font-disp);
+  font-size: clamp(64px, 10vw, 112px);
+  font-weight: 900;
+  line-height: .88;
+  letter-spacing: -2px;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.hero-title .red { color: var(--stamp-red); }
+.hero-title .outline {
+  -webkit-text-stroke: 2px var(--ink);
+  color: transparent;
+}
 
-.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:14px}
-.cs-item{background:var(--panel);padding:8px 10px}
-.cs-val{font-size:14px;font-weight:700;line-height:1}
-.cs-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:3px}
-.cs-pass{color:var(--green)}
-.cs-fail{color:var(--red)}
-.cs-info{color:var(--blue)}
-.cs-amber{color:var(--amber)}
+/* ── THEME TOGGLE ── */
+.theme-toggle {
+  font-family: var(--font-disp);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink3);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.theme-toggle:hover { border-color: var(--ink); color: var(--ink); }
 
-.card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px}
-.ctag{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid var(--border2);color:var(--dim)}
-.ctag-green{border-color:rgba(0,255,65,.35);color:var(--green);background:var(--green-dim)}
-.ctag-red{border-color:rgba(255,23,68,.35);color:var(--red);background:var(--red-dim)}
-.ctag-amber{border-color:rgba(255,171,0,.35);color:var(--amber);background:var(--amber-dim)}
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--ink3);
+  line-height: 1.9;
+  max-width: 440px;
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+}
 
-.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
-.card-ts{font-size:10px;color:var(--dim);letter-spacing:.3px}
-.card-actions{display:flex;gap:6px}
-.act-btn{font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid var(--border2);color:var(--dim);padding:5px 12px;cursor:pointer;transition:all .12s;text-decoration:none;display:inline-block}
-.act-btn:hover{border-color:var(--text);color:var(--text)}
-.act-btn.open:hover{border-color:var(--green);color:var(--green)}
-.act-btn.del:hover{border-color:var(--red);color:var(--red)}
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+.btn-primary {
+  font-family: var(--font-disp);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--stamp-red); border-color: var(--stamp-red); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-ghost {
+  font-family: var(--font-disp);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-ghost:hover { background: var(--paper2); }
 
-#empty-state{text-align:center;padding:64px 32px;border:1px solid var(--border)}
-.empty-ascii{font-family:var(--font-mono);font-size:11px;color:var(--border2);white-space:pre;margin-bottom:24px;line-height:1.4}
-.empty-title{font-family:var(--font-disp);font-size:22px;letter-spacing:2px;color:var(--muted);margin-bottom:8px}
-.empty-sub{font-size:11px;color:var(--muted);letter-spacing:.5px}
+/* ── STATS (right side of hero) ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+}
+.stat-cell {
+  background: var(--paper);
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--ink);
+  border-right: 1px solid var(--ink);
+  position: relative;
+}
+.stat-cell:nth-child(even) { border-right: none; }
+.stat-cell:nth-last-child(-n+2) { border-bottom: none; }
+.stat-n {
+  font-family: var(--font-disp);
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--ink);
+}
+.stat-n.red   { color: var(--stamp-red); }
+.stat-n.amber { color: var(--amber); }
+.stat-n.green { color: var(--green); }
+.stat-n.blue  { color: var(--blue); }
+.stat-l {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-top: 4px;
+}
 
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
-.modal-overlay.open{display:flex}
-.modal-frame-wrap{width:100%;height:92vh;background:var(--bg);border-top:2px solid var(--green);display:flex;flex-direction:column}
-.modal-bar{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:36px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
-.modal-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
-.modal-close{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid var(--border2);color:var(--dim);padding:4px 12px;cursor:pointer;transition:all .12s}
-.modal-close:hover{border-color:var(--red);color:var(--red)}
-#report-frame{flex:1;border:none;width:100%;background:#0a0a0a}
+/* ── SECTION HEADER ── */
+.sec-hdr {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 8px 0;
+  margin-bottom: 20px;
+}
+.sec-num {
+  font-family: var(--font-disp);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--stamp-red);
+  margin-right: 12px;
+}
+.sec-title {
+  font-family: var(--font-disp);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.sec-meta {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
 
-.upload-toast{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--green);border-left:3px solid var(--green);padding:12px 18px;font-size:11px;letter-spacing:.5px;color:var(--green);z-index:2000;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}
-.upload-toast.show{opacity:1;transform:translateY(0)}
+/* ── FILTER BAR ── */
+.filter-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+}
+.filter-input {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: .5px;
+  background: var(--paper);
+  border: none;
+  border-right: 1px solid var(--ink);
+  color: var(--ink);
+  padding: 8px 14px;
+  flex: 1;
+  min-width: 180px;
+  outline: none;
+}
+.filter-input::placeholder { color: var(--ink3); opacity: .5; }
+.filter-btn {
+  font-family: var(--font-disp);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--paper2);
+  border: none;
+  border-right: 1px solid var(--ink);
+  color: var(--ink3);
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all .12s;
+  white-space: nowrap;
+}
+.filter-btn:hover { background: var(--paper3); color: var(--ink); }
+.filter-btn.active       { background: var(--ink);    color: var(--paper); }
+.filter-btn.active-red   { background: var(--stamp-red); color: var(--paper); }
+.filter-btn.active-amber { background: var(--amber);  color: var(--paper); }
+.filter-btn.sort-on      { background: var(--blue);   color: var(--paper); }
+.filter-sep { width: 1px; background: var(--ink); }
+.filter-label {
+  font-family: var(--font-disp);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(245,240,232,.4);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
 
-.progress-bar-wrap{position:fixed;top:0;left:0;right:0;height:2px;z-index:9997;background:transparent;opacity:0;transition:opacity .2s}
-.progress-bar-wrap.active{opacity:1}
-.progress-bar{height:100%;background:var(--green);width:0%;transition:width .3s ease}
+/* ── DROP ZONE ── */
+.drop-zone {
+  border: 2px dashed var(--rule);
+  padding: 40px 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  margin-bottom: 28px;
+  background: var(--paper2);
+  position: relative;
+}
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: var(--ink);
+  background: var(--paper3);
+}
+.drop-icon { font-size: 24px; margin-bottom: 10px; opacity: .4; }
+.drop-title {
+  font-family: var(--font-disp);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.drop-sub { font-size: 10px; color: var(--ink3); letter-spacing: .5px; }
+.drop-sub strong { color: var(--ink); }
+#file-input { display: none; }
 
-.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:5000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .2s}
-.auth-overlay.open{opacity:1;pointer-events:all}
-.auth-box{width:380px;background:var(--panel);border:1px solid var(--border2);border-top:2px solid var(--green);padding:32px 28px 28px;position:relative;transform:translateY(12px);transition:transform .2s}
-.auth-overlay.open .auth-box{transform:translateY(0)}
-.auth-close{position:absolute;top:10px;right:12px;font-family:var(--font-mono);font-size:9px;letter-spacing:2px;background:transparent;border:none;color:var(--dim);cursor:pointer;padding:4px 8px;transition:color .12s}
-.auth-close:hover{color:var(--red)}
-.auth-title{font-family:var(--font-disp);font-size:22px;letter-spacing:2px;color:var(--green);margin-bottom:6px}
-.auth-sub{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:24px}
-.auth-field{margin-bottom:14px}
-.auth-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:6px;display:block}
-.auth-input{width:100%;font-family:var(--font-mono);font-size:13px;letter-spacing:1px;background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:10px 12px;outline:none;transition:border-color .12s}
-.auth-input:focus{border-color:var(--green)}
-.auth-input.error{border-color:var(--red);animation:shake .3s ease}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.auth-submit{width:100%;font-family:var(--font-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;background:var(--green);color:#000;border:none;padding:12px;cursor:pointer;font-weight:700;margin-top:6px;transition:all .15s}
-.auth-submit:hover{background:#00cc33;box-shadow:0 0 20px var(--green-glow)}
-.auth-err{font-size:10px;letter-spacing:.5px;color:var(--red);margin-top:10px;min-height:16px;text-align:center}
-.auth-attempts{font-size:10px;color:var(--dim);text-align:center;margin-top:6px;letter-spacing:.5px}
+/* ── REPORTS GRID ── */
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 0;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+}
+.report-card {
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  transition: background .12s;
+  animation: card-in .3s ease both;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.report-card:hover { background: var(--paper2); }
+@keyframes card-in { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 
-.admin-badge{font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border:1px solid var(--green);color:var(--green);background:var(--green-dim);cursor:pointer;transition:all .12s;display:none}
-.admin-badge:hover{background:rgba(0,255,65,.15)}
-.admin-badge.visible{display:inline-block}
-.auth-trigger{position:fixed;bottom:18px;right:18px;width:10px;height:10px;background:transparent;border:1px solid var(--border);cursor:pointer;z-index:500;transition:border-color .2s,background .2s}
-.auth-trigger:hover{border-color:var(--green);background:var(--green-dim)}
+/* top score stripe */
+.card-stripe {
+  height: 4px;
+  width: 100%;
+}
+.score-high .card-stripe { background: var(--green); }
+.score-mid  .card-stripe { background: var(--amber); }
+.score-low  .card-stripe { background: var(--stamp-red); }
+.score-none .card-stripe { background: var(--rule); }
 
-footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;max-width:1280px;margin:0 auto}
-.footer-left{font-size:10px;color:var(--muted);letter-spacing:.5px}
-.footer-left strong{color:var(--green)}
-.footer-right{font-size:10px;color:var(--muted);letter-spacing:.5px}
+.card-inner { padding: 18px 20px 14px; }
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.card-left {}
+.card-executor {
+  font-family: var(--font-disp);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--ink);
+  line-height: 1.1;
+  word-break: break-word;
+}
+.card-version {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-top: 3px;
+  opacity: .6;
+}
+.score-badge {
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+.score-badge-n {
+  font-family: var(--font-disp);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.score-badge-l {
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-top: 2px;
+  display: block;
+}
+.score-high .score-badge-n { color: var(--green); }
+.score-mid  .score-badge-n { color: var(--amber); }
+.score-low  .score-badge-n { color: var(--stamp-red); }
+.score-none .score-badge-n { color: var(--ink3); }
 
-@media(max-width:700px){
-  .header-inner,footer{padding-left:16px;padding-right:16px}
-  .wrap{padding:0 16px}
-  .hero{padding:48px 0 36px}
-  .hero-title{font-size:52px}
-  .reports-grid{grid-template-columns:1fr}
-  .nav-links{display:none}
+/* mini ledger */
+.card-ledger {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  margin-bottom: 10px;
+}
+.ledger-cell {
+  padding: 6px 8px;
+  border-right: 1px solid var(--rule2);
+}
+.ledger-cell:last-child { border-right: none; }
+.ledger-val {
+  font-family: var(--font-disp);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+}
+.ledger-val.red   { color: var(--stamp-red); }
+.ledger-val.green { color: var(--green); }
+.ledger-val.blue  { color: var(--blue); }
+.ledger-val.amber { color: var(--amber); }
+.ledger-lbl {
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-top: 2px;
+  opacity: .7;
+}
+
+.card-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 10px; }
+.ctag {
+  font-family: var(--font-disp);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid var(--rule);
+  color: var(--ink3);
+}
+.ctag-red   { border-color: var(--stamp-red); color: var(--stamp-red); background: var(--red-dim); }
+.ctag-green { border-color: var(--green);     color: var(--green);     background: var(--green-dim); }
+.ctag-amber { border-color: var(--amber);     color: var(--amber);     background: var(--amber-dim); }
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--rule2);
+  padding-top: 8px;
+}
+.card-ts { font-size: 8px; color: var(--ink3); letter-spacing: .3px; opacity: .6; }
+.card-actions { display: flex; gap: 4px; }
+.act-btn {
+  font-family: var(--font-disp);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink3);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all .12s;
+}
+.act-btn:hover     { border-color: var(--ink); color: var(--ink); }
+.act-btn.open:hover{ border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.act-btn.del:hover { border-color: var(--stamp-red); color: var(--stamp-red); }
+
+/* ── EMPTY STATE ── */
+#empty-state {
+  text-align: center;
+  padding: 80px 32px;
+  border: 1px solid var(--rule);
+  background: var(--paper2);
+}
+.empty-ascii {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: var(--rule);
+  white-space: pre;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+.empty-title {
+  font-family: var(--font-disp);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 6px;
+}
+.empty-sub { font-size: 10px; color: var(--ink3); opacity: .6; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(14,12,10,.7);
+  z-index: 1000;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-frame-wrap {
+  width: 100%; height: 92vh;
+  background: var(--paper);
+  border-top: 4px solid var(--ink);
+  display: flex; flex-direction: column;
+}
+.modal-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; height: 36px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper2);
+  flex-shrink: 0;
+}
+.modal-title { font-family: var(--font-disp); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--ink3); }
+.modal-close {
+  font-family: var(--font-disp); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  background: transparent; border: 1px solid var(--rule); color: var(--ink3); padding: 4px 12px; cursor: pointer; transition: all .12s;
+}
+.modal-close:hover { border-color: var(--stamp-red); color: var(--stamp-red); }
+#report-frame { flex: 1; border: none; width: 100%; }
+
+/* ── TOAST ── */
+.upload-toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--ink); color: var(--paper);
+  border-left: 4px solid var(--green);
+  padding: 12px 18px; font-size: 10px; letter-spacing: 1px;
+  z-index: 2000; opacity: 0; transform: translateY(8px); transition: all .25s; pointer-events: none;
+}
+.upload-toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── PROGRESS ── */
+.progress-bar-wrap { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9997; opacity: 0; transition: opacity .2s; }
+.progress-bar-wrap.active { opacity: 1; }
+.progress-bar { height: 100%; background: var(--stamp-red); width: 0%; transition: width .3s ease; }
+
+/* ── ABOUT SECTION ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  background: var(--ink);
+  gap: 1px;
+  border: 1px solid var(--ink);
+}
+.about-cell {
+  background: var(--paper);
+  padding: 28px 24px;
+}
+.about-cell-num {
+  font-family: var(--font-disp);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--stamp-red);
+  margin-bottom: 8px;
+}
+.about-cell-title {
+  font-family: var(--font-disp);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+.about-cell-body { font-size: 10px; color: var(--ink3); line-height: 1.9; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+.footer-left { font-size: 9px; color: var(--ink3); letter-spacing: 2px; text-transform: uppercase; }
+.footer-left strong { color: var(--ink); }
+.footer-right { font-size: 9px; color: var(--ink3); letter-spacing: 1px; }
+
+/* ── AUTH MODAL ── */
+.auth-overlay {
+  position: fixed; inset: 0;
+  background: rgba(14,12,10,.85);
+  z-index: 5000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.auth-overlay.open { opacity: 1; pointer-events: all; }
+.auth-box {
+  width: 400px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-top: 5px solid var(--ink);
+  padding: 0;
+  position: relative;
+  transform: translateY(10px);
+  transition: transform .2s;
+}
+.auth-overlay.open .auth-box { transform: translateY(0); }
+.auth-header {
+  background: var(--ink);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.auth-title {
+  font-family: var(--font-disp);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+.auth-close {
+  font-family: var(--font-body);
+  font-size: 10px;
+  background: transparent;
+  border: 1px solid rgba(245,240,232,.3);
+  color: rgba(245,240,232,.6);
+  cursor: pointer;
+  padding: 3px 10px;
+  transition: all .12s;
+  letter-spacing: 1px;
+}
+.auth-close:hover { border-color: var(--stamp-red); color: var(--stamp-red); }
+.auth-body { padding: 24px 20px 20px; }
+.auth-sub { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink3); margin-bottom: 20px; opacity: .6; }
+.auth-field { margin-bottom: 14px; }
+.auth-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink3); margin-bottom: 5px; display: block; }
+.auth-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 13px;
+  background: var(--paper2);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--ink);
+  color: var(--ink);
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .12s;
+}
+.auth-input:focus { border-bottom-color: var(--stamp-red); }
+.auth-input.error { border-color: var(--stamp-red); animation: shake .3s ease; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.auth-submit {
+  width: 100%;
+  font-family: var(--font-disp);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 11px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: all .15s;
+}
+.auth-submit:hover { background: var(--stamp-red); border-color: var(--stamp-red); }
+.auth-err { font-size: 9px; letter-spacing: .5px; color: var(--stamp-red); margin-top: 10px; min-height: 14px; text-align: center; }
+.auth-attempts { font-size: 9px; color: var(--ink3); text-align: center; margin-top: 5px; letter-spacing: .5px; opacity: .7; }
+
+/* ── HIDDEN TRIGGER ── */
+.auth-trigger {
+  position: fixed; bottom: 16px; right: 16px;
+  width: 8px; height: 8px;
+  background: transparent;
+  border: 1px solid var(--rule);
+  cursor: pointer; z-index: 500;
+  transition: all .2s;
+}
+.auth-trigger:hover { border-color: var(--stamp-red); background: var(--red-dim); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-divider { display: none; }
+  .hero-left { padding: 40px 0 32px; }
+  .hero-right { padding: 0 0 32px; }
+  .about-grid { grid-template-columns: 1fr; }
+}
+@media(max-width:600px) {
+  .header-inner { flex-wrap: wrap; }
+  .header-meta { display: none; }
+  .wrap { padding: 0 12px; }
+  footer { padding: 12px; }
+  .reports-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
 <div class="progress-bar-wrap" id="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
-<div class="grid-bg"></div>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
 
+<!-- CLASSIFICATION BAR -->
+<div class="classbar">EXECUTOR HEALTH REPORT <span>///</span> RESTRICTED ACCESS <span>///</span> EEHC v3.2</div>
+
+<!-- HEADER -->
 <header>
   <div class="header-inner">
-    <a class="logo" href="#">
-      <div class="logo-mark"></div>
-      <div class="logo-text">EEHC<span>.</span>REPORT</div>
-    </a>
-    <div class="nav-links">
-      <a href="#reports">Results</a>
-      <a href="#about">About</a>
-      <span class="nav-tag">v3.2</span>
-      <span class="live-dot">LIVE</span>
-      <span class="admin-badge" id="admin-badge" onclick="logout()" title="Click to log out">✓ ADMIN</span>
+    <div class="logo-block">
+      <div class="logo-eyebrow">Security Diagnostic Suite</div>
+      <div class="logo-main">EEHC<em>.</em>REPORT</div>
+    </div>
+    <div class="header-meta">
+      <a href="#reports" class="hm-item">Results</a>
+      <a href="#about" class="hm-item">About</a>
+      <span class="hm-item live">Live Sync</span>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
+      <span class="admin-badge" id="admin-badge" onclick="logout()" title="Click to log out">✓ Admin</span>
     </div>
   </div>
 </header>
 
+<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner" id="ticker-track"></div>
 </div>
 
+<!-- HERO -->
 <div class="wrap">
   <section class="hero">
-    <div class="hero-eyebrow">ExecEnvHealthCheck — Results Archive</div>
-    <h1 class="hero-title">
-      EXECUTOR<br>
-      <span class="accent">HEALTH</span><br>
-      <span class="dim">RESULTS</span>
-    </h1>
-    <p class="hero-sub">
-      All the <strong style="color:var(--text)">.html</strong> reports from nerfine's ExecEnvHealthCheck script.
-    </p>
-    <div class="hero-actions">
-      <button class="btn-primary admin-only" id="hero-upload-btn"
-              onclick="requireAdmin(()=>document.getElementById('file-input').click())"
-              style="display:none">+ Upload Reports</button>
-      <a href="#reports" class="btn-ghost">View Results ↓</a>
+    <div class="hero-left">
+      <div>
+        <div class="hero-issue">Filed: <span id="hero-date">—</span> &nbsp;·&nbsp; Archive Edition</div>
+        <h1 class="hero-title">
+          EXEC<br>
+          <span class="red">HEALTH</span><br>
+          <span class="outline">CHECK</span>
+        </h1>
+        <p class="hero-sub">
+          Official results archive for nerfine's ExecEnvHealthCheck diagnostic suite.
+          Each report audits 100+ security vectors, function coverage, UI library compatibility
+          and raw executor performance.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-primary admin-only" id="hero-upload-btn"
+                onclick="requireAdmin(()=>document.getElementById('file-input').click())"
+                style="display:none">+ File Report</button>
+        <a href="#reports" class="btn-ghost">View Archive ↓</a>
+      </div>
     </div>
-    <div class="stats-bar">
-      <div class="stat-item"><div class="stat-n" id="s-total">0</div><div class="stat-l">Reports Loaded</div></div>
-      <div class="stat-item"><div class="stat-n" id="s-secure" style="color:var(--green)">0</div><div class="stat-l">Secure (≥80%)</div></div>
-      <div class="stat-item"><div class="stat-n" id="s-vuln" style="color:var(--red)">0</div><div class="stat-l">Vulnerable</div></div>
-      <div class="stat-item"><div class="stat-n" id="s-avg" style="color:var(--amber)">—</div><div class="stat-l">Avg Security</div></div>
-      <div class="stat-item"><div class="stat-n" id="s-execu" style="color:var(--blue)">0</div><div class="stat-l">Executors</div></div>
+    <div class="hero-divider"></div>
+    <div class="hero-right">
+      <div class="stats-grid">
+        <div class="stat-cell"><div class="stat-n" id="s-total">0</div><div class="stat-l">Reports on file</div></div>
+        <div class="stat-cell"><div class="stat-n green" id="s-secure">0</div><div class="stat-l">Secure (≥80%)</div></div>
+        <div class="stat-cell"><div class="stat-n red" id="s-vuln">0</div><div class="stat-l">Vulnerable</div></div>
+        <div class="stat-cell"><div class="stat-n amber" id="s-avg">—</div><div class="stat-l">Avg security score</div></div>
+        <div class="stat-cell" style="grid-column:span 2"><div class="stat-n blue" id="s-execu">0</div><div class="stat-l">Unique executors tested</div></div>
+      </div>
     </div>
   </section>
 </div>
 
-<div class="wrap" id="reports" style="padding-bottom:80px">
-  <div class="sec-header">
-    <div class="sec-title">REPORTS</div>
-    <div class="sec-meta" id="report-count">0 loaded</div>
+<!-- REPORTS -->
+<div class="wrap" id="reports" style="padding-bottom:80px;margin-top:32px">
+  <div class="sec-hdr">
+    <div><span class="sec-num">§ 01</span><span class="sec-title">Filed Reports</span></div>
+    <div class="sec-meta" id="report-count">0 on record</div>
   </div>
 
   <div class="filter-bar">
-    <input class="filter-input" id="search-input" placeholder="Search executor name..." oninput="renderCards()">
+    <input class="filter-input" id="search-input" placeholder="Search executor..." oninput="renderCards()">
     <div class="filter-sep"></div>
-    <span class="filter-label">FILTER</span>
-    <button class="filter-btn active" onclick="setFilter(this,'all')">ALL</button>
-    <button class="filter-btn" onclick="setFilter(this,'high')">SECURE</button>
-    <button class="filter-btn" onclick="setFilter(this,'mid')">WARNING</button>
-    <button class="filter-btn" onclick="setFilter(this,'low')">VULN</button>
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-btn" onclick="setFilter(this,'high')">Secure</button>
+    <button class="filter-btn" onclick="setFilter(this,'mid')">Warning</button>
+    <button class="filter-btn" onclick="setFilter(this,'low')">Vuln</button>
     <div class="filter-sep"></div>
-    <span class="filter-label">SORT</span>
-    <button class="filter-btn" id="sort-sec" onclick="setSort('security',this)">SECURITY ↓</button>
-    <button class="filter-btn" id="sort-fn"  onclick="setSort('functions',this)">FUNCTIONS ↓</button>
-    <button class="filter-btn" id="sort-spd" onclick="setSort('speed',this)">SPEED ↓</button>
-    <button class="filter-btn admin-only" id="clear-btn" style="margin-left:auto;display:none" onclick="clearAll()">CLEAR ALL</button>
+    <span class="filter-label">Sort</span>
+    <button class="filter-btn" id="sort-sec" onclick="setSort('security',this)">Security ↓</button>
+    <button class="filter-btn" id="sort-fn"  onclick="setSort('functions',this)">Functions ↓</button>
+    <button class="filter-btn" id="sort-spd" onclick="setSort('speed',this)">Speed ↓</button>
+    <button class="filter-btn admin-only" id="clear-btn" style="display:none;margin-left:auto" onclick="clearAll()">Clear All</button>
   </div>
 
   <div class="drop-zone admin-only" id="drop-zone" style="display:none"
@@ -301,9 +987,9 @@ footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify
        ondragover="handleDragOver(event)"
        ondragleave="handleDragLeave()"
        ondrop="handleDrop(event)">
-    <div class="drop-icon">⬆</div>
-    <div class="drop-title">DROP REPORT FILES HERE</div>
-    <div class="drop-sub">Accepts <strong>.html</strong> files generated by nerfine</div>
+    <div class="drop-icon">↑</div>
+    <div class="drop-title">Drop Report Files Here</div>
+    <div class="drop-sub">Accepts <strong>.html</strong> files generated by ExecEnvHealthCheck</div>
     <input type="file" id="file-input" accept=".html" multiple onchange="handleFiles(this.files)">
   </div>
 
@@ -311,48 +997,53 @@ footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify
 
   <div id="empty-state">
     <div class="empty-ascii">
- ███████╗███████╗██╗  ██╗ ██████╗ 
- ██╔════╝██╔════╝██║  ██║██╔════╝ 
- █████╗  █████╗  ███████║██║      
- ██╔══╝  ██╔══╝  ██╔══██║██║      
- ███████╗███████╗██║  ██║╚██████╗ 
- ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ </div>
-    <div class="empty-title">NO REPORTS LOADED</div>
-    <div class="empty-sub">No files generated by nerfine have been uploaded yet</div>
+ ┌──────────────────────────┐
+ │   NO RECORDS ON FILE     │
+ │                          │
+ │   Awaiting first report  │
+ └──────────────────────────┘</div>
+    <div class="empty-title">No Reports Filed</div>
+    <div class="empty-sub">No ExecEnvHealthCheck reports have been submitted yet</div>
   </div>
 </div>
 
+<!-- ABOUT -->
 <div class="wrap" id="about" style="padding-bottom:80px">
-  <div class="sec-header">
-    <div class="sec-title">ABOUT</div>
+  <div class="sec-hdr">
+    <div><span class="sec-num">§ 02</span><span class="sec-title">About This Archive</span></div>
     <div class="sec-meta">ExecEnvHealthCheck v3.2</div>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)">
-    <div style="background:var(--panel);padding:24px">
-      <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--green);margin-bottom:10px">WHAT IS THIS</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.9">ExecEnvHealthCheck is a comprehensive Roblox executor diagnostic suite. It tests security vectors, function coverage, UI library compatibility, and raw performance — generating a self-contained HTML report.</div>
+  <div class="about-grid">
+    <div class="about-cell">
+      <div class="about-cell-num">01 / WHAT</div>
+      <div class="about-cell-title">What Is This</div>
+      <div class="about-cell-body">ExecEnvHealthCheck is a comprehensive Roblox executor diagnostic suite. It tests security vectors, function coverage, UI library compatibility, and raw performance — generating a self-contained HTML report.</div>
     </div>
-    <div style="background:var(--panel);padding:24px">
-      <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--amber);margin-bottom:10px">HOW IT WORKS</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.9">The script is ran inside any executor. It probes 100+ vulnerability vectors, benchmarks 50+ executor functions, stress-tests the Lua VM, and computes big Fibonacci numbers; then writes a detailed .html report.</div>
+    <div class="about-cell">
+      <div class="about-cell-num">02 / HOW</div>
+      <div class="about-cell-title">How It Works</div>
+      <div class="about-cell-body">The script runs inside any executor. It probes 100+ vulnerability vectors, benchmarks 50+ executor functions, stress-tests the Lua VM with 6 stages, and computes big Fibonacci numbers — then writes a detailed .html report.</div>
     </div>
-    <div style="background:var(--panel);padding:24px">
-      <div style="font-family:var(--font-disp);font-size:16px;letter-spacing:2px;color:var(--blue);margin-bottom:10px">THIS SITE</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.9">The site contains all the latest official reports of nerfine's tests. Reports update live — no refresh needed.</div>
+    <div class="about-cell">
+      <div class="about-cell-num">03 / SITE</div>
+      <div class="about-cell-title">This Archive</div>
+      <div class="about-cell-body">Official results from nerfine's testing program. Reports are stored on a private VPS — your IP is never exposed. All data syncs live every 8 seconds. No private information is ever retained.</div>
     </div>
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer>
-  <div class="footer-left"><strong>EEHC.REPORT</strong> &nbsp;·&nbsp; ExecEnvHealthCheck v3.2</div>
-  <div class="footer-right">No private data is ever stored</div>
+  <div class="footer-left"><strong>EEHC.REPORT</strong> &nbsp;·&nbsp; ExecEnvHealthCheck v3.2 &nbsp;·&nbsp; nerfine's Archive</div>
+  <div class="footer-right">No private data stored &nbsp;·&nbsp; VPS-backed &nbsp;·&nbsp; Live sync</div>
 </footer>
 
+<!-- MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal-frame-wrap">
     <div class="modal-bar">
       <div class="modal-title" id="modal-title">—</div>
-      <button class="modal-close" onclick="closeModal()">✕ CLOSE</button>
+      <button class="modal-close" onclick="closeModal()">✕ Close</button>
     </div>
     <iframe id="report-frame" sandbox="allow-scripts allow-same-origin"></iframe>
   </div>
@@ -360,22 +1051,27 @@ footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify
 
 <div class="upload-toast" id="toast"></div>
 
+<!-- AUTH MODAL -->
 <div class="auth-overlay" id="auth-modal">
   <div class="auth-box">
-    <button class="auth-close" onclick="closeAuthModal()">✕ CLOSE</button>
-    <div class="auth-title">ADMIN ACCESS</div>
-    <div class="auth-sub">Enter credentials to unlock upload controls</div>
-    <div class="auth-field">
-      <label class="auth-label" for="auth-pass">Password</label>
-      <input class="auth-input" id="auth-pass" type="password" placeholder="••••••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+    <div class="auth-header">
+      <div class="auth-title">Admin Access</div>
+      <button class="auth-close" onclick="closeAuthModal()">✕ Close</button>
     </div>
-    <div class="auth-field">
-      <label class="auth-label" for="auth-key">Secret Key</label>
-      <input class="auth-input" id="auth-key" type="password" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+    <div class="auth-body">
+      <div class="auth-sub">Enter credentials to unlock upload controls</div>
+      <div class="auth-field">
+        <label class="auth-label" for="auth-pass">Password</label>
+        <input class="auth-input" id="auth-pass" type="password" placeholder="••••••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+      </div>
+      <div class="auth-field">
+        <label class="auth-label" for="auth-key">Secret Key</label>
+        <input class="auth-input" id="auth-key" type="password" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+      </div>
+      <button class="auth-submit" onclick="submitAuth()">Authenticate</button>
+      <div class="auth-err" id="auth-err"></div>
+      <div class="auth-attempts" id="auth-attempts"></div>
     </div>
-    <button class="auth-submit" onclick="submitAuth()">AUTHENTICATE</button>
-    <div class="auth-err" id="auth-err"></div>
-    <div class="auth-attempts" id="auth-attempts"></div>
   </div>
 </div>
 
@@ -399,6 +1095,8 @@ let toastTimer    = null;
 let adminToken    = null;
 let pollTimer     = null;
 
+document.getElementById('hero-date').textContent = new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
+
 async function sha256(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
@@ -407,31 +1105,23 @@ async function sha256(str) {
 function setProgress(pct) {
   const wrap = document.getElementById('progress-wrap');
   const bar  = document.getElementById('progress-bar');
-  if (pct >= 100) {
-    bar.style.width = '100%';
-    setTimeout(() => { wrap.classList.remove('active'); bar.style.width = '0%'; }, 400);
-  } else {
-    wrap.classList.add('active');
-    bar.style.width = pct + '%';
-  }
+  if (pct >= 100) { bar.style.width='100%'; setTimeout(()=>{wrap.classList.remove('active');bar.style.width='0%';},400); }
+  else { wrap.classList.add('active'); bar.style.width=pct+'%'; }
 }
 
 async function apiFetch(path, opts = {}) {
   const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
   if (adminToken) headers['X-Admin-Token'] = adminToken;
   const clean = WORKER_URL.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '');
-  const res = await fetch(clean, { ...opts, headers });
-  return res;
+  return await fetch(clean, { ...opts, headers });
 }
 
 async function loadReports() {
   try {
-    const res  = await apiFetch('/reports');
+    const res = await apiFetch('/reports');
     if (!res.ok) return;
-    const data = await res.json();
-    reports = data;
-    renderCards();
-    updateStats();
+    reports = await res.json();
+    renderCards(); updateStats();
   } catch(e) {}
 }
 
@@ -442,7 +1132,6 @@ function startPolling() {
 
 function parseReport(html, filename) {
   const d = new DOMParser().parseFromString(html, 'text/html');
-
   function grabMeta(label) {
     for (const el of d.querySelectorAll('.meta-grid strong')) {
       const prev = el.previousSibling;
@@ -450,177 +1139,127 @@ function parseReport(html, filename) {
     }
     return null;
   }
-
-  const executor = (
-    grabMeta('EXECUTOR') ||
-    d.querySelector('.h-title')?.textContent?.replace(/EXEC\s*HEALTH/i,'').trim() ||
-    filename.replace(/HealthCheck_/,'').replace(/_\d{8}_\d{6}\.html$/,'').replace(/_/g,' ') ||
-    'Unknown'
-  ).trim();
-
+  const executor = (grabMeta('EXECUTOR') || d.querySelector('.h-title')?.textContent?.replace(/EXEC\s*HEALTH/i,'').trim() || filename.replace(/HealthCheck_/,'').replace(/_\d{8}_\d{6}\.html$/,'').replace(/_/g,' ') || 'Unknown').trim();
   const timestamp = grabMeta('TIMESTAMP') || grabMeta('DATE') || '—';
   let version = '?';
   const vm = d.querySelector('title')?.textContent?.match(/v([\d.]+)/);
   if (vm) version = vm[1];
-
-  let secScore = null, secMitigated = 0, secVuln = 0;
-  let fnPassed = 0, fnTotal = 0, uiPassed = 0, uiTotal = 0;
-  let stressPass = 0, stressTotal = 6, fibDigits = 0, avgIPS = 0;
-
+  let secScore=null,secMitigated=0,secVuln=0,fnPassed=0,fnTotal=0,uiPassed=0,uiTotal=0,stressPass=0,stressTotal=6,fibDigits=0,avgIPS=0;
   for (const card of d.querySelectorAll('.stat-card')) {
     const label = card.querySelector('.stat-label')?.textContent?.trim().toUpperCase();
     const val   = card.querySelector('.stat-val')?.textContent?.trim();
     const sub   = card.querySelector('.stat-sub')?.textContent || '';
     if (!label || !val) continue;
-    if (label === 'SECURITY') {
-      const m = val.match(/(\d+)/); if (m) secScore = parseInt(m[1]);
-      const ms = sub.match(/(\d+)\s*mitigated\s*\/\s*(\d+)\s*vuln/i);
-      if (ms) { secMitigated = parseInt(ms[1]); secVuln = parseInt(ms[2]); }
-    }
-    if (label === 'FUNCTIONS') { const ms = sub.match(/(\d+)\s*\/\s*(\d+)/); if (ms) { fnPassed=parseInt(ms[1]); fnTotal=parseInt(ms[2]); } }
-    if (label === 'UI LIBS')   { const ms = sub.match(/(\d+)\s*\/\s*(\d+)/); if (ms) { uiPassed=parseInt(ms[1]); uiTotal=parseInt(ms[2]); } }
-    if (label === 'STRESS')    { const m  = val.match(/(\d+)\/(\d+)/);        if (m)  { stressPass=parseInt(m[1]); stressTotal=parseInt(m[2]); }
-      const ms2 = sub.match(/([\d,]+)\s*avg/i); if (ms2) avgIPS = parseInt(ms2[1].replace(/,/g,'')); }
-    if (label === 'DIGITS')    { fibDigits = parseInt(val.replace(/,/g,'')) || 0; }
+    if (label==='SECURITY'){const m=val.match(/(\d+)/);if(m)secScore=parseInt(m[1]);const ms=sub.match(/(\d+)\s*mitigated\s*\/\s*(\d+)\s*vuln/i);if(ms){secMitigated=parseInt(ms[1]);secVuln=parseInt(ms[2]);}}
+    if (label==='FUNCTIONS'){const ms=sub.match(/(\d+)\s*\/\s*(\d+)/);if(ms){fnPassed=parseInt(ms[1]);fnTotal=parseInt(ms[2]);}}
+    if (label==='UI LIBS'){const ms=sub.match(/(\d+)\s*\/\s*(\d+)/);if(ms){uiPassed=parseInt(ms[1]);uiTotal=parseInt(ms[2]);}}
+    if (label==='STRESS'){const m=val.match(/(\d+)\/(\d+)/);if(m){stressPass=parseInt(m[1]);stressTotal=parseInt(m[2]);}const ms2=sub.match(/([\d,]+)\s*avg/i);if(ms2)avgIPS=parseInt(ms2[1].replace(/,/g,''));}
+    if (label==='DIGITS'){fibDigits=parseInt(val.replace(/,/g,''))||0;}
   }
-
-  if (secScore === null) {
-    for (const b of d.querySelectorAll('.banner')) {
-      const m = b.textContent.match(/(\d+)\s*VULNERABLE/i);
-      if (m) { secVuln = parseInt(m[1]); break; }
-    }
-  }
-
+  if (secScore===null){for(const b of d.querySelectorAll('.banner')){const m=b.textContent.match(/(\d+)\s*VULNERABLE/i);if(m){secVuln=parseInt(m[1]);break;}}}
   const id = filename.replace(/[^a-zA-Z0-9_-]/g,'_');
-  return { id, filename, executor, timestamp, version, secScore, secMitigated, secVuln, fnPassed, fnTotal, uiPassed, uiTotal, stressPass, stressTotal, fibDigits, avgIPS, html };
+  return {id,filename,executor,timestamp,version,secScore,secMitigated,secVuln,fnPassed,fnTotal,uiPassed,uiTotal,stressPass,stressTotal,fibDigits,avgIPS,html};
 }
 
 async function handleFiles(files) {
-  const arr = Array.from(files).filter(f => f.name.endsWith('.html'));
+  const arr = Array.from(files).filter(f=>f.name.endsWith('.html'));
   if (!arr.length) return;
   const btn = document.getElementById('hero-upload-btn');
-  btn.disabled = true; btn.textContent = 'UPLOADING...';
-  setProgress(5);
-  let done = 0;
+  btn.disabled=true; btn.textContent='Filing...'; setProgress(5);
+  let done=0;
   for (const file of arr) {
     const html = await file.text();
     const rep  = parseReport(html, file.name);
-    await apiFetch('/reports', { method: 'POST', body: JSON.stringify(rep) });
-    setProgress(5 + (++done / arr.length) * 90);
+    await apiFetch('/reports', {method:'POST', body:JSON.stringify(rep)});
+    setProgress(5+(++done/arr.length)*90);
   }
-  setProgress(100);
-  btn.disabled = false; btn.textContent = '+ Upload Reports';
-  document.getElementById('file-input').value = '';
+  setProgress(100); btn.disabled=false; btn.textContent='+ File Report';
+  document.getElementById('file-input').value='';
   await loadReports();
-  showToast(`✓ ${arr.length} report${arr.length > 1 ? 's' : ''} published`);
+  showToast(`✓ ${arr.length} report${arr.length>1?'s':''} filed`);
 }
 
-function handleDragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('dragover'); }
-function handleDragLeave()  { document.getElementById('drop-zone').classList.remove('dragover'); }
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('drop-zone').classList.remove('dragover');
-  if (!adminUnlocked) { openAuthModal(); return; }
-  handleFiles(e.dataTransfer.files);
-}
+function handleDragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('dragover');}
+function handleDragLeave(){document.getElementById('drop-zone').classList.remove('dragover');}
+function handleDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('dragover');if(!adminUnlocked){openAuthModal();return;}handleFiles(e.dataTransfer.files);}
 
-function setFilter(btn, filter) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active','active-red','active-amber'));
-  if      (filter === 'high') btn.classList.add('active');
-  else if (filter === 'low')  btn.classList.add('active-red');
-  else if (filter === 'mid')  btn.classList.add('active-amber');
-  else                        btn.classList.add('active');
+function setFilter(btn,filter){
+  currentFilter=filter;
+  document.querySelectorAll('.filter-bar .filter-btn').forEach(b=>b.classList.remove('active','active-red','active-amber'));
+  if(filter==='high')btn.classList.add('active');
+  else if(filter==='low')btn.classList.add('active-red');
+  else if(filter==='mid')btn.classList.add('active-amber');
+  else btn.classList.add('active');
   renderCards();
 }
 
-function setSort(key, btn) {
-  if (currentSort === key) {
-    currentSort = null;
-    btn.classList.remove('sort-on');
-  } else {
-    currentSort = key;
-    document.querySelectorAll('#sort-sec,#sort-fn,#sort-spd').forEach(b => b.classList.remove('sort-on'));
-    btn.classList.add('sort-on');
-  }
+function setSort(key,btn){
+  if(currentSort===key){currentSort=null;btn.classList.remove('sort-on');}
+  else{currentSort=key;document.querySelectorAll('#sort-sec,#sort-fn,#sort-spd').forEach(b=>b.classList.remove('sort-on'));btn.classList.add('sort-on');}
   renderCards();
 }
 
-function scoreClass(s) {
-  if (s === null) return 'score-none';
-  if (s >= 80)   return 'score-high';
-  if (s >= 50)   return 'score-mid';
-  return 'score-low';
-}
+function scoreClass(s){if(s===null)return'score-none';if(s>=80)return'score-high';if(s>=50)return'score-mid';return'score-low';}
 
-function sortedFiltered() {
-  const q = document.getElementById('search-input').value.toLowerCase().trim();
-  let list = reports.filter(r => {
-    const sc = scoreClass(r.secScore);
-    const ok =
-      currentFilter === 'all' ||
-      (currentFilter === 'high' && sc === 'score-high') ||
-      (currentFilter === 'mid'  && sc === 'score-mid')  ||
-      (currentFilter === 'low'  && sc === 'score-low');
-    return ok && (!q || r.executor.toLowerCase().includes(q) || r.filename.toLowerCase().includes(q));
+function sortedFiltered(){
+  const q=document.getElementById('search-input').value.toLowerCase().trim();
+  let list=reports.filter(r=>{
+    const sc=scoreClass(r.secScore);
+    const ok=currentFilter==='all'||(currentFilter==='high'&&sc==='score-high')||(currentFilter==='mid'&&sc==='score-mid')||(currentFilter==='low'&&sc==='score-low');
+    return ok&&(!q||r.executor.toLowerCase().includes(q)||r.filename.toLowerCase().includes(q));
   });
-  if (currentSort === 'security')  list = [...list].sort((a,b) => (b.secScore  ?? -1) - (a.secScore  ?? -1));
-  if (currentSort === 'functions') list = [...list].sort((a,b) => {
-    const ra = a.fnTotal ? a.fnPassed / a.fnTotal : 0;
-    const rb = b.fnTotal ? b.fnPassed / b.fnTotal : 0;
-    return rb - ra;
-  });
-  if (currentSort === 'speed') list = [...list].sort((a,b) => (b.avgIPS || 0) - (a.avgIPS || 0));
+  if(currentSort==='security')list=[...list].sort((a,b)=>(b.secScore??-1)-(a.secScore??-1));
+  if(currentSort==='functions')list=[...list].sort((a,b)=>{const ra=a.fnTotal?a.fnPassed/a.fnTotal:0,rb=b.fnTotal?b.fnPassed/b.fnTotal:0;return rb-ra;});
+  if(currentSort==='speed')list=[...list].sort((a,b)=>(b.avgIPS||0)-(a.avgIPS||0));
   return list;
 }
 
-function fmtScore(s) { return s !== null ? s + '%' : '—'; }
-function fmtIPS(n)   { return n ? (n >= 1000000 ? (n/1000000).toFixed(1)+'M' : n >= 1000 ? (n/1000).toFixed(0)+'K' : String(n)) : '—'; }
+function fmtScore(s){return s!==null?s+'%':'—';}
+function fmtIPS(n){return n?(n>=1000000?(n/1000000).toFixed(1)+'M':n>=1000?(n/1000).toFixed(0)+'K':String(n)):'—';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function renderCards() {
-  const grid    = document.getElementById('grid');
-  const empty   = document.getElementById('empty-state');
-  const visible = sortedFiltered();
-  document.getElementById('report-count').textContent = visible.length + ' loaded';
-  grid.innerHTML = '';
-  if (!visible.length) { empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  visible.forEach((r, i) => {
-    const sc = scoreClass(r.secScore);
-    let tags = '';
-    if (r.secVuln > 0)                                      tags += `<span class="ctag ctag-red">${r.secVuln} VULN</span>`;
-    if (r.secScore !== null && r.secScore >= 80)             tags += `<span class="ctag ctag-green">SECURE</span>`;
-    if (r.stressPass === r.stressTotal && r.stressTotal > 0) tags += `<span class="ctag ctag-green">STRESS OK</span>`;
-    if (r.stressPass < r.stressTotal)                        tags += `<span class="ctag ctag-amber">STRESS ${r.stressPass}/${r.stressTotal}</span>`;
-    if (r.fnTotal > 0 && r.fnPassed / r.fnTotal < 0.5)      tags += `<span class="ctag ctag-red">LOW FN COV</span>`;
-    if (r.uiTotal > 0)                                       tags += `<span class="ctag">UI ${r.uiPassed}/${r.uiTotal}</span>`;
-    const card = document.createElement('div');
-    card.className = `report-card ${sc}`;
-    card.style.animationDelay = Math.min(i * 0.04, 0.4) + 's';
-    card.innerHTML = `
+function renderCards(){
+  const grid=document.getElementById('grid'),empty=document.getElementById('empty-state'),visible=sortedFiltered();
+  document.getElementById('report-count').textContent=visible.length+' on record';
+  grid.innerHTML='';
+  if(!visible.length){empty.style.display='block';return;}
+  empty.style.display='none';
+  visible.forEach((r,i)=>{
+    const sc=scoreClass(r.secScore);
+    let tags='';
+    if(r.secVuln>0)                                      tags+=`<span class="ctag ctag-red">${r.secVuln} Vuln</span>`;
+    if(r.secScore!==null&&r.secScore>=80)                 tags+=`<span class="ctag ctag-green">Secure</span>`;
+    if(r.stressPass===r.stressTotal&&r.stressTotal>0)     tags+=`<span class="ctag ctag-green">Stress OK</span>`;
+    if(r.stressPass<r.stressTotal)                        tags+=`<span class="ctag ctag-amber">Stress ${r.stressPass}/${r.stressTotal}</span>`;
+    if(r.fnTotal>0&&r.fnPassed/r.fnTotal<0.5)             tags+=`<span class="ctag ctag-red">Low Fn Cov</span>`;
+    if(r.uiTotal>0)                                       tags+=`<span class="ctag">UI ${r.uiPassed}/${r.uiTotal}</span>`;
+    const card=document.createElement('div');
+    card.className=`report-card ${sc}`;
+    card.style.animationDelay=Math.min(i*.04,.4)+'s';
+    card.innerHTML=`
+      <div class="card-stripe"></div>
       <div class="card-inner">
         <div class="card-top">
-          <div>
+          <div class="card-left">
             <div class="card-executor">${esc(r.executor)}</div>
-            <div class="card-version">v${esc(r.version)} &nbsp;·&nbsp; ${esc(r.filename)}</div>
+            <div class="card-version">v${esc(r.version)} · ${esc(r.filename)}</div>
           </div>
-          <div class="score-badge">${fmtScore(r.secScore)}<span class="badge-label">SECURITY</span></div>
+          <div class="score-badge">
+            <div class="score-badge-n">${fmtScore(r.secScore)}</div>
+            <span class="score-badge-l">Security</span>
+          </div>
         </div>
-        <div class="card-stats">
-          <div class="cs-item"><div class="cs-val cs-pass">${r.secMitigated}</div><div class="cs-label">Mitigated</div></div>
-          <div class="cs-item"><div class="cs-val cs-info">${r.fnPassed}/${r.fnTotal}</div><div class="cs-label">Functions</div></div>
-          <div class="cs-item"><div class="cs-val cs-amber">${fmtIPS(r.avgIPS)}</div><div class="cs-label">Avg Speed</div></div>
+        <div class="card-ledger">
+          <div class="ledger-cell"><div class="ledger-val green">${r.secMitigated}</div><div class="ledger-lbl">Mitigated</div></div>
+          <div class="ledger-cell"><div class="ledger-val red">${r.secVuln}</div><div class="ledger-lbl">Vulnerable</div></div>
+          <div class="ledger-cell"><div class="ledger-val blue">${r.fnPassed}/${r.fnTotal}</div><div class="ledger-lbl">Functions</div></div>
         </div>
         <div class="card-tags">${tags}</div>
         <div class="card-footer">
-          <div class="card-ts">${esc(r.timestamp || r.filename)}</div>
+          <div class="card-ts">${esc(r.timestamp||r.filename)}</div>
           <div class="card-actions">
-            <button class="act-btn open" onclick="openReport('${esc(r.id)}')">OPEN</button>
-            ${adminUnlocked ? `<button class="act-btn del" onclick="deleteReport('${esc(r.id)}',event)">DEL</button>` : ''}
+            <button class="act-btn open" onclick="openReport('${esc(r.id)}')">Open</button>
+            ${adminUnlocked?`<button class="act-btn del" onclick="deleteReport('${esc(r.id)}',event)">Del</button>`:''}
           </div>
         </div>
       </div>`;
@@ -628,181 +1267,88 @@ function renderCards() {
   });
 }
 
-function updateStats() {
-  const total  = reports.length;
-  const secure = reports.filter(r => r.secScore !== null && r.secScore >= 80).length;
-  const vuln   = reports.filter(r => r.secVuln > 0).length;
-  const scores = reports.filter(r => r.secScore !== null).map(r => r.secScore);
-  const avg    = scores.length ? Math.round(scores.reduce((a,b) => a+b,0) / scores.length) : null;
-  const execus = new Set(reports.map(r => r.executor)).size;
-  document.getElementById('s-total').textContent  = total;
-  document.getElementById('s-secure').textContent = secure;
-  document.getElementById('s-vuln').textContent   = vuln;
-  document.getElementById('s-avg').textContent    = avg !== null ? avg + '%' : '—';
-  document.getElementById('s-execu').textContent  = execus;
+function updateStats(){
+  const total=reports.length,secure=reports.filter(r=>r.secScore!==null&&r.secScore>=80).length,vuln=reports.filter(r=>r.secVuln>0).length;
+  const scores=reports.filter(r=>r.secScore!==null).map(r=>r.secScore);
+  const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):null;
+  const execus=new Set(reports.map(r=>r.executor)).size;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-secure').textContent=secure;
+  document.getElementById('s-vuln').textContent=vuln;
+  document.getElementById('s-avg').textContent=avg!==null?avg+'%':'—';
+  document.getElementById('s-execu').textContent=execus;
 }
 
-async function openReport(id) {
-  const r = reports.find(x => x.id === id);
-  if (!r) return;
-  document.getElementById('modal-title').textContent = r.executor + '  ·  ' + r.filename;
+async function openReport(id){
+  const r=reports.find(x=>x.id===id);
+  if(!r)return;
+  document.getElementById('modal-title').textContent=r.executor+' · '+r.filename;
   document.getElementById('modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  if (r.html) {
-    document.getElementById('report-frame').src = URL.createObjectURL(new Blob([r.html], {type:'text/html'}));
-  } else {
-    const res = await apiFetch('/reports/' + encodeURIComponent(id) + '/html');
-    if (res.ok) {
-      const html = await res.text();
-      document.getElementById('report-frame').src = URL.createObjectURL(new Blob([html], {type:'text/html'}));
-    }
-  }
+  document.body.style.overflow='hidden';
+  if(r.html){document.getElementById('report-frame').src=URL.createObjectURL(new Blob([r.html],{type:'text/html'}));}
+  else{const res=await apiFetch('/reports/'+encodeURIComponent(id)+'/html');if(res.ok){const html=await res.text();document.getElementById('report-frame').src=URL.createObjectURL(new Blob([html],{type:'text/html'}));}}
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-  document.getElementById('report-frame').src = 'about:blank';
-  document.body.style.overflow = '';
-}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.getElementById('report-frame').src='about:blank';document.body.style.overflow='';}
+async function deleteReport(id,e){e.stopPropagation();if(!adminUnlocked)return;await apiFetch('/reports/'+encodeURIComponent(id),{method:'DELETE'});await loadReports();showToast('Report removed');}
+async function clearAll(){if(!reports.length||!adminUnlocked)return;if(!confirm('Delete all '+reports.length+' report(s)?'))return;await apiFetch('/reports',{method:'DELETE'});await loadReports();showToast('All reports cleared');}
 
-async function deleteReport(id, e) {
-  e.stopPropagation();
-  if (!adminUnlocked) return;
-  await apiFetch('/reports/' + encodeURIComponent(id), { method: 'DELETE' });
-  await loadReports();
-  showToast('Report deleted');
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
 
-async function clearAll() {
-  if (!reports.length || !adminUnlocked) return;
-  if (!confirm('Delete all ' + reports.length + ' report(s)? This cannot be undone.')) return;
-  await apiFetch('/reports', { method: 'DELETE' });
-  await loadReports();
-  showToast('All reports deleted');
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-function buildTicker() {
-  const items = [
-    ['SYS','ExecEnvHealthCheck v3.2'], ['SEC','100+ vulnerability vectors'],
-    ['FN','50+ executor functions'],   ['PERF','6-stage stress test'],
-    ['BIG','Fibonacci big-integer benchmark'], ['UI','13 UI library checks'],
-    ['LIVE','Live VPS sync'], ['PRIV','VPS IP never exposed'],
+function buildTicker(){
+  const items=[
+    ['SYS','ExecEnvHealthCheck v3.2'],['SEC','100+ vulnerability vectors'],
+    ['FN','50+ executor functions'],['PERF','6-stage stress test'],
+    ['BIG','Fibonacci big-integer benchmark'],['UI','13 UI library checks'],
+    ['LIVE','VPS-backed live sync'],['PRIV','IP never exposed'],
   ];
-  document.getElementById('ticker-track').innerHTML = [...items,...items]
-    .map(([k,v]) => `<span class="ticker-item"><span class="ticker-key">${k}</span>${v}</span>`).join('');
+  document.getElementById('ticker-track').innerHTML=[...items,...items].map(([k,v])=>`<span class="ticker-item"><span class="ticker-key">${k}</span>${v}</span>`).join('');
 }
 
-function checkSession() {
-  try {
-    const s = sessionStorage.getItem(AUTH_SESSION);
-    if (s) {
-      const parts = s.split('|');
-      if (parts[0] === AUTH_HASH) {
-        adminUnlocked = true;
-        adminToken    = parts[1] || null;
-        applyAdminUI();
-      }
-    }
-  } catch(e) {}
+function checkSession(){
+  try{const s=sessionStorage.getItem(AUTH_SESSION);if(s){const parts=s.split('|');if(parts[0]===AUTH_HASH){adminUnlocked=true;adminToken=parts[1]||null;applyAdminUI();}}}catch(e){}
 }
 
-function applyAdminUI() {
-  document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-  document.getElementById('admin-badge').classList.add('visible');
-  const trig = document.getElementById('auth-trigger');
-  trig.style.opacity = '0'; trig.style.pointerEvents = 'none';
+function applyAdminUI(){document.querySelectorAll('.admin-only').forEach(el=>el.style.display='');document.getElementById('admin-badge').classList.add('visible');const trig=document.getElementById('auth-trigger');trig.style.opacity='0';trig.style.pointerEvents='none';}
+function revokeAdminUI(){document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');document.getElementById('admin-badge').classList.remove('visible');const trig=document.getElementById('auth-trigger');trig.style.opacity='';trig.style.pointerEvents='';}
+
+function openAuthModal(){if(adminUnlocked)return;document.getElementById('auth-err').textContent='';document.getElementById('auth-attempts').textContent='';document.getElementById('auth-pass').value='';document.getElementById('auth-key').value='';if(Date.now()<lockoutUntil){const left=Math.ceil((lockoutUntil-Date.now())/1000);document.getElementById('auth-err').textContent=`Locked out. Wait ${left}s.`;}document.getElementById('auth-modal').classList.add('open');setTimeout(()=>document.getElementById('auth-pass').focus(),150);}
+function closeAuthModal(){document.getElementById('auth-modal').classList.remove('open');}
+
+async function submitAuth(){
+  if(Date.now()<lockoutUntil){const left=Math.ceil((lockoutUntil-Date.now())/1000);document.getElementById('auth-err').textContent=`Locked out. Wait ${left}s.`;return;}
+  const pass=document.getElementById('auth-pass').value,key=document.getElementById('auth-key').value,submit=document.querySelector('.auth-submit');
+  if(!pass||!key){document.getElementById('auth-err').textContent='Both fields are required.';return;}
+  submit.textContent='Verifying...';submit.disabled=true;
+  const token=pass+'|'+key,digest=await sha256(token);
+  submit.textContent='Authenticate';submit.disabled=false;
+  if(digest===AUTH_HASH){adminUnlocked=true;authAttempts=0;adminToken=token;try{sessionStorage.setItem(AUTH_SESSION,AUTH_HASH+'|'+token);}catch(e){}closeAuthModal();applyAdminUI();renderCards();showToast('✓ Admin access granted');}
+  else{authAttempts++;const remaining=MAX_ATTEMPTS-authAttempts;if(authAttempts>=MAX_ATTEMPTS){lockoutUntil=Date.now()+LOCKOUT_MS;authAttempts=0;document.getElementById('auth-err').textContent='Too many attempts. Locked for 5 minutes.';document.getElementById('auth-attempts').textContent='';}else{document.getElementById('auth-err').textContent='Invalid credentials.';document.getElementById('auth-attempts').textContent=`${remaining} attempt${remaining!==1?'s':''} remaining`;}['auth-pass','auth-key'].forEach(id=>{const el=document.getElementById(id);el.classList.add('error');el.value='';setTimeout(()=>el.classList.remove('error'),400);});setTimeout(()=>document.getElementById('auth-pass').focus(),50);}
 }
 
-function revokeAdminUI() {
-  document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-  document.getElementById('admin-badge').classList.remove('visible');
-  const trig = document.getElementById('auth-trigger');
-  trig.style.opacity = ''; trig.style.pointerEvents = '';
+function logout(){if(!confirm('Log out of admin session?'))return;adminUnlocked=false;adminToken=null;try{sessionStorage.removeItem(AUTH_SESSION);}catch(e){}revokeAdminUI();renderCards();showToast('Logged out');}
+function requireAdmin(cb){if(adminUnlocked){cb();return;}openAuthModal();}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAuthModal();closeModal();}});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+document.getElementById('auth-modal').addEventListener('click',e=>{if(e.target===document.getElementById('auth-modal'))closeAuthModal();});
+
+function toggleTheme(){
+  const html = document.documentElement;
+  const light = html.getAttribute('data-theme') === 'light';
+  html.setAttribute('data-theme', light ? 'dark' : 'light');
+  document.getElementById('theme-btn').textContent = light ? '☀ Light' : '☾ Dark';
+  try { localStorage.setItem('eehc_theme', light ? 'dark' : 'light'); } catch(e) {}
 }
 
-function openAuthModal() {
-  if (adminUnlocked) return;
-  document.getElementById('auth-err').textContent = '';
-  document.getElementById('auth-attempts').textContent = '';
-  document.getElementById('auth-pass').value = '';
-  document.getElementById('auth-key').value  = '';
-  if (Date.now() < lockoutUntil) {
-    const left = Math.ceil((lockoutUntil - Date.now()) / 1000);
-    document.getElementById('auth-err').textContent = `Locked out. Wait ${left}s.`;
-  }
-  document.getElementById('auth-modal').classList.add('open');
-  setTimeout(() => document.getElementById('auth-pass').focus(), 150);
+function initTheme(){
+  let saved = 'dark';
+  try { saved = localStorage.getItem('eehc_theme') || 'dark'; } catch(e) {}
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('theme-btn').textContent = saved === 'light' ? '☾ Dark' : '☀ Light';
 }
 
-function closeAuthModal() {
-  document.getElementById('auth-modal').classList.remove('open');
-}
-
-async function submitAuth() {
-  if (Date.now() < lockoutUntil) {
-    const left = Math.ceil((lockoutUntil - Date.now()) / 1000);
-    document.getElementById('auth-err').textContent = `Locked out. Wait ${left}s.`;
-    return;
-  }
-  const pass   = document.getElementById('auth-pass').value;
-  const key    = document.getElementById('auth-key').value;
-  const submit = document.querySelector('.auth-submit');
-  if (!pass || !key) { document.getElementById('auth-err').textContent = 'Both fields are required.'; return; }
-  submit.textContent = 'VERIFYING...'; submit.disabled = true;
-  const token  = pass + '|' + key;
-  const digest = await sha256(token);
-  submit.textContent = 'AUTHENTICATE'; submit.disabled = false;
-  if (digest === AUTH_HASH) {
-    adminUnlocked = true; authAttempts = 0; adminToken = token;
-    try { sessionStorage.setItem(AUTH_SESSION, AUTH_HASH + '|' + token); } catch(e) {}
-    closeAuthModal(); applyAdminUI(); renderCards();
-    showToast('✓ Admin access granted');
-  } else {
-    authAttempts++;
-    const remaining = MAX_ATTEMPTS - authAttempts;
-    if (authAttempts >= MAX_ATTEMPTS) {
-      lockoutUntil = Date.now() + LOCKOUT_MS; authAttempts = 0;
-      document.getElementById('auth-err').textContent = 'Too many attempts. Locked for 5 minutes.';
-      document.getElementById('auth-attempts').textContent = '';
-    } else {
-      document.getElementById('auth-err').textContent = 'Invalid credentials.';
-      document.getElementById('auth-attempts').textContent = `${remaining} attempt${remaining !== 1 ? 's' : ''} remaining`;
-    }
-    ['auth-pass','auth-key'].forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.add('error'); el.value = '';
-      setTimeout(() => el.classList.remove('error'), 400);
-    });
-    setTimeout(() => document.getElementById('auth-pass').focus(), 50);
-  }
-}
-
-function logout() {
-  if (!confirm('Log out of admin session?')) return;
-  adminUnlocked = false; adminToken = null;
-  try { sessionStorage.removeItem(AUTH_SESSION); } catch(e) {}
-  revokeAdminUI(); renderCards();
-  showToast('Logged out');
-}
-
-function requireAdmin(cb) { if (adminUnlocked) { cb(); return; } openAuthModal(); }
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuthModal(); closeModal(); } });
-document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeModal(); });
-document.getElementById('auth-modal').addEventListener('click', e => { if (e.target === document.getElementById('auth-modal')) closeAuthModal(); });
-
-buildTicker();
-checkSession();
-loadReports();
-startPolling();
+buildTicker();initTheme();checkSession();loadReports();startPolling();
 </script>
 </body>
 </html>
