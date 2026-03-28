@@ -382,7 +382,7 @@ footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify
 <div class="auth-trigger" id="auth-trigger" onclick="openAuthModal()" title=""></div>
 
 <script>
-const WORKER_URL   = 'https://autumn-river-2b6b.mathisdelauriere.workers.dev/';
+const WORKER_URL   = 'https://autumn-river-2b6b.mathisdelauriere.workers.dev';
 const AUTH_HASH    = '670d819f823b8a9f4aacac66a7fb94b31a4c41f329ac79d92b24d5e3ccc85260';
 const AUTH_SESSION = 'eehc_admin_v1';
 const MAX_ATTEMPTS = 5;
@@ -419,7 +419,8 @@ function setProgress(pct) {
 async function apiFetch(path, opts = {}) {
   const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
   if (adminToken) headers['X-Admin-Token'] = adminToken;
-  const res = await fetch(WORKER_URL + path, { ...opts, headers });
+  const clean = WORKER_URL.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '');
+  const res = await fetch(clean, { ...opts, headers });
   return res;
 }
 
