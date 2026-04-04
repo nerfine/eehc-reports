@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExecEnvHealthCheck — Results Archive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #050c05;
+      --green: #00ff41;
+      --dim: rgba(0, 255, 65, 0.12);
+      --border: rgba(0, 255, 65, 0.14);
+      --white: #dedede;
+      --gray: rgba(222, 222, 222, 0.4);
+      --red: #ff3b3b;
+      --amber: #ffaa00;
+    }
+
+    [data-theme="pink"] {
+      --bg: #0a0118;
+      --green: #ff00ff;
+      --dim: rgba(255, 0, 255, 0.12);
+      --border: rgba(255, 0, 255, 0.14);
+    }
+
+    [data-theme="cherry"] {
+      --bg: #1a0f14;
+      --green: #ff4d6d;
+      --dim: rgba(255, 77, 109, 0.12);
+      --border: rgba(255, 77, 109, 0.14);
+    }
+
+    [data-theme="blue"] {
+      --bg: #010a14;
+      --green: #00f0ff;
+      --dim: rgba(0, 240, 255, 0.12);
+      --border: rgba(0, 240, 255, 0.14);
+    }
+
+    [data-theme="purple"] {
+      --bg: #282a36;
+      --green: #bd93f9;
+      --dim: rgba(189, 147, 249, 0.12);
+      --border: rgba(189, 147, 249, 0.14);
+      --red: #ff5555;
+    }
+
+    [data-theme="orange"] {
+      --bg: #141001;
+      --green: #ffaa00;
+      --dim: rgba(255, 170, 0, 0.12);
+      --border: rgba(255, 170, 0, 0.14);
+    }
+
+    [data-theme="gold"] {
+      --bg: #141201;
+      --green: #ffd700;
+      --dim: rgba(255, 215, 0, 0.12);
+      --border: rgba(255, 215, 0, 0.14);
+    }
+
+    [data-theme="frost"] {
+      --bg: #011014;
+      --green: #a0f0ff;
+      --dim: rgba(160, 240, 255, 0.12);
+      --border: rgba(160, 240, 255, 0.14);
+    }
+
+    [data-theme="radioactive"] {
+      --bg: #0a1401;
+      --green: #bfff00;
+      --dim: rgba(191, 255, 0, 0.12);
+      --border: rgba(191, 255, 0, 0.14);
+    }
+
+    [data-theme="violet"] {
+      --bg: #0a0114;
+      --green: #8a2be2;
+      --dim: rgba(138, 43, 226, 0.12);
+      --border: rgba(138, 43, 226, 0.14);
+    }
+
+    [data-theme="blood"] {
+      --bg: #140101;
+      --green: #dc143c;
+      --dim: rgba(220, 20, 60, 0.12);
+      --border: rgba(220, 20, 60, 0.14);
+    }
+
+    [data-theme="mono"] {
+      --bg: #050505;
+      --green: #ffffff;
+      --dim: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.14);
+    }
+
+    .settings-open-btn {
+      position: fixed;
+      top: 56px;
+      right: 40px;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      padding: 8px 16px;
+      cursor: none;
+      transition: .2s;
+    }
+
+    .settings-open-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      box-shadow: inset 0 0 10px var(--dim);
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* SETTINGS MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s, background 0.8s, backdrop-filter 0.8s;
+      overflow: hidden;
+    }
+
+    .modal-overlay.init {
+      background: transparent;
+      backdrop-filter: blur(0px);
+    }
+
+    .lang-text-cycle {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 7rem);
+      color: var(--green);
+      text-shadow: 0 0 20px var(--dim);
+      letter-spacing: 0.1em;
+      position: absolute;
+      text-align: center;
+      z-index: 5;
+      line-height: .9;
+      transition: opacity 0.4s, transform 0.4s;
+      animation: pulseG 1.5s infinite alternate ease-in-out;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .modal-shp {
+      position: absolute;
+      background: var(--green);
+      opacity: 0.1;
+      filter: blur(20px);
+      border-radius: 50%;
+      animation: floatShp 15s infinite alternate ease-in-out;
+    }
+
+    .modal-shp:nth-child(1) {
+      width: 300px;
+      height: 300px;
+      top: -100px;
+      left: -100px;
+      animation-duration: 20s;
+    }
+
+    .modal-shp:nth-child(2) {
+      width: 400px;
+      height: 400px;
+      bottom: -150px;
+      right: 10%;
+      animation-duration: 25s;
+      animation-direction: alternate-reverse;
+    }
+
+    .modal-shp:nth-child(3) {
+      width: 200px;
+      height: 200px;
+      top: 40%;
+      left: 30%;
+      animation-duration: 18s;
+    }
+
+    @keyframes floatShp {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        transform: translate(150px, 150px) scale(1.5);
+      }
+    }
+
+    .modal-box {
+      position: relative;
+      z-index: 2;
+      width: 480px;
+      max-width: 90%;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--green);
+      box-shadow: 0 0 20px var(--dim), inset 0 0 15px var(--dim);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      transform: scale(0.95);
+      transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 4px;
+      color: var(--green);
+      text-shadow: 0 0 10px var(--dim);
+      text-align: center;
+      line-height: 1;
+      margin-bottom: -10px;
+    }
+
+    .theme-grid-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .theme-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 14px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      cursor: none;
+      transition: all .2s;
+      text-transform: uppercase;
+    }
+
+    .theme-btn:hover,
+    .theme-btn.active {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--dim);
+      box-shadow: inset 0 0 10px var(--dim);
+      text-shadow: 0 0 5px var(--dim);
+    }
+
+    .close-btn {
+      align-self: center;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid var(--green);
+      color: var(--white);
+      font-family: 'Share Tech Mono', monospace;
+      padding: 8px 24px;
+      transition: .2s;
+      cursor: none;
+      letter-spacing: 3px;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .close-btn:hover {
+      border-bottom-color: #fff;
+      color: #fff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Share Tech Mono', monospace;
+      cursor: none;
+    }
+
+    /* ─ CURSOR ─ */
+    #cur {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    #cur-ring {
+      position: fixed;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(0, 255, 65, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width .18s, height .18s;
+    }
+
+    /* ─ CANVAS ─ */
+    #bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ─ VIGNETTE ─ */
+    .vig {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.72) 100%);
+    }
+
+    /* ─ GRID ─ */
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ─ SCROLLBAR & SELECTION ─ */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+      border-left: 1px solid var(--border);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--green);
+    }
+
+    ::selection {
+      background: var(--dim);
+      color: var(--green);
+    }
+
+    /* ─ PAGE ─ */
+    .page {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─ TOP BAR ─ */
+    .topbar {
+      overflow: hidden;
+      height: 36px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      color: var(--green);
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+    }
+
+    .tb-track {
+      display: flex;
+      white-space: nowrap;
+      animation: tb-scroll 35s ease-in-out infinite alternate;
+    }
+
+    .topbar .k {
+      color: var(--green);
+      opacity: 1;
+      font-weight: bold;
+    }
+
+    .tb-items {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      padding-right: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .tb-item {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    @keyframes tb-scroll {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ─ MAIN LAYOUT ─ */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ─ HERO ─ */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 3.5rem 4rem;
+      max-width: 900px;
+    }
+
+    /* ─ ABOUT PANEL ─ */
+    .about-panel {
+      flex: 1;
+      max-width: 820px;
+      padding-right: 3.5rem;
+      margin-bottom: 4rem;
+      animation: fi .5s .8s forwards;
+      opacity: 0;
+    }
+
+    .a-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(222, 222, 222, 0.1);
+      padding-bottom: 1rem;
+      margin-bottom: 0;
+    }
+
+    .ah-l {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .ah-r {
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: rgba(222, 222, 222, 0.4);
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .a-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(222, 222, 222, 0.05);
+      border-top: none;
+    }
+
+    .a-col {
+      padding: 2.2rem 1.8rem;
+      border-right: 1px solid rgba(222, 222, 222, 0.05);
+    }
+
+    .a-col:last-child {
+      border-right: none;
+    }
+
+    .a-col-t {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+    }
+
+    .a-col-t.c1 {
+      color: var(--green);
+      text-shadow: 0 0 10px rgba(0, 255, 65, .2);
+    }
+
+    .a-col-t.c2 {
+      color: var(--amber);
+      text-shadow: 0 0 10px rgba(255, 170, 0, .2);
+    }
+
+    .a-col-t.c3 {
+      color: #3be8ff;
+      text-shadow: 0 0 10px rgba(59, 232, 255, .2);
+    }
+
+    .a-col-p {
+      font-size: 0.65rem;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .label {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fi .5s .1s forwards;
+    }
+
+    .label::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--green);
+      transform: translateY(-2px);
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5.5rem, 13vw, 10rem);
+      line-height: 0.88;
+      letter-spacing: 0.02em;
+      margin-bottom: 2rem;
+    }
+
+    h1 .l1 {
+      display: block;
+      color: var(--white);
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: si .65s .2s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    h1 .l2 {
+      display: block;
+      color: var(--green);
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: si .65s .3s cubic-bezier(.16, 1, .3, 1) forwards, pulseG 2.5s 1.03s infinite alternate ease-in-out;
+    }
+
+    h1 .l3 {
+      display: block;
+      color: #383838;
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: si .65s .4s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    .desc {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--gray);
+      max-width: 480px;
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      animation: fi .5s .7s forwards;
+    }
+
+    .desc strong {
+      color: var(--white);
+    }
+
+    .csr {
+      display: inline-block;
+      width: 2px;
+      height: .75em;
+      background: var(--green);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blk 1s step-end infinite;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .65rem 1.4rem;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .18em;
+      cursor: none;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: color .25s;
+      opacity: 0;
+      animation: fi .5s .88s forwards;
+      width: fit-content;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green);
+      transform: translateX(-101%);
+      transition: transform .28s ease;
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      transform: translateX(0);
+    }
+
+    .btn:hover {
+      color: #000;
+    }
+
+    /* ─ STATS ROW ─ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fi .6s 1.05s forwards;
+      margin: 0;
+    }
+
+    .st {
+      padding: 1.3rem 2rem;
+      border-right: 1px solid var(--border);
+      transition: background .25s;
+    }
+
+    .st:last-child {
+      border-right: none;
+    }
+
+    .st:hover {
+      background: rgba(0, 255, 65, 0.04);
+    }
+
+    .sv {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      line-height: 1;
+      display: block;
+      margin-bottom: .3rem;
+    }
+
+    .sv.g {
+      color: var(--green);
+    }
+
+    .sv.r {
+      color: var(--red);
+    }
+
+    .sv.a {
+      color: var(--amber);
+    }
+
+    .sv.w {
+      color: var(--white);
+    }
+
+    .sl {
+      font-size: .55rem;
+      letter-spacing: .18em;
+      color: rgba(222, 222, 222, .28);
+    }
+
+    /* ─ BOTTOM BANNER ─ */
+    .banner {
+      border-top: 1px solid var(--border);
+      padding: 1.1rem 0;
+      overflow: hidden;
+      background: var(--bg);
+      opacity: 0;
+      animation: fi .6s 1.2s forwards;
+      position: relative;
+      z-index: 20;
+    }
+
+    .banner-track {
+      display: flex;
+      white-space: nowrap;
+      gap: 0;
+      animation: scroll 28s ease-in-out infinite alternate-reverse;
+    }
+
+    .banner-item {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      color: var(--green);
+      opacity: 0.6;
+      padding: 0 2.8rem;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    .banner-dot {
+      opacity: 0.5;
+      margin: 0 0.5rem;
+    }
+
+    @keyframes scroll {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ─ ANIMS ─ */
+    @keyframes fi {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes si {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulseG {
+      0% {
+        text-shadow: 0 0 30px var(--dim);
+        color: var(--green);
+        filter: brightness(1) drop-shadow(0 0 10px var(--green));
+      }
+
+      100% {
+        text-shadow: 0 0 70px var(--green);
+        color: var(--white);
+        filter: brightness(1.2) drop-shadow(0 0 25px var(--green));
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+  <canvas id="bg"></canvas>
+  <div class="grid"></div>
+  <div class="vig"></div>
+
+  <div class="page">
+    <button class="settings-open-btn" onclick="openSettings()">SETTINGS</button>
+
+    <div id="lang-modal" class="modal-overlay">
+      <div class="lang-text-cycle" id="lt-cycle">INITIALIZING...</div>
+      <div class="modal-lines" id="lm-lines" style="opacity: 0; transition: opacity 1s;">
+        <div class="modal-shp"></div>
+        <div class="modal-shp"></div>
+        <div class="modal-shp"></div>
+      </div>
+      <div class="modal-box" id="lm-box" style="display: none; opacity: 0; transition: opacity 0.5s;">
+        <div class="modal-title" style="margin-bottom: 25px;">SELECT LANGUAGE</div>
+        <div class="theme-grid-btns">
+          <button class="theme-btn" onclick="closeLang('en')">ENGLISH</button>
+          <button class="theme-btn" onclick="closeLang('es')">ESPAÑOL</button>
+          <button class="theme-btn" onclick="closeLang('fr')">FRANÇAIS</button>
+          <button class="theme-btn" onclick="closeLang('ru')">РУССКИЙ</button>
+          <button class="theme-btn" onclick="closeLang('zh')">中文</button>
+          <button class="theme-btn" onclick="closeLang('ja')">日本語</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings-modal" class="modal-overlay">
+      <div class="modal-lines">
+        <div class="modal-shp"></div>
+        <div class="modal-shp"></div>
+        <div class="modal-shp"></div>
+      </div>
+      <div class="modal-box" style="width: 800px; max-width: 95%;">
+        <div style="display: flex; gap: 40px;">
+          <!-- THEMES -->
+          <div style="flex: 1; display: flex; flex-direction: column;">
+            <div class="modal-title" style="margin-bottom: 30px;" data-val="THEMES">THEMES</div>
+            <div class="theme-grid-btns">
+              <button class="theme-btn" onclick="setTheme('classic')" data-val="CLASSIC GREEN">CLASSIC GREEN</button>
+              <button class="theme-btn" onclick="setTheme('pink')" data-val="NEON PINK">NEON PINK</button>
+              <button class="theme-btn" onclick="setTheme('cherry')" data-val="CHILL CHERRY">CHILL CHERRY</button>
+              <button class="theme-btn" onclick="setTheme('blue')" data-val="OCEAN BLUE">OCEAN BLUE</button>
+              <button class="theme-btn" onclick="setTheme('purple')" data-val="DRACULA PURPLE">DRACULA PURPLE</button>
+              <button class="theme-btn" onclick="setTheme('orange')" data-val="SOLAR ORANGE">SOLAR ORANGE</button>
+              <button class="theme-btn" onclick="setTheme('gold')" data-val="PURE GOLD">PURE GOLD</button>
+              <button class="theme-btn" onclick="setTheme('frost')" data-val="FROSTBITE">FROSTBITE</button>
+              <button class="theme-btn" onclick="setTheme('radioactive')" data-val="RADIOACTIVE">RADIOACTIVE</button>
+              <button class="theme-btn" onclick="setTheme('violet')" data-val="DEEP VIOLET">DEEP VIOLET</button>
+              <button class="theme-btn" onclick="setTheme('blood')" data-val="BLOOD RED">BLOOD RED</button>
+              <button class="theme-btn" onclick="setTheme('mono')" data-val="MONOCHROME">MONOCHROME</button>
+            </div>
+          </div>
+
+          <div style="width: 1px; background: var(--border); box-shadow: 0 0 10px var(--dim);"></div>
+
+          <!-- LANGUAGES -->
+          <div style="flex: 1; display: flex; flex-direction: column;">
+            <div class="modal-title" style="margin-bottom: 30px;" data-val="SELECT LANGUAGE">SELECT LANGUAGE</div>
+            <div class="theme-grid-btns">
+              <button class="theme-btn" onclick="changeLang('en')" data-val="ENGLISH">ENGLISH</button>
+              <button class="theme-btn" onclick="changeLang('es')" data-val="ESPAÑOL">ESPAÑOL</button>
+              <button class="theme-btn" onclick="changeLang('fr')" data-val="FRANÇAIS">FRANÇAIS</button>
+              <button class="theme-btn" onclick="changeLang('ru')" data-val="РУССКИЙ">РУССКИЙ</button>
+              <button class="theme-btn" onclick="changeLang('zh')" data-val="中文">中文</button>
+              <button class="theme-btn" onclick="changeLang('ja')" data-val="日本語">日本語</button>
+            </div>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeSettings()" style="margin-top: 20px;" data-val="CLOSE">CLOSE</button>
+      </div>
+    </div>
+
+    <div class="topbar">
+      <div class="tb-track">
+        <div class="tb-items">
+          <div class="tb-item"><span class="k">SEC</span> 100+ vulnerability vectors</div>
+          <div class="tb-item"><span class="k">FN</span> 50+ executor functions</div>
+          <div class="tb-item"><span class="k">PERF</span> 6-stage stress test</div>
+          <div class="tb-item"><span class="k">BIG</span> Fibonacci big-integer benchmark</div>
+          <div class="tb-item"><span class="k">UI</span> 13 UI library checks</div>
+          <div class="tb-item"><span class="k">LIVE</span> Live VPS sync</div>
+          <div class="tb-item"><span class="k">PRIV</span> VPS IP never exposed</div>
+          <div class="tb-item"><span class="k">SYS</span> ExecEnvHealthCheck v3.2</div>
+        </div>
+        <div class="tb-items">
+          <div class="tb-item"><span class="k">SEC</span> 100+ vulnerability vectors</div>
+          <div class="tb-item"><span class="k">FN</span> 50+ executor functions</div>
+          <div class="tb-item"><span class="k">PERF</span> 6-stage stress test</div>
+          <div class="tb-item"><span class="k">BIG</span> Fibonacci big-integer benchmark</div>
+          <div class="tb-item"><span class="k">UI</span> 13 UI library checks</div>
+          <div class="tb-item"><span class="k">LIVE</span> Live VPS sync</div>
+          <div class="tb-item"><span class="k">PRIV</span> VPS IP never exposed</div>
+          <div class="tb-item"><span class="k">SYS</span> ExecEnvHealthCheck v3.2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="hero">
+        <div class="label">EXECENVHEALTHCHECK — RESULTS ARCHIVE</div>
+        <h1 id="gt">
+          <span class="l1" data-val="EXECUTOR">EXECUTOR</span>
+          <span class="l2" data-val="HEALTH">HEALTH</span>
+          <span class="l3" data-val="RESULTS">RESULTS</span>
+        </h1>
+        <p class="desc" id="desc-box" style="min-height: 2.8rem;"><span class="csr"></span></p>
+        <div style="display: flex; gap: 1.5rem; margin-top: 1rem;">
+          <a href="results.html" class="btn">VIEW RESULTS ↓</a>
+          <a href="review.html" class="btn"
+            style="background: var(--dim); border-color: var(--green); color: var(--green);">REVIEWS ↓</a>
+        </div>
+      </div>
+
+      <div class="about-panel">
+        <div class="a-head">
+          <div class="ah-l">ABOUT</div>
+          <div class="ah-r">EXECENVHEALTHCHECK V3.2</div>
+        </div>
+        <div class="a-grid">
+          <div class="a-col">
+            <div class="a-col-t c1">WHAT IS THIS</div>
+            <div class="a-col-p">ExecEnvHealthCheck is a comprehensive Roblox executor diagnostic suite. It tests
+              security vectors, function coverage, UI library compatibility, and raw performance - generating a
+              self-contained HTML report.</div>
+          </div>
+          <div class="a-col">
+            <div class="a-col-t c2">HOW IT WORKS</div>
+            <div class="a-col-p">The script is ran inside any executor. It probes 100+ vulnerability vectors, benchmarks
+              50+ executor functions, stress-tests the Lua VM, and computes big Fibonacci numbers; then writes a
+              detailed .html report.</div>
+          </div>
+          <div class="a-col">
+            <div class="a-col-t c3">THIS SITE</div>
+            <div class="a-col-p">The site contains all the latest official reports of nerfine's tests. Reports update
+              live - no refresh needed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="st"><span class="sv g" data-n="2">0</span><span class="sl">REPORTS LOADED</span></div>
+      <div class="st"><span class="sv g" data-n="2">0</span><span class="sl">SECURE (≥80%)</span></div>
+      <div class="st"><span class="sv r" data-n="1">0</span><span class="sl">VULNERABLE</span></div>
+      <div class="st"><span class="sv a" data-pct="97">0%</span><span class="sl">AVG SECURITY</span></div>
+      <div class="st"><span class="sv w" data-n="2">0</span><span class="sl">EXECUTORS</span></div>
+    </div>
+
+    <div class="banner">
+      <div class="banner-track" id="btrack">
+        <span class="banner-item">PRIVACY CHECK<span class="banner-dot">◆</span></span>
+        <span class="banner-item">SECURITY SCAN<span class="banner-dot">◆</span></span>
+        <span class="banner-item">PERFORMANCE TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VULNERABILITY ANALYSIS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">EXECUTOR FUNCTIONS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">STRESS TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VPS ISOLATION<span class="banner-dot">◆</span></span>
+        <span class="banner-item">IP EXPOSURE CHECK<span class="banner-dot">◆</span></span>
+        <span class="banner-item">PRIVACY CHECK<span class="banner-dot">◆</span></span>
+        <span class="banner-item">SECURITY SCAN<span class="banner-dot">◆</span></span>
+        <span class="banner-item">PERFORMANCE TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VULNERABILITY ANALYSIS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">EXECUTOR FUNCTIONS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">STRESS TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VPS ISOLATION<span class="banner-dot">◆</span></span>
+        <span class="banner-item">IP EXPOSURE CHECK<span class="banner-dot">◆</span></span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const THEME_COLORS = {
+      'classic': '0, 255, 65',
+      'pink': '255, 0, 255',
+      'cherry': '255, 77, 109',
+      'blue': '0, 240, 255',
+      'purple': '189, 147, 249',
+      'orange': '255, 170, 0',
+      'gold': '255, 215, 0',
+      'frost': '160, 240, 255',
+      'radioactive': '191, 255, 0',
+      'violet': '138, 43, 226',
+      'blood': '220, 20, 60',
+      'mono': '255, 255, 255'
+    };
+    let currentRGB = '0, 255, 65';
+
+    function openSettings() { document.getElementById("settings-modal").classList.add("active"); }
+    function closeSettings() { document.getElementById("settings-modal").classList.remove("active"); }
+    function setTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('theme', t);
+      currentRGB = THEME_COLORS[t] || '0, 255, 65';
+    }
+
+    (function () {
+      const s = localStorage.getItem('theme') || 'classic';
+      document.documentElement.setAttribute('data-theme', s);
+      currentRGB = THEME_COLORS[s] || '0, 255, 65';
+
+      const lastLangTime = localStorage.getItem('lang_time') || 0;
+      const hoursSinceLast = (Date.now() - lastLangTime) / (1000 * 60 * 60);
+
+      if (!localStorage.getItem('lang_chosen') || hoursSinceLast > 24) {
+        const lm = document.getElementById('lang-modal');
+        const lt = document.getElementById('lt-cycle');
+        const lb = document.getElementById('lm-box');
+        const ll = document.getElementById('lm-lines');
+
+        lm.classList.add('active');
+        ll.style.opacity = '1';
+        document.body.style.overflow = 'hidden';
+
+        const langs = [
+          "EXECUTOR<br>HEALTH<br>RESULTS",
+          "RESULTADOS<br>DE SALUD<br>DEL EJECUTOR",
+          "RÉSULTATS<br>DE SANTÉ DE<br>L'EXÉCUTEUR",
+          "РЕЗУЛЬТАТЫ<br>ЗДОРОВЬЯ<br>ИСПОЛНИТЕЛЯ",
+          "执行器<br>健康结果",
+          "エグゼキューター<br>健康結果"
+        ];
+
+        let lIdx = 0;
+        lt.innerHTML = langs[0];
+
+        const int = setInterval(() => {
+          lIdx++;
+          if (lIdx >= langs.length) {
+            clearInterval(int);
+            lt.style.opacity = '0';
+            lt.style.transform = 'scale(0.9)';
+
+            setTimeout(() => {
+              lt.style.display = 'none';
+              lb.style.display = 'flex';
+              setTimeout(() => lb.style.opacity = '1', 50);
+            }, 500);
+            return;
+          }
+
+          lt.style.opacity = '0';
+          lt.style.transform = 'scale(0.95)';
+
+          setTimeout(() => {
+            lt.innerHTML = langs[lIdx];
+            lt.style.opacity = '1';
+            lt.style.transform = 'scale(1)';
+          }, 400);
+
+        }, 1600);
+      }
+    })();
+
+    function closeLang(l) {
+      if (l) localStorage.setItem('lang_chosen', l);
+      else localStorage.setItem('lang_chosen', 'en');
+      localStorage.setItem('lang_time', Date.now());
+      document.getElementById('lang-modal').classList.remove('active');
+      document.body.style.overflow = '';
+      if (typeof applyLang === 'function') applyLang(l || 'en');
+    }
+
+    function changeLang(l) {
+      if (l) localStorage.setItem('lang_chosen', l);
+      else localStorage.setItem('lang_chosen', 'en');
+      localStorage.setItem('lang_time', Date.now());
+      location.reload();
+    }
+
+    const lg = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+    document.querySelectorAll('#gt span').forEach((el, idx) => {
+      let it = 0; const orig = el.dataset.val;
+      setTimeout(() => {
+        const intv = setInterval(() => {
+          el.innerText = orig.split("").map((l, i) => {
+            if (i < it) return orig[i];
+            return lg[Math.floor(Math.random() * lg.length)];
+          }).join("");
+          if (it >= orig.length) clearInterval(intv);
+          it += 1 / 4;
+        }, 45);
+      }, 200 + (idx * 200));
+    });
+
+    // CURSOR
+    const cur = document.getElementById('cur');
+    const ring = document.getElementById('cur-ring');
+    let mx = -300, my = -300, rx = -300, ry = -300;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+    });
+
+    (function loop() {
+      rx += (mx - rx) * 0.13; ry += (my - ry) * 0.13;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+
+    document.querySelectorAll('.btn,.st').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = ring.style.height = '42px'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = ring.style.height = '28px'; });
+    });
+
+    // CANVAS
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+
+    const STARS = Array.from({ length: 180 }, () => ({
+      x: Math.random(), y: Math.random(),
+      r: Math.random() * 1 + 0.2,
+      base: Math.random() * 0.4 + 0.07,
+      phase: Math.random() * Math.PI * 2,
+      spd: Math.random() * 0.02 + 0.006,
+    }));
+
+    const NODES = Array.from({ length: 55 }, () => ({
+      x: Math.random() * (innerWidth || 1400),
+      y: Math.random() * (innerHeight || 900),
+      vx: (Math.random() - .5) * .4,
+      vy: (Math.random() - .5) * .4,
+      r: Math.random() * 1.4 + 0.4,
+    }));
+
+    const CONN = 150, CPULL = 180, ATT = 0.0012;
+
+    (function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (const s of STARS) {
+        s.phase += s.spd;
+        ctx.beginPath();
+        ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${currentRGB},${s.base * (.5 + .5 * Math.sin(s.phase))})`;
+        ctx.fill();
+      }
+
+      for (const n of NODES) {
+        const dx = mx - n.x, dy = my - n.y, d = Math.hypot(dx, dy);
+        if (d < CPULL) { const f = ATT * (1 - d / CPULL); n.vx += dx * f; n.vy += dy * f; }
+        n.vx *= .974; n.vy *= .974;
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0) { n.x = 0; n.vx *= -1; } if (n.x > W) { n.x = W; n.vx *= -1; }
+        if (n.y < 0) { n.y = 0; n.vy *= -1; } if (n.y > H) { n.y = H; n.vy *= -1; }
+      }
+
+      for (let i = 0; i < NODES.length; i++) {
+        for (let j = i + 1; j < NODES.length; j++) {
+          const d = Math.hypot(NODES[i].x - NODES[j].x, NODES[i].y - NODES[j].y);
+          if (d < CONN) {
+            ctx.beginPath(); ctx.moveTo(NODES[i].x, NODES[i].y); ctx.lineTo(NODES[j].x, NODES[j].y);
+            ctx.strokeStyle = `rgba(${currentRGB},${(1 - d / CONN) * .14})`; ctx.lineWidth = .5; ctx.stroke();
+          }
+        }
+        const cd = Math.hypot(NODES[i].x - mx, NODES[i].y - my);
+        if (cd < CPULL) {
+          const t = 1 - cd / CPULL;
+          ctx.beginPath(); ctx.moveTo(NODES[i].x, NODES[i].y); ctx.lineTo(mx, my);
+          ctx.strokeStyle = `rgba(${currentRGB},${t * .55})`; ctx.lineWidth = t * 1.3; ctx.stroke();
+        }
+      }
+
+      for (const n of NODES) {
+        const cd = Math.hypot(n.x - mx, n.y - my), close = cd < CPULL, t = close ? 1 - cd / CPULL : 0;
+        ctx.beginPath(); ctx.arc(n.x, n.y, close ? n.r * 2 : n.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${currentRGB},${close ? .75 : .25})`; ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    })();
+
+    //countersz
+    setTimeout(() => {
+      document.querySelectorAll('[data-n]').forEach(el => {
+        const t = +el.dataset.n; let c = 0;
+        const iv = setInterval(() => { el.textContent = Math.min(++c, t); if (c >= t) clearInterval(iv); }, 160);
+      });
+      document.querySelectorAll('[data-pct]').forEach(el => {
+        const t = +el.dataset.pct; let c = 0;
+        const iv = setInterval(() => { c = Math.min(c + 2, t); el.textContent = c + '%'; if (c >= t) clearInterval(iv); }, 25);
+      });
+    }, 1100);
+
+    // le loop
+    const descText = "All the .html reports from nerfine's ExecEnvHealthCheck script.";
+    const descBox = document.getElementById('desc-box');
+    let charIdx = 0, isDeleting = false;
+
+    function typeLoop() {
+      const cur = descText.slice(0, charIdx);
+      let parts = cur.split('.html');
+      if (parts.length > 1) {
+        descBox.innerHTML = parts.join('<strong>.html</strong>') + '<span class="csr"></span>';
+      } else {
+        let m = cur.match(/\.h(t(m(l)?)?)?$/);
+        if (m) descBox.innerHTML = cur.substring(0, m.index) + '<strong>' + m[0] + '</strong><span class="csr"></span>';
+        else descBox.innerHTML = cur + '<span class="csr"></span>';
+      }
+
+      let speed = isDeleting ? 20 + Math.random() * 15 : 35 + Math.random() * 35;
+
+      if (!isDeleting && charIdx === descText.length) {
+        speed = 4000;
+        isDeleting = true;
+      } else if (isDeleting && charIdx === 0) {
+        speed = 1200;
+        isDeleting = false;
+      }
+
+      charIdx += isDeleting ? -1 : 1;
+      setTimeout(typeLoop, speed);
+    }
+    setTimeout(typeLoop, 1400);
+    //oui oui area
+  </script>
+  <script src="lang.js"></script>
+</body>
+
+</html>

