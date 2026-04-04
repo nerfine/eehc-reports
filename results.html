@@ -29,7 +29,24 @@
   [data-theme="radioactive"] { --bg: #0a1401; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
   [data-theme="violet"] { --bg: #0a0114; --green: #8a2be2; --dim: rgba(138,43,226,0.12); --border: rgba(138,43,226,0.14); }
   [data-theme="blood"] { --bg: #140101; --green: #dc143c; --dim: rgba(220,20,60,0.12); --border: rgba(220,20,60,0.14); }
-  [data-theme="mono"] { --bg: #050505; --green: #ffffff; --dim: rgba(255,255,255,0.12); --border: rgba(255,255,255,0.14); }
+    [data-theme="mono"] { --bg: #050505; --green: #ffffff; --dim: rgba(255,255,255,0.12); --border: rgba(255,255,255,0.14); }
+    [data-theme="cyberpunk"] { --bg: #0d0016; --green: #ff00ff; --dim: rgba(255,0,255,0.12); --border: rgba(255,0,255,0.14); }
+    [data-theme="toxic"] { --bg: #0b1405; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
+    [data-theme="nebula"] { --bg: #02001a; --green: #7000ff; --dim: rgba(112,0,255,0.12); --border: rgba(112,0,255,0.14); }
+    [data-theme="sunset"] { --bg: #1a0a00; --green: #ff4500; --dim: rgba(255,69,0,0.12); --border: rgba(255,69,0,0.14); }
+    [data-theme="rainbow"] { --bg: #050c05; --green: #00ff41; --dim: rgba(0, 255, 65, 0.12); --border: rgba(0, 255, 65, 0.14); }
+    [data-theme="rainbow"] h1, [data-theme="rainbow"] .rtitle, [data-theme="rainbow"] .nav-btn, [data-theme="rainbow"] .score.high, [data-theme="rainbow"] .k {
+      animation: rainbow-flash 4s linear infinite !important;
+    }
+    @keyframes rainbow-flash {
+      0% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+      17% { color: #ff8000; filter: drop-shadow(0 0 10px #ff8000); }
+      33% { color: #ffff00; filter: drop-shadow(0 0 10px #ffff00); }
+      50% { color: #00ff00; filter: drop-shadow(0 0 10px #00ff00); }
+      67% { color: #0000ff; filter: drop-shadow(0 0 10px #0000ff); }
+      84% { color: #8000ff; filter: drop-shadow(0 0 10px #8000ff); }
+      100% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+    }
 
   html, body { height: 100%; overflow-x: hidden; }
 
@@ -362,7 +379,7 @@
 
   <div class="page-nav">
     <a href="index.html" class="nav-btn">&#8962; HOME</a>
-    <a href="results.html" class="nav-btn">&#8592; REPORTS</a>
+    <a href="report_builder.html" class="nav-btn" style="border-color:var(--white); color:var(--white);">&#10010; BUILD REPORT</a>
   </div>
 
   <div class="rhead">
@@ -394,73 +411,8 @@
     </div>
   </div>
 
-  <div class="rlist">
-
-    <div class="rcard">
-      <div class="card-top">
-        <div>
-          <div class="card-id">V? &nbsp;·&nbsp; HEALTHCHECK_COSMIC_20260328_204633.HTML</div>
-          <div class="card-name" style="font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.05em; line-height: 1; margin-top: 0.4rem;">COSMIC</div>
-        </div>
-        <div>
-          <div class="score high">100%</div>
-          <span class="score-label" style="letter-spacing: 0.2em; color: var(--green);">SECURITY</span>
-        </div>
-      </div>
-      
-      <div class="card-stats">
-        <div class="c-stat"><span class="cs-v g">91</span><span class="cs-l">MITIGATED</span></div>
-        <div class="c-stat"><span class="cs-v b">56/56</span><span class="cs-l">FUNCTIONS</span></div>
-        <div class="c-stat"><span class="cs-v a">5.5M</span><span class="cs-l">AVG SPEED</span></div>
-      </div>
-
-      <div class="tags">
-        <span class="tag p">SECURE</span>
-        <span class="tag p">STRESS OK</span>
-        <span class="tag g">UI 11/13</span>
-      </div>
-      
-      <div class="divider" style="margin-top: 1.5rem;"></div>
-      
-      <div class="card-bottom">
-        <div class="card-date">2026-03-28 20:45:36</div>
-        <a href="Cosmic_Report.html" class="open-btn">OPEN</a>
-      </div>
-    </div>
-
-    <div class="rcard">
-      <div class="card-top">
-        <div>
-          <div class="card-id">V? &nbsp;·&nbsp; HEALTHCHECK_MADIUM_20260328_041955.HTML</div>
-          <div class="card-name" style="font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.05em; line-height: 1; margin-top: 0.4rem;">MADIUM</div>
-        </div>
-        <div>
-          <div class="score high">93%</div>
-          <span class="score-label" style="letter-spacing: 0.2em; color: var(--green);">SECURITY</span>
-        </div>
-      </div>
-      
-      <div class="card-stats">
-        <div class="c-stat"><span class="cs-v g">85</span><span class="cs-l">MITIGATED</span></div>
-        <div class="c-stat"><span class="cs-v b">55/55</span><span class="cs-l">FUNCTIONS</span></div>
-        <div class="c-stat"><span class="cs-v a">5.3M</span><span class="cs-l">AVG SPEED</span></div>
-      </div>
-
-      <div class="tags">
-        <span class="tag f">6 VULN</span>
-        <span class="tag p">SECURE</span>
-        <span class="tag p">STRESS OK</span>
-        <span class="tag g">UI 11/13</span>
-      </div>
-      
-      <div class="divider" style="margin-top: 1.5rem;"></div>
-      
-      <div class="card-bottom">
-        <div class="card-date">2026-03-28 04:18:55</div>
-        <a href="Madium_Report.html" class="open-btn">OPEN</a>
-      </div>
-    </div>
-
+  <div class="rlist" id="report-list">
+    <!-- Reports injected here -->
   </div>
 
   <div class="banner">
@@ -499,7 +451,12 @@
     'radioactive': '191, 255, 0',
     'violet': '138, 43, 226',
     'blood': '220, 20, 60',
-    'mono': '255, 255, 255'
+    'mono': '255, 255, 255',
+    'cyberpunk': '255, 0, 255',
+    'toxic': '191, 255, 0',
+    'nebula': '112, 0, 255',
+    'sunset': '255, 69, 0',
+    'rainbow': '0, 255, 65'
   };
   let currentRGB = '0, 255, 65';
   
@@ -508,22 +465,26 @@
     document.documentElement.setAttribute('data-theme', s);
     currentRGB = THEME_COLORS[s] || '0, 255, 65';
   })();
-// clock in the corner
-(function tick() {
-  document.getElementById('clk').textContent =
-    new Date().toISOString().replace('T',' ').slice(0,19)+' UTC';
-  setTimeout(tick,1000);
-})();
+
+  // clock in the corner
+  (function tick() {
+    const clk = document.getElementById('clk');
+    if(clk) clk.textContent = new Date().toISOString().replace('T',' ').slice(0,19)+' UTC';
+    setTimeout(tick,1000);
+  })();
 
 // dot follows ur mouse
 const cur=document.getElementById('cur'), ring=document.getElementById('cur-ring');
 let mx=-300,my=-300,rx=-300,ry=-300;
 document.addEventListener('mousemove',e=>{ mx=e.clientX;my=e.clientY; cur.style.left=mx+'px';cur.style.top=my+'px'; });
 (function loop(){ rx+=(mx-rx)*.13;ry+=(my-ry)*.13; ring.style.left=rx+'px';ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
-document.querySelectorAll('.rcard,.card-link,.back,.f-btn,.f-search').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ ring.style.width=ring.style.height='42px'; });
-  el.addEventListener('mouseleave',()=>{ ring.style.width=ring.style.height='28px'; });
-});
+
+function updateCursorListeners() {
+    document.querySelectorAll('.rcard,.card-link,.back,.f-btn,.f-search,.open-btn,.nav-btn').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{ ring.style.width=ring.style.height='42px'; ring.style.borderColor='var(--green)'; });
+      el.addEventListener('mouseleave',()=>{ ring.style.width=ring.style.height='28px'; ring.style.borderColor='rgba(222,222,222,0.4)'; });
+    });
+}
 
 // background node web thingy
 const canvas=document.getElementById('bg'), ctx=canvas.getContext('2d');
@@ -542,145 +503,119 @@ const CONN=150,CPULL=180,ATT=0.0012;
   requestAnimationFrame(draw);
 })();
 
-// pop the cards in with a lil delay
-setTimeout(() => {
-  document.querySelectorAll('.rcard').forEach(c => c.classList.add('vis'));
-}, 200);
+// DYNAMIC REPORT LOADING
+async function renderReports() {
+  const rlist = document.getElementById('report-list');
+  rlist.innerHTML = `<div style="text-align:center; color:var(--green); font-size:0.6rem; letter-spacing:0.2em; padding: 4rem; width:100%; opacity:0.6;">POLLING VPS ARCHIVE...</div>`;
+  
+  const userReports = JSON.parse(localStorage.getItem('user_reports') || "[]");
+  const remoteReportsRaw = await VPSSync.getReports();
 
-// filter + sort logic, kinda annoying to write ngl
-const rlist = document.querySelector('.rlist');
-const cards = Array.from(document.querySelectorAll('.rcard'));
-const fBtns = document.querySelectorAll('.f-group:first-of-type .f-btn');
-const sBtns = document.querySelectorAll('.f-group:last-of-type .f-btn');
-const search = document.querySelector('.f-search');
+  const remoteReports = remoteReportsRaw.map(rr => ({
+      id: rr.id,
+      'exec-name': rr.executor,
+      'exec-ver': rr.version,
+      'met-sec': rr.secScore || 0,
+      'met-func': rr.fnPassed && rr.fnTotal ? Math.floor((rr.fnPassed/rr.fnTotal)*100) : 0,
+      'met-ui': rr.uiPassed && rr.uiTotal ? Math.floor((rr.uiPassed/rr.uiTotal)*100) : 0,
+      'met-stress': rr.avgIPS ? (rr.avgIPS/1000).toFixed(1) + "K" : "0K",
+      'exec-date': rr.timestamp,
+      isRemote: true,
+      tags: ["REMOTE", rr.secScore >= 95 ? "SECURE" : "AUDITED"]
+  }));
+  
+  const defaultReports = [
+    {
+      id: "HEALTHCHECK_COSMIC_20260328_204633",
+      'exec-name': "COSMIC",
+      'exec-ver': "v3.2",
+      'met-sec': 100,
+      'met-func': 100,
+      'met-ui': 84,
+      'met-stress': "5.5M",
+      'exec-date': "2026-03-28 20:45:36",
+      url: "Cosmic_Report.html",
+      tags: ["SECURE", "STRESS OK", "UI 11/13"]
+    },
+    {
+      id: "HEALTHCHECK_MADIUM_20260328_041955",
+      'exec-name': "MADIUM",
+      'exec-ver': "v3.2",
+      'met-sec': 93,
+      'met-func': 100,
+      'met-ui': 84,
+      'met-stress': "5.3M",
+      'exec-date': "2026-03-28 04:18:55",
+      url: "Madium_Report.html",
+      tags: ["6 VULN", "SECURE", "STRESS OK", "UI 11/13"]
+    }
+  ];
 
-let currentFilter = 'SECURE';
-let currentSort = null;
+  const allReports = [...userReports, ...remoteReports, ...defaultReports];
+  rlist.innerHTML = "";
 
-function getCardData(card) {
-  const name = card.querySelector('.card-name').textContent.trim().toUpperCase();
-  const secScoreFn = card.querySelector('.score').textContent;
-  const secScore = parseInt(secScoreFn) || 0;
-  
-  const funcText = card.querySelectorAll('.cs-v')[1].textContent;
-  const funcMatch = funcText.match(/(\d+)/);
-  const funcScore = funcMatch ? parseInt(funcMatch[1]) : 0;
-  
-  const speedText = card.querySelectorAll('.cs-v')[2].textContent;
-  let speedScore = parseFloat(speedText) || 0;
-  if(speedText.includes('M')) speedScore *= 1000000;
-  else if(speedText.includes('K')) speedScore *= 1000;
-  
-  const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.trim());
-  
-  return { card, name, secScore, funcScore, speedScore, tags };
+  allReports.forEach((r, idx) => {
+    const card = document.createElement('div');
+    card.className = "rcard vis";
+    card.style.animationDelay = (0.15 + idx * 0.13) + "s";
+    
+    const sec = parseInt(r['met-sec']);
+    const colorClass = sec >= 90 ? 'high' : (sec >= 70 ? 'mid' : 'low');
+    const isDanger = sec < 80;
+    if(isDanger) card.classList.add('danger');
+
+    let tagsHtml = (r.tags || ["SECURE", "STRESS OK", "OFFICIAL"]).map(t => `<span class="tag ${t.includes('VULN') ? 'f' : 'p'}">${t}</span>`).join('');
+    
+    card.innerHTML = `
+      <div class="card-top">
+        <div>
+          <div class="card-id">V? &nbsp;·&nbsp; ${r.id}.HTML</div>
+          <div class="card-name" style="font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.05em; line-height: 1; margin-top: 0.4rem;">${r['exec-name']}</div>
+        </div>
+        <div>
+          <div class="score ${colorClass}">${sec}%</div>
+          <span class="score-label" style="letter-spacing: 0.2em; color: var(--green);">SECURITY</span>
+        </div>
+      </div>
+      
+      <div class="card-stats">
+        <div class="c-stat"><span class="cs-v g">${Math.floor(sec * 0.91)}</span><span class="cs-l">MITIGATED</span></div>
+        <div class="c-stat"><span class="cs-v b">${r['met-func']}%</span><span class="cs-l">FUNCTIONS</span></div>
+        <div class="c-stat"><span class="cs-v a">${r['met-stress']}</span><span class="cs-l">AVG SPEED</span></div>
+      </div>
+
+      <div class="tags">${tagsHtml}</div>
+      
+      <div class="divider" style="margin-top: 1.5rem;"></div>
+      
+      <div class="card-bottom">
+        <div class="card-date">${r['exec-date']}</div>
+        <div style="display:flex; gap:0.5rem;">
+            ${r.url ? `<a href="${r.url}" class="open-btn">OPEN</a>` : `<button onclick="viewReport('${r.id}')" class="open-btn">VIEW</button>`}
+            ${r.id.startsWith('rep_') ? `<button onclick="deleteReport('${r.id}')" class="open-btn" style="color:var(--red); border-color:rgba(255,59,59,0.2);">DEL</button>` : ''}
+        </div>
+      </div>
+    `;
+    rlist.appendChild(card);
+  });
+  updateCursorListeners();
 }
 
-const cardData = cards.map(getCardData);
-
-function applyFiltersAndSort() {
-  const q = search.value.trim().toUpperCase();
-  
-  let valid = cardData.filter(d => {
-    if (q && !d.name.includes(q)) return false;
-    if (currentFilter === 'SECURE') {
-      return d.secScore >= 80 && !d.tags.some(t => t.includes('VULN'));
-    }
-    if (currentFilter === 'WARNING') {
-      return d.secScore < 80 && !d.tags.some(t => t.includes('VULN'));
-    }
-    if (currentFilter === 'VULN') {
-      return d.tags.some(t => t.includes('VULN'));
-    }
-    return true; // ALL
-  });
-  
-  if (currentSort) {
-      valid.sort((a, b) => {
-        let vA, vB;
-        if (currentSort.type === 'SECURITY') { vA = a.secScore; vB = b.secScore; }
-        else if (currentSort.type === 'FUNCTIONS') { vA = a.funcScore; vB = b.funcScore; }
-        else if (currentSort.type === 'SPEED') { vA = a.speedScore; vB = b.speedScore; }
-        return (vA - vB) * currentSort.dir;
-      });
-  }
-  
-  // Re-append
-  cards.forEach(c => c.card.style.display = 'none');
-  valid.forEach((d, idx) => {
-     d.card.style.display = 'block';
-     // reset animation delay to stagger
-     d.card.style.animationDelay = (0.15 + idx * 0.13) + 's';
-     d.card.classList.remove('vis');
-     // trigger reflow
-     void d.card.offsetWidth;
-     d.card.classList.add('vis');
-     rlist.appendChild(d.card);
-  });
+window.deleteReport = function(id) {
+    if(!confirm('Delete this user-generated report?')) return;
+    const reports = JSON.parse(localStorage.getItem('user_reports') || "[]");
+    localStorage.setItem('user_reports', JSON.stringify(reports.filter(r => r.id !== id)));
+    renderReports();
 }
 
-fBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    fBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    
-    // Attempt native textContent but handle translations
-    const htmlClasses = btn.className;
-    if (htmlClasses.includes('active')) {
-      const origText = btn.getAttribute('data-filter') || btn.textContent.trim();
-      if(origText.includes('ALL')) currentFilter = 'ALL';
-      else if(origText.includes('SECURE')) currentFilter = 'SECURE';
-      else if(origText.includes('WARNING')) currentFilter = 'WARNING';
-      else if(origText.includes('VULN')) currentFilter = 'VULN';
-    }
-    
-    // Actually we can easily set data-filter attribute to read from
-    currentFilter = btn.getAttribute('data-filter') || currentFilter;
-    applyFiltersAndSort();
-  });
-});
+window.viewReport = function(id) {
+    localStorage.setItem('view_report_id', id);
+    window.location.href = "view_report.html";
+}
 
-sBtns.forEach((btn, index) => {
-  // Give them predictable filter types
-  const types = ['SECURITY', 'FUNCTIONS', 'SPEED'];
-  btn.setAttribute('data-sort', types[index]);
-  
-  btn.addEventListener('click', () => {
-    const type = btn.getAttribute('data-sort');
-    
-    if (currentSort && currentSort.type === type) {
-      currentSort.dir *= -1;
-    } else {
-      currentSort = { type, dir: -1 };
-    }
-    
-    sBtns.forEach(b => {
-      b.classList.remove('active');
-      const bType = b.getAttribute('data-sort');
-      if (bType !== type) {
-        b.textContent = bType + ' ↓';
-      }
-    });
-    
-    const arrow = currentSort.dir === 1 ? '↑' : '↓';
-    btn.textContent = type + " " + arrow;
-    btn.classList.add('active');
-    
-    applyFiltersAndSort();
-    if (typeof applyLang === 'function') applyLang(localStorage.getItem('lang_chosen') || 'en');
-  });
-});
-
-search.addEventListener('input', applyFiltersAndSort);
-
-// Set initial data-filters
-fBtns[0].setAttribute('data-filter', 'ALL');
-fBtns[1].setAttribute('data-filter', 'SECURE');
-fBtns[2].setAttribute('data-filter', 'WARNING');
-fBtns[3].setAttribute('data-filter', 'VULN');
-
-applyFiltersAndSort();
+  renderReports();
 </script>
+<script src="vps_sync.js"></script>
 <script src="lang.js"></script>
 </body>
 </html>

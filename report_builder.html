@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExecEnvHealthCheck — Report Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050c05;
+            --green: #00ff41;
+            --dim: rgba(0, 255, 65, 0.12);
+            --border: rgba(0, 255, 65, 0.14);
+            --white: #dedede;
+            --gray: rgba(222, 222, 222, 0.38);
+            --red: #ff3b3b;
+            --amber: #ffaa00;
+        }
+        [data-theme="pink"] { --bg: #0a0118; --green: #ff00ff; --dim: rgba(255, 0, 255, 0.12); --border: rgba(255, 0, 255, 0.14); }
+        [data-theme="cherry"] { --bg: #1a0f14; --green: #ff4d6d; --dim: rgba(255, 77, 109, 0.12); --border: rgba(255, 77, 109, 0.14); }
+        [data-theme="blue"] { --bg: #010a14; --green: #00f0ff; --dim: rgba(0, 240, 255, 0.12); --border: rgba(0, 240, 255, 0.14); }
+        [data-theme="purple"] { --bg: #282a36; --green: #bd93f9; --dim: rgba(189, 147, 249, 0.12); --border: rgba(189, 147, 249, 0.14); }
+        [data-theme="cyberpunk"] { --bg: #0d0016; --green: #ff00ff; --dim: rgba(255,0,255,0.12); --border: rgba(255,0,255,0.14); }
+        [data-theme="toxic"] { --bg: #0b1405; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
+        [data-theme="nebula"] { --bg: #02001a; --green: #7000ff; --dim: rgba(112,0,255,0.12); --border: rgba(112,0,255,0.14); }
+        [data-theme="sunset"] { --bg: #1a0a00; --green: #ff4500; --dim: rgba(255,69,0,0.12); --border: rgba(255,69,0,0.14); }
+        [data-theme="rainbow"] { --bg: #050c05; --green: #00ff41; --dim: rgba(0, 255, 65, 0.12); --border: rgba(0, 255, 65, 0.14); }
+        [data-theme="rainbow"] .logo, [data-theme="rainbow"] .nav-btn, [data-theme="rainbow"] .section-title {
+          animation: rainbow-flash 4s linear infinite !important;
+        }
+        @keyframes rainbow-flash {
+          0% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+          17% { color: #ff8000; filter: drop-shadow(0 0 10px #ff8000); }
+          33% { color: #ffff00; filter: drop-shadow(0 0 10px #ffff00); }
+          50% { color: #00ff00; filter: drop-shadow(0 0 10px #00ff00); }
+          67% { color: #0000ff; filter: drop-shadow(0 0 10px #0000ff); }
+          84% { color: #8000ff; filter: drop-shadow(0 0 10px #8000ff); }
+          100% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Share Tech Mono', monospace;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        #cur { position: fixed; width: 8px; height: 8px; background: var(--green); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 8px var(--green); }
+        #cur-ring { position: fixed; width: 28px; height: 28px; border: 1px solid rgba(222, 222, 222, 0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width .18s, height .18s; }
+
+        canvas#bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        .grid { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px); background-size: 48px 48px; }
+        .vig { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.72) 100%); }
+
+        .page { position: relative; z-index: 10; min-height: 100vh; padding: 2rem 3.5rem; display: flex; flex-direction: column; gap: 2rem; }
+
+        .topbar {
+            display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem;
+        }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--white); letter-spacing: 0.05em; }
+        .logo span { color: var(--green); }
+
+        .nav-btns { display: flex; gap: 1rem; }
+        .nav-btn {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: var(--green); padding: 0.6rem 1.2rem; font-size: 0.7rem; text-decoration: none; text-transform: uppercase; transition: all 0.2s;
+        }
+        .nav-btn:hover { border-color: var(--green); background: var(--dim); box-shadow: 0 0 10px var(--dim); }
+
+        .builder-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; flex: 1;
+        }
+
+        .config-panel {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;
+            position: relative;
+        }
+        .config-panel::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--green); opacity: 0.4; box-shadow: 0 0 10px var(--green); }
+
+        .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--green); margin-bottom: 0.5rem; letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.8rem; }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .field-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .field-group label { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gray); text-transform: uppercase; }
+        .field-group input, .field-group select, .field-group textarea {
+            background: rgba(0,0,0,0.6); border: 1px solid var(--border); color: var(--white); padding: 0.8rem 1rem; font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; outline: none; transition: border-color 0.2s;
+        }
+        .field-group input:focus { border-color: var(--green); }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        .preview-panel {
+            background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 2.5rem; border-style: dashed; display: flex; flex-direction: column; gap: 1.5rem;
+        }
+
+        .report-preview-box {
+            flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--border); padding: 2rem; position: relative; overflow-y: auto; max-height: 700px;
+        }
+
+        .action-btns { margin-top: 1rem; display: flex; gap: 1rem; }
+        .action-btn {
+            flex: 1; padding: 1rem; font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; border: 1px solid var(--green); color: var(--green); background: transparent; cursor: none; transition: all 0.25s;
+        }
+        .action-btn:hover { background: var(--green); color: #000; box-shadow: 0 0 20px var(--dim); }
+        .action-btn.secondary { border-color: var(--gray); color: var(--gray); }
+        .action-btn.secondary:hover { background: var(--gray); color: #000; }
+
+        /* PREVIEW STYLES */
+        .preview-h { border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .preview-h-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.6rem; color: var(--gray); }
+        .preview-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; line-height: 1; color: var(--white); }
+        .preview-title em { font-style: normal; color: var(--green); }
+        .preview-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-bottom: 1.5rem; }
+        .p-stat { background: var(--bg); padding: 1rem; }
+        .p-stat-v { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; display: block; color: var(--green); }
+        .p-stat-l { font-size: 0.5rem; letter-spacing: 0.15em; color: var(--gray); }
+        
+        .p-tags { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .p-tag { font-size: 0.5rem; border: 1px solid var(--green); color: var(--green); padding: 0.2rem 0.5rem; }
+
+        .p-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
+        .p-table th { text-align: left; border-bottom: 1px solid var(--border); padding: 0.5rem; color: var(--green); }
+        .p-table td { padding: 0.5rem; border-bottom: 1px solid rgba(222,222,222,0.05); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--border); }
+    </style>
+</head>
+<body>
+    <div id="cur"></div>
+    <div id="cur-ring"></div>
+    <canvas id="bg"></canvas>
+    <div class="grid"></div>
+    <div class="vig"></div>
+
+    <div class="page">
+        <div class="topbar">
+            <div class="logo">EXEC<span>HEALTH</span> // BUILDER</div>
+            <div class="nav-btns">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="results.html" class="nav-btn">Results</a>
+            </div>
+        </div>
+
+        <div class="builder-container">
+            <div class="config-panel">
+                <div class="section-title">METADATA</div>
+                <div class="field-group">
+                    <label>EXECUTOR NAME</label>
+                    <input type="text" id="exec-name" placeholder="e.g. COSMIC, MADIUM, VULCAN" value="COSMIC">
+                </div>
+                <div class="stats-grid">
+                    <div class="field-group">
+                        <label>VERSION</label>
+                        <input type="text" id="exec-ver" value="v3.2">
+                    </div>
+                    <div class="field-group">
+                        <label>DATE</label>
+                        <input type="date" id="exec-date">
+                    </div>
+                </div>
+
+                <div class="section-title">METRICS</div>
+                <div class="stats-grid">
+                    <div class="field-group">
+                        <label>SECURITY (%)</label>
+                        <input type="number" id="met-sec" value="100" min="0" max="100">
+                    </div>
+                    <div class="field-group">
+                        <label>FUNCTIONS (%)</label>
+                        <input type="number" id="met-func" value="100" min="0" max="100">
+                    </div>
+                    <div class="field-group">
+                        <label>UI LIBS (%)</label>
+                        <input type="number" id="met-ui" value="84" min="0" max="100">
+                    </div>
+                    <div class="field-group">
+                        <label>STRESS AVG (M iter/s)</label>
+                        <input type="text" id="met-stress" value="5.5M">
+                    </div>
+                </div>
+
+                <div class="section-title">TEST RESULTS</div>
+                <div class="field-group">
+                    <label>SECURITY STATUS TEXT</label>
+                    <input type="text" id="sec-msg" value="OK ALL VECTORS MITIGATED — no exploitable paths detected.">
+                </div>
+                <div class="field-group">
+                    <label>REASON FOR SKIPS / VULNS</label>
+                    <textarea id="met-details" placeholder="Describe findings...">Executor reported 0 vulns. All hooks were successfully active.</textarea>
+                </div>
+
+                <div class="action-btns">
+                    <button class="action-btn" id="save-btn">GENERATE REPORT</button>
+                    <button class="action-btn secondary" id="reset-btn">RESET</button>
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <div class="section-title">LIVE PREVIEW</div>
+                <div class="report-preview-box" id="preview-box">
+                    <!-- Preview content injected here -->
+                </div>
+                <div style="font-size: 0.55rem; color: var(--gray); text-align: center; letter-spacing: 0.1em;">
+                    PREVIEW MODE: DATA WILL BE STORED LOCALLY IN BROWSER STORAGE
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const THEME_COLORS = {
+            'classic': '0, 255, 65', 'pink': '255, 0, 255', 'cherry': '255, 77, 109', 'blue': '0, 240, 255', 'purple': '189, 147, 249',
+            'cyberpunk': '255, 0, 255', 'toxic': '191, 255, 0', 'nebula': '112, 0, 255', 'sunset': '255, 69, 0', 'rainbow': '0, 255, 65'
+        };
+        let currentRGB = '0, 255, 65';
+        (function(){
+            let s = localStorage.getItem('theme') || 'classic';
+            document.documentElement.setAttribute('data-theme', s);
+            currentRGB = THEME_COLORS[s] || '0, 255, 65';
+        })();
+
+        // Cursor
+        const cur=document.getElementById('cur'), ring=document.getElementById('cur-ring');
+        let mx=-300,my=-300,rx=-300,ry=-300;
+        document.addEventListener('mousemove',e=>{ mx=e.clientX;my=e.clientY; cur.style.left=mx+'px';cur.style.top=my+'px'; });
+        (function loop(){ rx+=(mx-rx)*.13;ry+=(my-ry)*.13; ring.style.left=rx+'px';ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+        document.querySelectorAll('input, button, a, textarea').forEach(el=>{
+            el.addEventListener('mouseenter',()=>{ ring.style.width=ring.style.height='42px'; ring.style.borderColor='var(--green)'; el.style.cursor='none'; });
+            el.addEventListener('mouseleave',()=>{ ring.style.width=ring.style.height='28px'; ring.style.borderColor='rgba(222,222,222,0.4)'; });
+        });
+
+        // Date init
+        document.getElementById('exec-date').valueAsDate = new Date();
+
+        const previewBox = document.getElementById('preview-box');
+        const inputs = ['exec-name', 'exec-ver', 'exec-date', 'met-sec', 'met-func', 'met-ui', 'met-stress', 'sec-msg', 'met-details'];
+
+        function updatePreview() {
+            const data = {};
+            inputs.forEach(id => data[id] = document.getElementById(id).value);
+            
+            const colorClass = data['met-sec'] >= 90 ? 'high' : (data['met-sec'] >= 70 ? 'mid' : 'low');
+            
+            previewBox.innerHTML = `
+                <div class="preview-h">
+                    <div class="preview-h-meta">
+                        <span>HEALTH REPORT</span>
+                        <span style="text-align:right">${data['exec-ver']}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:0.5rem;">
+                        <div class="preview-title">${data['exec-name']}<br><em>HEALTH</em></div>
+                        <div style="text-align:right">
+                            <span class="score ${colorClass}" style="font-family:'Bebas Neue'; font-size:3rem; line-height:1;">${data['met-sec']}%</span>
+                            <div style="font-size:0.5rem; color:var(--gray); letter-spacing:0.1em;">SECURITY SCORE</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-stats">
+                    <div class="p-stat">
+                        <span class="p-stat-v">${data['met-func']}%</span>
+                        <span class="p-stat-l">FUNCTIONS</span>
+                    </div>
+                    <div class="p-stat">
+                        <span class="p-stat-v">${data['met-ui']}%</span>
+                        <span class="p-stat-l">UI LIBS</span>
+                    </div>
+                    <div class="p-stat">
+                        <span class="p-stat-v">${data['met-stress']}</span>
+                        <span class="p-stat-l">AVG SPEED</span>
+                    </div>
+                </div>
+
+                <div class="p-tags">
+                    <div class="p-tag">${data['met-sec'] >= 80 ? 'SECURE' : 'WARNING'}</div>
+                    <div class="p-tag">STRESS OK</div>
+                    <div class="p-tag">V3.2 CORE</div>
+                </div>
+
+                <div style="font-size:0.6rem; color:var(--green); margin-bottom:1rem; border-left:2px solid var(--green); padding-left:0.5rem; text-transform:uppercase;">
+                    ${data['sec-msg']}
+                </div>
+
+                <table class="p-table">
+                    <thead><tr><th>TEST</th><th>STATUS</th></tr></thead>
+                    <tbody>
+                        <tr><td>Global Env Probe</td><td><span style="color:var(--green)">MITIGATED</span></td></tr>
+                        <tr><td>FileSystem Sandbox</td><td><span style="color:var(--green)">MITIGATED</span></td></tr>
+                        <tr><td>Registry Access</td><td><span style="color:var(--amber)">SKIPPED</span></td></tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top:1.5rem; font-size:0.6rem; color:var(--gray); line-height:1.4; white-space:pre-wrap;">
+-- ANALYTICS LOGS --
+${data['met-details']}
+                </div>
+            `;
+        }
+
+        inputs.forEach(id => document.getElementById(id).addEventListener('input', updatePreview));
+        updatePreview();
+
+        document.getElementById('save-btn').addEventListener('click', () => {
+            const data = {};
+            inputs.forEach(id => data[id] = document.getElementById(id).value);
+            data.id = "rep_" + Date.now();
+            data.timestamp = new Date(data['exec-date']).getTime();
+            
+            const reports = JSON.parse(localStorage.getItem('user_reports') || "[]");
+            reports.unshift(data);
+            localStorage.setItem('user_reports', JSON.stringify(reports));
+
+            const btn = document.getElementById('save-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "REPORT GENERATED ✓";
+            btn.style.background = 'var(--green)';
+            btn.style.color = '#000';
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = '';
+                btn.style.color = '';
+                window.location.href = "results.html";
+            }, 1500);
+        });
+
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            if(confirm('Reset all fields?')) {
+                window.location.reload();
+            }
+        });
+
+        // Background script
+        const canvas=document.getElementById('bg'), ctx=canvas.getContext('2d');
+        let W,H;
+        function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+        resize(); window.addEventListener('resize',resize);
+        const STARS=Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1+0.2,base:Math.random()*.4+.07,phase:Math.random()*Math.PI*2,spd:Math.random()*.02+0.006}));
+        (function draw(){
+            ctx.clearRect(0,0,W,H);
+            for(const s of STARS){s.phase+=s.spd;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(${currentRGB},${s.base*(.5+.5*Math.sin(s.phase))})`;ctx.fill();}
+            requestAnimationFrame(draw);
+        })();
+    </script>
+</body>
+</html>

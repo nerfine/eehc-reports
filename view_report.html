@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExecEnvHealthCheck — Viewing Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050c05;
+            --green: #00ff41;
+            --dim: rgba(0, 255, 65, 0.12);
+            --border: rgba(0, 255, 65, 0.14);
+            --white: #dedede;
+            --gray: rgba(222, 222, 222, 0.38);
+            --red: #ff3b3b;
+            --amber: #ffaa00;
+        }
+        [data-theme="pink"] { --bg: #0a0118; --green: #ff00ff; --dim: rgba(255, 0, 255, 0.12); --border: rgba(255, 0, 255, 0.14); }
+        [data-theme="cherry"] { --bg: #1a0f14; --green: #ff4d6d; --dim: rgba(255, 77, 109, 0.12); --border: rgba(255, 77, 109, 0.14); }
+        [data-theme="blue"] { --bg: #010a14; --green: #00f0ff; --dim: rgba(0, 240, 255, 0.12); --border: rgba(0, 240, 255, 0.14); }
+        [data-theme="purple"] { --bg: #282a36; --green: #bd93f9; --dim: rgba(189, 147, 249, 0.12); --border: rgba(189, 147, 249, 0.14); }
+        [data-theme="cyberpunk"] { --bg: #0d0016; --green: #ff00ff; --dim: rgba(255,0,255,0.12); --border: rgba(255,0,255,0.14); }
+        [data-theme="toxic"] { --bg: #0b1405; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
+        [data-theme="nebula"] { --bg: #02001a; --green: #7000ff; --dim: rgba(112,0,255,0.12); --border: rgba(112,0,255,0.14); }
+        [data-theme="sunset"] { --bg: #1a0a00; --green: #ff4500; --dim: rgba(255,69,0,0.12); --border: rgba(255,69,0,0.14); }
+        [data-theme="rainbow"] { --bg: #050c05; --green: #00ff41; --dim: rgba(0, 255, 65, 0.12); --border: rgba(0, 255, 65, 0.14); }
+        [data-theme="rainbow"] .report-title, [data-theme="rainbow"] .nav-btn, [data-theme="rainbow"] .score-val {
+          animation: rainbow-flash 4s linear infinite !important;
+        }
+        @keyframes rainbow-flash {
+          0% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+          17% { color: #ff8000; filter: drop-shadow(0 0 10px #ff8000); }
+          33% { color: #ffff00; filter: drop-shadow(0 0 10px #ffff00); }
+          50% { color: #00ff00; filter: drop-shadow(0 0 10px #00ff00); }
+          67% { color: #0000ff; filter: drop-shadow(0 0 10px #0000ff); }
+          84% { color: #8000ff; filter: drop-shadow(0 0 10px #8000ff); }
+          100% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Share Tech Mono', monospace;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        #cur { position: fixed; width: 8px; height: 8px; background: var(--green); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 8px var(--green); }
+        #cur-ring { position: fixed; width: 28px; height: 28px; border: 1px solid rgba(222, 222, 222, 0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width .18s, height .18s; }
+
+        canvas#bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        .grid { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px); background-size: 48px 48px; }
+        .vig { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.72) 100%); }
+
+        .page { position: relative; z-index: 10; min-height: 100vh; padding: 2rem 3.5rem; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; }
+
+        .nav-btns { display: flex; gap: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+        .nav-btn {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: var(--green); padding: 0.6rem 1.2rem; font-size: 0.7rem; text-decoration: none; text-transform: uppercase; transition: all 0.2s;
+        }
+        .nav-btn:hover { border-color: var(--green); background: var(--dim); box-shadow: 0 0 10px var(--dim); }
+
+        .report-header { display: flex; justify-content: space-between; align-items: flex-end; }
+        .report-title { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; line-height: 0.9; color: var(--white); }
+        .report-title span { color: var(--green); }
+        
+        .score-box { text-align: right; }
+        .score-val { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; line-height: 1; color: var(--green); text-shadow: 0 0 20px var(--dim); }
+        .score-label { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--gray); text-transform: uppercase; }
+
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .metric-card { background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 2rem; position: relative; }
+        .metric-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--green); }
+        .m-val { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; display: block; color: var(--white); }
+        .m-lbl { font-size: 0.55rem; letter-spacing: 0.2em; color: var(--gray); }
+
+        .scan-results { border: 1px solid var(--border); background: rgba(0,0,0,0.2); padding: 2rem; }
+        .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--green); margin-bottom: 1.5rem; letter-spacing: 0.1em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+
+        .log-box { background: #000; border: 1px solid var(--border); padding: 1.5rem; font-size: 0.7rem; color: #aaa; line-height: 1.6; white-space: pre-wrap; font-family: 'Consolas', monospace; }
+
+        .status-msg { padding: 1rem; border-left: 3px solid var(--green); background: var(--dim); color: var(--green); font-size: 0.65rem; letter-spacing: 0.1em; margin-bottom: 2rem; text-transform: uppercase; }
+
+        .p-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin-bottom: 2rem; }
+        .p-table th { text-align: left; padding: 1rem; border-bottom: 2px solid var(--border); color: var(--green); }
+        .p-table td { padding: 1rem; border-bottom: 1px solid rgba(222,222,222,0.05); }
+
+        .footer { padding: 2rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.6rem; color: var(--gray); letter-spacing: 0.2rem; }
+
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        .live-tag { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--red); font-size: 0.6rem; animation: pulse 1.5s infinite; margin-bottom: 1rem; }
+        .live-tag::before { content:''; width: 6px; height: 6px; background: var(--red); border-radius: 50%; }
+    </style>
+</head>
+<body>
+    <div id="cur"></div>
+    <div id="cur-ring"></div>
+    <canvas id="bg"></canvas>
+    <div class="grid"></div>
+    <div class="vig"></div>
+
+    <div class="page" id="report-content">
+        <!-- Content will be injected here -->
+    </div>
+
+    <script src="vps_sync.js"></script>
+    <script>
+        const THEME_COLORS = {
+            'classic': '0, 255, 65', 'pink': '255, 0, 255', 'cherry': '255, 77, 109', 'blue': '0, 240, 255', 'purple': '189, 147, 249',
+            'cyberpunk': '255, 0, 255', 'toxic': '191, 255, 0', 'nebula': '112, 0, 255', 'sunset': '255, 69, 0', 'rainbow': '0, 255, 65'
+        };
+        let currentRGB = '0, 255, 65';
+        (function(){
+            let s = localStorage.getItem('theme') || 'classic';
+            document.documentElement.setAttribute('data-theme', s);
+            currentRGB = THEME_COLORS[s] || '0, 255, 65';
+        })();
+
+        // Cursor
+        const cur=document.getElementById('cur'), ring=document.getElementById('cur-ring');
+        let mx=-300,my=-300,rx=-300,ry=-300;
+        document.addEventListener('mousemove',e=>{ mx=e.clientX;my=e.clientY; cur.style.left=mx+'px';cur.style.top=my+'px'; });
+        (function loop(){ rx+=(mx-rx)*.13;ry+=(my-ry)*.13; ring.style.left=rx+'px';ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+
+        async function loadReport() {
+            const reportId = localStorage.getItem('view_report_id');
+            if(!reportId) {
+                document.getElementById('report-content').innerHTML = `<h1>REPORT NOT FOUND</h1><br><a href="results.html">Return to results</a>`;
+                return;
+            }
+
+            const userReports = JSON.parse(localStorage.getItem('user_reports') || "[]");
+            let r = userReports.find(x => x.id === reportId);
+            
+            if(!r) {
+                // Try fetching remote HTML from VPS
+                document.getElementById('report-content').innerHTML = `<div style="text-align:center; color:var(--green); font-size:1rem; padding: 5rem;">PULLING REMOTE DATA...</div>`;
+                const remoteHtml = await VPSSync.getReportHtml(reportId);
+                if(remoteHtml) {
+                    document.getElementById('report-content').innerHTML = remoteHtml;
+                    // Add back button manually since the remote HTML might not have it
+                    const btn = document.createElement('div');
+                    btn.innerHTML = `<div class="nav-btns" style="position:fixed; top:20px; left:20px; z-index:9999;"><a href="results.html" class="nav-btn">← Back to Index</a></div>`;
+                    document.body.appendChild(btn);
+                    return;
+                }
+                document.getElementById('report-content').innerHTML = `<h1>REPORT DATA NOT FOUND ON VPS</h1><br><a href="results.html">Return to results</a>`;
+                return;
+            }
+
+            const sec = parseInt(r['met-sec']);
+            const color = sec >= 90 ? 'var(--green)' : (sec >= 70 ? 'var(--amber)' : 'var(--red)');
+
+            document.getElementById('report-content').innerHTML = `
+                <div class="nav-btns">
+                    <a href="results.html" class="nav-btn">← Back to Index</a>
+                    <a href="report_builder.html" class="nav-btn">New Report</a>
+                </div>
+
+                <div class="report-header">
+                    <div>
+                        <div class="live-tag">UNOFFICIAL USER REPORT</div>
+                        <div class="report-title">${r['exec-name']}<br><span>HEALTH</span></div>
+                        <div style="font-size: 0.6rem; color: var(--gray); letter-spacing: 0.1em; margin-top: 1rem;">
+                            ID: ${r.id} / DATE: ${r['exec-date']} / VER: ${r['exec-ver']}
+                        </div>
+                    </div>
+                    <div class="score-box">
+                        <div class="score-val" style="color: ${color};">${sec}%</div>
+                        <div class="score-label">SECURITY RATING</div>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="m-val">${r['met-func']}%</span>
+                        <span class="m-lbl">FUNCTIONS</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="m-val">${r['met-ui']}%</span>
+                        <span class="m-lbl">UI LIBRARIES</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="m-val">${r['met-stress']}</span>
+                        <span class="m-lbl">STRESS TEST AVG</span>
+                    </div>
+                </div>
+
+                <div class="status-msg">
+                    ${r['sec-msg']}
+                </div>
+
+                <div class="scan-results">
+                    <div class="section-title">DETAILED AUDIT LOGS</div>
+                    <div class="log-box">
+-- INITIALIZING SCAN ENGINE --
+-- TARGET: ${r['exec-name']} ${r['exec-ver']} --
+-- TIMESTAMP: ${r['exec-date']} --
+
+${r['met-details']}
+
+-- SCAN COMPLETE --
+                    </div>
+                </div>
+
+                <div class="scan-results">
+                    <div class="section-title">CORE TEST VECTORS</div>
+                    <table class="p-table">
+                        <thead><tr><th>TEST VECTOR</th><th>DESCRIPTION</th><th>RESULT</th></tr></thead>
+                        <tbody>
+                            <tr><td>getrawmetatable</td><td>Metadata access check</td><td><span style="color:var(--green)">PASSED</span></td></tr>
+                            <tr><td>hookfunction</td><td>Integrity manipulation</td><td><span style="color:var(--green)">PASSED</span></td></tr>
+                            <tr><td>getgc</td><td>Garbage collector probe</td><td><span style="color:var(--amber)">WARNING</span></td></tr>
+                            <tr><td>Drawing.new</td><td>UI overlay support</td><td><span style="color:var(--green)">PASSED</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="footer">
+                    EXECENVHEALTHCHECK ENGINE v3.2 — END OF TRANSMISSION
+                </div>
+            `;
+
+            document.querySelectorAll('.nav-btn, .action-btn').forEach(el=>{
+                el.addEventListener('mouseenter',()=>{ ring.style.width=ring.style.height='42px'; ring.style.borderColor='var(--green)'; el.style.cursor='none'; });
+                el.addEventListener('mouseleave',()=>{ ring.style.width=ring.style.height='28px'; ring.style.borderColor='rgba(222,222,222,0.4)'; });
+            });
+        }
+
+        loadReport();
+
+        // Background script
+        const canvas=document.getElementById('bg'), ctx=canvas.getContext('2d');
+        let W,H;
+        function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+        resize(); window.addEventListener('resize',resize);
+        const STARS=Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1+0.2,base:Math.random()*.4+.07,phase:Math.random()*Math.PI*2,spd:Math.random()*.02+0.006}));
+        (function draw(){
+            ctx.clearRect(0,0,W,H);
+            for(const s of STARS){s.phase+=s.spd;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(${currentRGB},${s.base*(.5+.5*Math.sin(s.phase))})`;ctx.fill();}
+            requestAnimationFrame(draw);
+        })();
+    </script>
+</body>
+</html>

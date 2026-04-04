@@ -104,6 +104,29 @@
       --dim: rgba(255, 255, 255, 0.12);
       --border: rgba(255, 255, 255, 0.14);
     }
+    
+    [data-theme="cyberpunk"] { --bg: #0d0016; --green: #ff00ff; --dim: rgba(255,0,255,0.12); --border: rgba(255,0,255,0.14); }
+    [data-theme="toxic"] { --bg: #0b1405; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
+    [data-theme="nebula"] { --bg: #02001a; --green: #7000ff; --dim: rgba(112,0,255,0.12); --border: rgba(112,0,255,0.14); }
+    [data-theme="sunset"] { --bg: #1a0a00; --green: #ff4500; --dim: rgba(255,69,0,0.12); --border: rgba(255,69,0,0.14); }
+    [data-theme="rainbow"] {
+      --bg: #050c05;
+      --green: #00ff41; 
+      --dim: rgba(0, 255, 65, 0.12);
+      --border: rgba(0, 255, 65, 0.14);
+    }
+    [data-theme="rainbow"] h1 .l2, [data-theme="rainbow"] .rtitle, [data-theme="rainbow"] .nav-btn, [data-theme="rainbow"] .k {
+      animation: rainbow-flash 4s linear infinite !important;
+    }
+    @keyframes rainbow-flash {
+      0% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+      17% { color: #ff8000; filter: drop-shadow(0 0 10px #ff8000); }
+      33% { color: #ffff00; filter: drop-shadow(0 0 10px #ffff00); }
+      50% { color: #00ff00; filter: drop-shadow(0 0 10px #00ff00); }
+      67% { color: #0000ff; filter: drop-shadow(0 0 10px #0000ff); }
+      84% { color: #8000ff; filter: drop-shadow(0 0 10px #8000ff); }
+      100% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
+    }
 
     .settings-open-btn {
       position: fixed;
@@ -836,16 +859,17 @@
             <div class="theme-grid-btns">
               <button class="theme-btn" onclick="setTheme('classic')" data-val="CLASSIC GREEN">CLASSIC GREEN</button>
               <button class="theme-btn" onclick="setTheme('pink')" data-val="NEON PINK">NEON PINK</button>
-              <button class="theme-btn" onclick="setTheme('cherry')" data-val="CHILL CHERRY">CHILL CHERRY</button>
-              <button class="theme-btn" onclick="setTheme('blue')" data-val="OCEAN BLUE">OCEAN BLUE</button>
               <button class="theme-btn" onclick="setTheme('purple')" data-val="DRACULA PURPLE">DRACULA PURPLE</button>
-              <button class="theme-btn" onclick="setTheme('orange')" data-val="SOLAR ORANGE">SOLAR ORANGE</button>
+              <button class="theme-btn" onclick="setTheme('blue')" data-val="OCEAN BLUE">OCEAN BLUE</button>
+              <button class="theme-btn" onclick="setTheme('toxic')" data-val="TOXIC LIME" style="color:#bfff00;">TOXIC LIME</button>
+              <button class="theme-btn" onclick="setTheme('cyberpunk')" data-val="CYBERPUNK" style="color:#ff00ff;">CYBERPUNK</button>
+              <button class="theme-btn" onclick="setTheme('sunset')" data-val="SUNSET" style="color:#ff4500;">SUNSET</button>
+              <button class="theme-btn" onclick="setTheme('nebula')" data-val="NEBULA" style="color:#7000ff;">NEBULA</button>
               <button class="theme-btn" onclick="setTheme('gold')" data-val="PURE GOLD">PURE GOLD</button>
               <button class="theme-btn" onclick="setTheme('frost')" data-val="FROSTBITE">FROSTBITE</button>
-              <button class="theme-btn" onclick="setTheme('radioactive')" data-val="RADIOACTIVE">RADIOACTIVE</button>
-              <button class="theme-btn" onclick="setTheme('violet')" data-val="DEEP VIOLET">DEEP VIOLET</button>
               <button class="theme-btn" onclick="setTheme('blood')" data-val="BLOOD RED">BLOOD RED</button>
               <button class="theme-btn" onclick="setTheme('mono')" data-val="MONOCHROME">MONOCHROME</button>
+              <button class="theme-btn" onclick="setTheme('rainbow')" data-val="RAINBOW MODE" style="background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #0000ff, #8000ff); color: white; border: none; font-weight: bold; text-shadow: 1px 1px 3px black; grid-column: span 2;">RAINBOW MODE</button>
             </div>
           </div>
 
@@ -980,7 +1004,12 @@
       'radioactive': '191, 255, 0',
       'violet': '138, 43, 226',
       'blood': '220, 20, 60',
-      'mono': '255, 255, 255'
+      'mono': '255, 255, 255',
+      'cyberpunk': '255, 0, 255',
+      'toxic': '191, 255, 0',
+      'nebula': '112, 0, 255',
+      'sunset': '255, 69, 0',
+      'rainbow': '0, 255, 65'
     };
     let currentRGB = '0, 255, 65';
 
