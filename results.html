@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ExecEnvHealthCheck — Report Index</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #050c05;
+    --green: #00ff41;
+    --dim: rgba(0,255,65,0.12);
+    --border: rgba(0,255,65,0.14);
+    --white: #dedede;
+    --gray: rgba(222,222,222,0.38);
+    --red: #ff3b3b;
+    --amber: #ffaa00;
+  }
+
+  [data-theme="pink"] { --bg: #0a0118; --green: #ff00ff; --dim: rgba(255,0,255,0.12); --border: rgba(255,0,255,0.14); }
+  [data-theme="cherry"] { --bg: #1a0f14; --green: #ff4d6d; --dim: rgba(255,77,109,0.12); --border: rgba(255,77,109,0.14); }
+  [data-theme="blue"] { --bg: #010a14; --green: #00f0ff; --dim: rgba(0,240,255,0.12); --border: rgba(0,240,255,0.14); }
+  [data-theme="purple"] { --bg: #282a36; --green: #bd93f9; --dim: rgba(189,147,249,0.12); --border: rgba(189,147,249,0.14); --red: #ff5555; }
+  [data-theme="orange"] { --bg: #141001; --green: #ffaa00; --dim: rgba(255,170,0,0.12); --border: rgba(255,170,0,0.14); }
+  [data-theme="gold"] { --bg: #141201; --green: #ffd700; --dim: rgba(255,215,0,0.12); --border: rgba(255,215,0,0.14); }
+  [data-theme="frost"] { --bg: #011014; --green: #a0f0ff; --dim: rgba(160,240,255,0.12); --border: rgba(160,240,255,0.14); }
+  [data-theme="radioactive"] { --bg: #0a1401; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
+  [data-theme="violet"] { --bg: #0a0114; --green: #8a2be2; --dim: rgba(138,43,226,0.12); --border: rgba(138,43,226,0.14); }
+  [data-theme="blood"] { --bg: #140101; --green: #dc143c; --dim: rgba(220,20,60,0.12); --border: rgba(220,20,60,0.14); }
+  [data-theme="mono"] { --bg: #050505; --green: #ffffff; --dim: rgba(255,255,255,0.12); --border: rgba(255,255,255,0.14); }
+
+  html, body { height: 100%; overflow-x: hidden; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    cursor: none;
+  }
+
+  #cur {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--green); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0 8px var(--green);
+  }
+  #cur-ring {
+    position: fixed; width: 28px; height: 28px;
+    border: 1px solid rgba(0,255,65,0.4); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: width .18s, height .18s;
+  }
+
+  #bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .vig {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.72) 100%);
+  }
+  .grid {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--green); }
+  ::selection { background: var(--dim); color: var(--green); }
+
+  .page { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* TOP BAR */
+  .topbar {
+    overflow: hidden;
+    height: 36px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    font-size: 0.58rem; letter-spacing: 0.14em;
+    color: var(--green); opacity: 0.6;
+    display: flex; align-items: center;
+    position: sticky; top: 0; z-index: 20;
+  }
+  .tb-track {
+    display: flex; white-space: nowrap;
+    animation: tb-scroll 35s ease-in-out infinite alternate;
+  }
+  .topbar .k { color: var(--green); font-weight: bold; opacity: 1; }
+  .tb-items { 
+    display: flex; gap: 2.5rem; align-items: center; 
+    padding-right: 2.5rem;
+    flex-shrink: 0;
+  }
+  .tb-item { display: flex; gap: 0.4rem; align-items: center; }
+  @keyframes tb-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+  /* NAV BAR */
+  .page-nav {
+    display: flex;
+    gap: 0.8rem;
+    padding: 1.2rem 3.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--green);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.7rem 1.6rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-decoration: none;
+    cursor: none;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .nav-btn:hover {
+    border-color: var(--green);
+    background: var(--dim);
+    box-shadow: 0 0 14px var(--dim);
+    text-shadow: 0 0 8px var(--green);
+  }
+
+  /* HEADER */
+  .rhead {
+    padding: 2rem 3.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+    opacity: 0; animation: fi .5s .1s forwards;
+  }
+
+  .rlabel {
+    font-size: .62rem; letter-spacing: .28em; color: var(--green);
+    display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem;
+  }
+  .rlabel::before { content:''; width:20px; height:1px; background:var(--green); }
+
+  .rtitle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: var(--white); letter-spacing: .03em;
+  }
+
+  .rmeta {
+    font-size: .6rem; letter-spacing: .14em; color: var(--gray); margin-top: .6rem;
+  }
+
+  /* FILTERS BAR */
+  .filters-bar {
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: 1rem 3.5rem;
+    border-bottom: 1px solid var(--border);
+    animation: fi .5s .15s forwards; opacity: 0;
+    overflow-x: auto;
+    background: transparent;
+  }
+  .f-search {
+    flex: 1; max-width: 420px;
+    background: rgba(222,222,222,0.02);
+    border: 1px solid var(--border);
+    padding: 0.7rem 1.2rem;
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.05em;
+    outline: none; transition: border-color 0.3s;
+    cursor: none;
+  }
+  .f-search:focus { border-color: rgba(0,255,65,0.5); }
+  .f-search::placeholder { color: rgba(222,222,222,0.3); }
+  .f-sep { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+  .f-group { display: flex; align-items: center; gap: 0.8rem; flex-shrink: 0; }
+  .f-lbl { font-size: 0.55rem; letter-spacing: 0.2em; color: var(--gray); margin-right: 0.2rem; }
+  .f-btn {
+    background: transparent;
+    border: 1px solid rgba(222,222,222,0.1);
+    color: rgba(222,222,222,0.5);
+    padding: 0.5rem 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em;
+    cursor: none; transition: all 0.25s;
+  }
+  .f-btn:hover { border-color: rgba(222,222,222,0.3); color: var(--white); }
+  .f-btn.active {
+    border-color: var(--green); color: var(--green);
+    background: rgba(0,255,65,0.04);
+    box-shadow: 0 0 8px rgba(0,255,65,0.1) inset;
+  }
+
+  /* REPORT LIST */
+  .rlist {
+    flex: 1;
+    padding: 3rem 3.5rem 4rem;
+    display: flex; flex-direction: column; gap: 2.5rem;
+  }
+
+  .rcard {
+    border: 1px solid var(--border);
+    padding: 2rem 2.2rem;
+    position: relative; overflow: hidden;
+    cursor: none;
+    transition: border-color .3s, background .3s;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  .rcard.vis { animation: fup .5s forwards; }
+  .rcard:nth-child(1) { animation-delay: .15s; }
+  .rcard:nth-child(2) { animation-delay: .28s; }
+  .rcard:nth-child(3) { animation-delay: .41s; }
+
+  .rcard:hover { border-color: rgba(0,255,65,0.35); background: rgba(0,255,65,0.025); }
+
+  .rcard::before {
+    content:''; position:absolute; top:0; left:0;
+    width:0; height:2px; background:var(--green);
+    transition:width .4s ease;
+  }
+  .rcard:hover::before { width:100%; }
+
+  .rcard.danger { border-color: rgba(255,59,59,0.2); }
+  .rcard.danger::before { background: var(--red); }
+  .rcard.danger:hover { border-color: rgba(255,59,59,0.4); background: rgba(255,59,59,0.02); }
+
+  /* Card internals */
+  .card-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-id {
+    font-size: .58rem; letter-spacing: .18em; color: rgba(0,255,65,.4);
+    margin-bottom: .5rem;
+  }
+  .card-id.d { color: rgba(255,59,59,.4); }
+
+  .card-name {
+    font-size: .9rem; letter-spacing: .06em; color: var(--white);
+  }
+
+  .score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; line-height: 1; text-align: right;
+  }
+  .score.high { color: var(--green); text-shadow: 0 0 16px rgba(0,255,65,.3); }
+  .score.mid  { color: var(--amber); text-shadow: 0 0 16px rgba(255,170,0,.3); }
+  .score.low  { color: var(--red);   text-shadow: 0 0 16px rgba(255,59,59,.3); }
+  .score-label { font-size: .52rem; letter-spacing: .15em; color: var(--gray); display: block; margin-top: .1rem; text-align: right; }
+
+  .divider { height: 1px; background: var(--border); margin-bottom: 1.5rem; }
+
+  .tags { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .tag {
+    font-size: .56rem; letter-spacing: .1em;
+    padding: .22rem .5rem; border: 1px solid; border-radius: 1px;
+  }
+  .tag.p { border-color: rgba(0,255,65,.3); color: var(--green); }
+  .tag.w { border-color: rgba(255,170,0,.3); color: var(--amber); }
+  .tag.f { border-color: rgba(255,59,59,.3); color: var(--red); }
+  .tag.g { border-color: rgba(222,222,222,0.15); color: rgba(222,222,222,0.4); }
+
+  .card-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 1.5rem; border: 1px solid rgba(222,222,222,0.04); background: rgba(0,0,0,0.15);
+  }
+  .c-stat { padding: 1.2rem; border-right: 1px solid rgba(222,222,222,0.04); }
+  .c-stat:last-child { border-right: none; }
+  .cs-v { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; display: block; line-height: 1; margin-bottom: 0.3rem; }
+  .cs-v.g { color: var(--green); text-shadow: 0 0 12px rgba(0,255,65,.2); }
+  .cs-v.b { color: #3be8ff; text-shadow: 0 0 12px rgba(59,232,255,.2); }
+  .cs-v.a { color: var(--amber); text-shadow: 0 0 12px rgba(255,170,0,.2); }
+  .cs-l { font-size: 0.55rem; letter-spacing: 0.22em; color: var(--gray); text-transform: uppercase; }
+
+  .card-bottom { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 1rem; }
+  .open-btn {
+    display: inline-block; border: 1px solid rgba(222,222,222,0.15);
+    color: var(--green); padding: 0.6rem 2rem;
+    font-size: 0.55rem; letter-spacing: 0.25em; text-decoration: none;
+    transition: all 0.25s; cursor: none; margin-top: .4rem; line-height: 1;
+  }
+  .open-btn:hover { border-color: var(--green); background: rgba(0,255,65,0.05); box-shadow: inset 0 0 10px var(--dim); }
+
+  .card-date { font-size: .57rem; letter-spacing: .12em; color: rgba(222,222,222,.22); }
+
+  .card-link {
+    display: inline-flex; align-items: center; gap: .4rem;
+    margin-top: 1.4rem;
+    font-size: .62rem; letter-spacing: .16em;
+    color: var(--green); opacity: .55;
+    text-decoration: none; border-bottom: 1px solid rgba(0,255,65,.2);
+    padding-bottom: 1px; transition: opacity .2s;
+    cursor: none;
+  }
+  .card-link:hover { opacity: 1; }
+
+  .banner {
+    border-top: 1px solid var(--border);
+    padding: 1.1rem 0;
+    overflow: hidden;
+    background: var(--bg);
+    position: relative;
+    z-index: 20;
+  }
+  .banner-track {
+    display: flex; white-space: nowrap;
+    animation: scroll 28s ease-in-out infinite alternate-reverse;
+  }
+  .banner-item {
+    font-size: 0.6rem; letter-spacing: 0.22em;
+    color: var(--green); opacity: 0.6;
+    padding: 0 2.8rem; flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .banner-dot { opacity: 0.5; margin: 0 0.5rem; }
+  @keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  @keyframes fi  { to { opacity:1; } }
+  @keyframes fup { to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<canvas id="bg"></canvas>
+<div class="grid"></div>
+<div class="vig"></div>
+
+<div class="page">
+
+  <div class="topbar">
+    <div class="tb-track">
+      <div class="tb-items">
+        <div class="tb-item"><span class="k">SEC</span> 100+ vulnerability vectors</div>
+        <div class="tb-item"><span class="k">FN</span> 50+ executor functions</div>
+        <div class="tb-item"><span class="k">PERF</span> 6-stage stress test</div>
+        <div class="tb-item"><span class="k">BIG</span> Fibonacci big-integer benchmark</div>
+        <div class="tb-item"><span class="k">UI</span> 13 UI library checks</div>
+        <div class="tb-item"><span class="k">LIVE</span> Live VPS sync</div>
+        <div class="tb-item"><span class="k">PRIV</span> VPS IP never exposed</div>
+        <div class="tb-item"><span class="k">SYS</span> ExecEnvHealthCheck v3.2</div>
+      </div>
+      <div class="tb-items">
+        <div class="tb-item"><span class="k">SEC</span> 100+ vulnerability vectors</div>
+        <div class="tb-item"><span class="k">FN</span> 50+ executor functions</div>
+        <div class="tb-item"><span class="k">PERF</span> 6-stage stress test</div>
+        <div class="tb-item"><span class="k">BIG</span> Fibonacci big-integer benchmark</div>
+        <div class="tb-item"><span class="k">UI</span> 13 UI library checks</div>
+        <div class="tb-item"><span class="k">LIVE</span> Live VPS sync</div>
+        <div class="tb-item"><span class="k">PRIV</span> VPS IP never exposed</div>
+        <div class="tb-item"><span class="k">SYS</span> ExecEnvHealthCheck v3.2</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html" class="nav-btn">&#8962; HOME</a>
+    <a href="results.html" class="nav-btn">&#8592; REPORTS</a>
+  </div>
+
+  <div class="rhead">
+    <div class="rlabel">REPORT INDEX</div>
+    <div class="rtitle">REPORT INDEX</div>
+    <div class="rmeta">2 ENTRIES &nbsp;·&nbsp; SORTED BY DATE DESC &nbsp;·&nbsp; LAST UPDATED <span id="clk"></span></div>
+  </div>
+
+  <div class="filters-bar">
+    <input type="text" class="f-search" placeholder="Search executor name...">
+    
+    <div class="f-sep"></div>
+    
+    <div class="f-group">
+      <span class="f-lbl">FILTER</span>
+      <button class="f-btn">ALL</button>
+      <button class="f-btn active">SECURE</button>
+      <button class="f-btn">WARNING</button>
+      <button class="f-btn">VULN</button>
+    </div>
+    
+    <div class="f-sep"></div>
+    
+    <div class="f-group">
+      <span class="f-lbl">SORT</span>
+      <button class="f-btn">SECURITY &darr;</button>
+      <button class="f-btn">FUNCTIONS &darr;</button>
+      <button class="f-btn">SPEED &darr;</button>
+    </div>
+  </div>
+
+  <div class="rlist">
+
+    <div class="rcard">
+      <div class="card-top">
+        <div>
+          <div class="card-id">V? &nbsp;·&nbsp; HEALTHCHECK_COSMIC_20260328_204633.HTML</div>
+          <div class="card-name" style="font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.05em; line-height: 1; margin-top: 0.4rem;">COSMIC</div>
+        </div>
+        <div>
+          <div class="score high">100%</div>
+          <span class="score-label" style="letter-spacing: 0.2em; color: var(--green);">SECURITY</span>
+        </div>
+      </div>
+      
+      <div class="card-stats">
+        <div class="c-stat"><span class="cs-v g">91</span><span class="cs-l">MITIGATED</span></div>
+        <div class="c-stat"><span class="cs-v b">56/56</span><span class="cs-l">FUNCTIONS</span></div>
+        <div class="c-stat"><span class="cs-v a">5.5M</span><span class="cs-l">AVG SPEED</span></div>
+      </div>
+
+      <div class="tags">
+        <span class="tag p">SECURE</span>
+        <span class="tag p">STRESS OK</span>
+        <span class="tag g">UI 11/13</span>
+      </div>
+      
+      <div class="divider" style="margin-top: 1.5rem;"></div>
+      
+      <div class="card-bottom">
+        <div class="card-date">2026-03-28 20:45:36</div>
+        <a href="Cosmic_Report.html" class="open-btn">OPEN</a>
+      </div>
+    </div>
+
+    <div class="rcard">
+      <div class="card-top">
+        <div>
+          <div class="card-id">V? &nbsp;·&nbsp; HEALTHCHECK_MADIUM_20260328_041955.HTML</div>
+          <div class="card-name" style="font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.05em; line-height: 1; margin-top: 0.4rem;">MADIUM</div>
+        </div>
+        <div>
+          <div class="score high">93%</div>
+          <span class="score-label" style="letter-spacing: 0.2em; color: var(--green);">SECURITY</span>
+        </div>
+      </div>
+      
+      <div class="card-stats">
+        <div class="c-stat"><span class="cs-v g">85</span><span class="cs-l">MITIGATED</span></div>
+        <div class="c-stat"><span class="cs-v b">55/55</span><span class="cs-l">FUNCTIONS</span></div>
+        <div class="c-stat"><span class="cs-v a">5.3M</span><span class="cs-l">AVG SPEED</span></div>
+      </div>
+
+      <div class="tags">
+        <span class="tag f">6 VULN</span>
+        <span class="tag p">SECURE</span>
+        <span class="tag p">STRESS OK</span>
+        <span class="tag g">UI 11/13</span>
+      </div>
+      
+      <div class="divider" style="margin-top: 1.5rem;"></div>
+      
+      <div class="card-bottom">
+        <div class="card-date">2026-03-28 04:18:55</div>
+        <a href="Madium_Report.html" class="open-btn">OPEN</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="banner">
+    <div class="banner-track">
+      <span class="banner-item">PRIVACY CHECK<span class="banner-dot">◆</span></span>
+      <span class="banner-item">SECURITY SCAN<span class="banner-dot">◆</span></span>
+      <span class="banner-item">PERFORMANCE TEST<span class="banner-dot">◆</span></span>
+      <span class="banner-item">VULNERABILITY ANALYSIS<span class="banner-dot">◆</span></span>
+      <span class="banner-item">EXECUTOR FUNCTIONS<span class="banner-dot">◆</span></span>
+      <span class="banner-item">STRESS TEST<span class="banner-dot">◆</span></span>
+      <span class="banner-item">VPS ISOLATION<span class="banner-dot">◆</span></span>
+      <span class="banner-item">IP EXPOSURE CHECK<span class="banner-dot">◆</span></span>
+      <span class="banner-item">PRIVACY CHECK<span class="banner-dot">◆</span></span>
+      <span class="banner-item">SECURITY SCAN<span class="banner-dot">◆</span></span>
+      <span class="banner-item">PERFORMANCE TEST<span class="banner-dot">◆</span></span>
+      <span class="banner-item">VULNERABILITY ANALYSIS<span class="banner-dot">◆</span></span>
+      <span class="banner-item">EXECUTOR FUNCTIONS<span class="banner-dot">◆</span></span>
+      <span class="banner-item">STRESS TEST<span class="banner-dot">◆</span></span>
+      <span class="banner-item">VPS ISOLATION<span class="banner-dot">◆</span></span>
+      <span class="banner-item">IP EXPOSURE CHECK<span class="banner-dot">◆</span></span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const THEME_COLORS = {
+    'classic': '0, 255, 65',
+    'pink': '255, 0, 255',
+    'cherry': '255, 77, 109',
+    'blue': '0, 240, 255',
+    'purple': '189, 147, 249',
+    'orange': '255, 170, 0',
+    'gold': '255, 215, 0',
+    'frost': '160, 240, 255',
+    'radioactive': '191, 255, 0',
+    'violet': '138, 43, 226',
+    'blood': '220, 20, 60',
+    'mono': '255, 255, 255'
+  };
+  let currentRGB = '0, 255, 65';
+  
+  (function(){
+    let s = localStorage.getItem('theme') || 'classic';
+    document.documentElement.setAttribute('data-theme', s);
+    currentRGB = THEME_COLORS[s] || '0, 255, 65';
+  })();
+// clock in the corner
+(function tick() {
+  document.getElementById('clk').textContent =
+    new Date().toISOString().replace('T',' ').slice(0,19)+' UTC';
+  setTimeout(tick,1000);
+})();
+
+// dot follows ur mouse
+const cur=document.getElementById('cur'), ring=document.getElementById('cur-ring');
+let mx=-300,my=-300,rx=-300,ry=-300;
+document.addEventListener('mousemove',e=>{ mx=e.clientX;my=e.clientY; cur.style.left=mx+'px';cur.style.top=my+'px'; });
+(function loop(){ rx+=(mx-rx)*.13;ry+=(my-ry)*.13; ring.style.left=rx+'px';ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+document.querySelectorAll('.rcard,.card-link,.back,.f-btn,.f-search').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ ring.style.width=ring.style.height='42px'; });
+  el.addEventListener('mouseleave',()=>{ ring.style.width=ring.style.height='28px'; });
+});
+
+// background node web thingy
+const canvas=document.getElementById('bg'), ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+resize(); window.addEventListener('resize',resize);
+const STARS=Array.from({length:180},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1+0.2,base:Math.random()*.4+.07,phase:Math.random()*Math.PI*2,spd:Math.random()*.02+.006}));
+const NODES=Array.from({length:55},()=>({x:Math.random()*(innerWidth||1400),y:Math.random()*(innerHeight||900),vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.4+.4}));
+const CONN=150,CPULL=180,ATT=0.0012;
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(const s of STARS){s.phase+=s.spd;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(${currentRGB},${s.base*(.5+.5*Math.sin(s.phase))})`;ctx.fill();}
+  for(const n of NODES){const dx=mx-n.x,dy=my-n.y,d=Math.hypot(dx,dy);if(d<CPULL){const f=ATT*(1-d/CPULL);n.vx+=dx*f;n.vy+=dy*f;}n.vx*=.974;n.vy*=.974;n.x+=n.vx;n.y+=n.vy;if(n.x<0){n.x=0;n.vx*=-1;}if(n.x>W){n.x=W;n.vx*=-1;}if(n.y<0){n.y=0;n.vy*=-1;}if(n.y>H){n.y=H;n.vy*=-1;}}
+  for(let i=0;i<NODES.length;i++){for(let j=i+1;j<NODES.length;j++){const d=Math.hypot(NODES[i].x-NODES[j].x,NODES[i].y-NODES[j].y);if(d<CONN){ctx.beginPath();ctx.moveTo(NODES[i].x,NODES[i].y);ctx.lineTo(NODES[j].x,NODES[j].y);ctx.strokeStyle=`rgba(${currentRGB},${(1-d/CONN)*.14})`;ctx.lineWidth=.5;ctx.stroke();}}const cd=Math.hypot(NODES[i].x-mx,NODES[i].y-my);if(cd<CPULL){const t=1-cd/CPULL;ctx.beginPath();ctx.moveTo(NODES[i].x,NODES[i].y);ctx.lineTo(mx,my);ctx.strokeStyle=`rgba(${currentRGB},${t*.55})`;ctx.lineWidth=t*1.3;ctx.stroke();}}
+  for(const n of NODES){const cd=Math.hypot(n.x-mx,n.y-my),close=cd<CPULL,t=close?1-cd/CPULL:0;ctx.beginPath();ctx.arc(n.x,n.y,close?n.r*2:n.r,0,Math.PI*2);ctx.fillStyle=`rgba(${currentRGB},${close?.75:.25})`;ctx.fill();}
+  requestAnimationFrame(draw);
+})();
+
+// pop the cards in with a lil delay
+setTimeout(() => {
+  document.querySelectorAll('.rcard').forEach(c => c.classList.add('vis'));
+}, 200);
+
+// filter + sort logic, kinda annoying to write ngl
+const rlist = document.querySelector('.rlist');
+const cards = Array.from(document.querySelectorAll('.rcard'));
+const fBtns = document.querySelectorAll('.f-group:first-of-type .f-btn');
+const sBtns = document.querySelectorAll('.f-group:last-of-type .f-btn');
+const search = document.querySelector('.f-search');
+
+let currentFilter = 'SECURE';
+let currentSort = null;
+
+function getCardData(card) {
+  const name = card.querySelector('.card-name').textContent.trim().toUpperCase();
+  const secScoreFn = card.querySelector('.score').textContent;
+  const secScore = parseInt(secScoreFn) || 0;
+  
+  const funcText = card.querySelectorAll('.cs-v')[1].textContent;
+  const funcMatch = funcText.match(/(\d+)/);
+  const funcScore = funcMatch ? parseInt(funcMatch[1]) : 0;
+  
+  const speedText = card.querySelectorAll('.cs-v')[2].textContent;
+  let speedScore = parseFloat(speedText) || 0;
+  if(speedText.includes('M')) speedScore *= 1000000;
+  else if(speedText.includes('K')) speedScore *= 1000;
+  
+  const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.trim());
+  
+  return { card, name, secScore, funcScore, speedScore, tags };
+}
+
+const cardData = cards.map(getCardData);
+
+function applyFiltersAndSort() {
+  const q = search.value.trim().toUpperCase();
+  
+  let valid = cardData.filter(d => {
+    if (q && !d.name.includes(q)) return false;
+    if (currentFilter === 'SECURE') {
+      return d.secScore >= 80 && !d.tags.some(t => t.includes('VULN'));
+    }
+    if (currentFilter === 'WARNING') {
+      return d.secScore < 80 && !d.tags.some(t => t.includes('VULN'));
+    }
+    if (currentFilter === 'VULN') {
+      return d.tags.some(t => t.includes('VULN'));
+    }
+    return true; // ALL
+  });
+  
+  if (currentSort) {
+      valid.sort((a, b) => {
+        let vA, vB;
+        if (currentSort.type === 'SECURITY') { vA = a.secScore; vB = b.secScore; }
+        else if (currentSort.type === 'FUNCTIONS') { vA = a.funcScore; vB = b.funcScore; }
+        else if (currentSort.type === 'SPEED') { vA = a.speedScore; vB = b.speedScore; }
+        return (vA - vB) * currentSort.dir;
+      });
+  }
+  
+  // Re-append
+  cards.forEach(c => c.card.style.display = 'none');
+  valid.forEach((d, idx) => {
+     d.card.style.display = 'block';
+     // reset animation delay to stagger
+     d.card.style.animationDelay = (0.15 + idx * 0.13) + 's';
+     d.card.classList.remove('vis');
+     // trigger reflow
+     void d.card.offsetWidth;
+     d.card.classList.add('vis');
+     rlist.appendChild(d.card);
+  });
+}
+
+fBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    fBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // Attempt native textContent but handle translations
+    const htmlClasses = btn.className;
+    if (htmlClasses.includes('active')) {
+      const origText = btn.getAttribute('data-filter') || btn.textContent.trim();
+      if(origText.includes('ALL')) currentFilter = 'ALL';
+      else if(origText.includes('SECURE')) currentFilter = 'SECURE';
+      else if(origText.includes('WARNING')) currentFilter = 'WARNING';
+      else if(origText.includes('VULN')) currentFilter = 'VULN';
+    }
+    
+    // Actually we can easily set data-filter attribute to read from
+    currentFilter = btn.getAttribute('data-filter') || currentFilter;
+    applyFiltersAndSort();
+  });
+});
+
+sBtns.forEach((btn, index) => {
+  // Give them predictable filter types
+  const types = ['SECURITY', 'FUNCTIONS', 'SPEED'];
+  btn.setAttribute('data-sort', types[index]);
+  
+  btn.addEventListener('click', () => {
+    const type = btn.getAttribute('data-sort');
+    
+    if (currentSort && currentSort.type === type) {
+      currentSort.dir *= -1;
+    } else {
+      currentSort = { type, dir: -1 };
+    }
+    
+    sBtns.forEach(b => {
+      b.classList.remove('active');
+      const bType = b.getAttribute('data-sort');
+      if (bType !== type) {
+        b.textContent = bType + ' ↓';
+      }
+    });
+    
+    const arrow = currentSort.dir === 1 ? '↑' : '↓';
+    btn.textContent = type + " " + arrow;
+    btn.classList.add('active');
+    
+    applyFiltersAndSort();
+    if (typeof applyLang === 'function') applyLang(localStorage.getItem('lang_chosen') || 'en');
+  });
+});
+
+search.addEventListener('input', applyFiltersAndSort);
+
+// Set initial data-filters
+fBtns[0].setAttribute('data-filter', 'ALL');
+fBtns[1].setAttribute('data-filter', 'SECURE');
+fBtns[2].setAttribute('data-filter', 'WARNING');
+fBtns[3].setAttribute('data-filter', 'VULN');
+
+applyFiltersAndSort();
+</script>
+<script src="lang.js"></script>
+</body>
+</html>

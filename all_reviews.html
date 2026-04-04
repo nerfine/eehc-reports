@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExecEnvHealthCheck — Review Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #050c05;
+      --green: #00ff41;
+      --dim: rgba(0, 255, 65, 0.12);
+      --border: rgba(0, 255, 65, 0.14);
+      --white: #dedede;
+      --gray: rgba(222, 222, 222, 0.38);
+      --red: #ff3b3b;
+      --amber: #ffaa00;
+    }
+
+    [data-theme="pink"] {
+      --bg: #0a0118;
+      --green: #ff00ff;
+      --dim: rgba(255, 0, 255, 0.12);
+      --border: rgba(255, 0, 255, 0.14);
+    }
+
+    [data-theme="cherry"] {
+      --bg: #1a0f14;
+      --green: #ff4d6d;
+      --dim: rgba(255, 77, 109, 0.12);
+      --border: rgba(255, 77, 109, 0.14);
+    }
+
+    [data-theme="blue"] {
+      --bg: #010a14;
+      --green: #00f0ff;
+      --dim: rgba(0, 240, 255, 0.12);
+      --border: rgba(0, 240, 255, 0.14);
+    }
+
+    [data-theme="purple"] {
+      --bg: #282a36;
+      --green: #bd93f9;
+      --dim: rgba(189, 147, 249, 0.12);
+      --border: rgba(189, 147, 249, 0.14);
+      --red: #ff5555;
+    }
+
+    [data-theme="orange"] {
+      --bg: #141001;
+      --green: #ffaa00;
+      --dim: rgba(255, 170, 0, 0.12);
+      --border: rgba(255, 170, 0, 0.14);
+    }
+
+    [data-theme="gold"] {
+      --bg: #141201;
+      --green: #ffd700;
+      --dim: rgba(255, 215, 0, 0.12);
+      --border: rgba(255, 215, 0, 0.14);
+    }
+
+    [data-theme="frost"] {
+      --bg: #011014;
+      --green: #a0f0ff;
+      --dim: rgba(160, 240, 255, 0.12);
+      --border: rgba(160, 240, 255, 0.14);
+    }
+
+    [data-theme="radioactive"] {
+      --bg: #0a1401;
+      --green: #bfff00;
+      --dim: rgba(191, 255, 0, 0.12);
+      --border: rgba(191, 255, 0, 0.14);
+    }
+
+    [data-theme="violet"] {
+      --bg: #0a0114;
+      --green: #8a2be2;
+      --dim: rgba(138, 43, 226, 0.12);
+      --border: rgba(138, 43, 226, 0.14);
+    }
+
+    [data-theme="blood"] {
+      --bg: #140101;
+      --green: #dc143c;
+      --dim: rgba(220, 20, 60, 0.12);
+      --border: rgba(220, 20, 60, 0.14);
+    }
+
+    [data-theme="mono"] {
+      --bg: #050505;
+      --green: #ffffff;
+      --dim: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.14);
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Share Tech Mono', monospace;
+      cursor: none;
+    }
+
+    #cur {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    #cur-ring {
+      position: fixed;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(222, 222, 222, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width .18s, height .18s, border-color .2s;
+    }
+
+    #bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .vig {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.72) 100%);
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+      border-left: 1px solid var(--border);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--green);
+    }
+
+    ::selection {
+      background: var(--dim);
+      color: var(--green);
+    }
+
+    .page {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      overflow: hidden;
+      height: 36px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      color: var(--green);
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .tb-track {
+      display: flex;
+      white-space: nowrap;
+      animation: tb-scroll 35s ease-in-out infinite alternate;
+    }
+
+    .topbar .k {
+      color: var(--green);
+      opacity: 1;
+      font-weight: bold;
+    }
+
+    .tb-items {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      padding-right: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .tb-item {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    @keyframes tb-scroll {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* NAV BAR */
+    .page-nav {
+      display: flex;
+      gap: 0.8rem;
+      padding: 1.4rem 3.5rem 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.4rem;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border);
+      color: var(--green);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 0.7rem 1.6rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--green);
+      background: var(--dim);
+      box-shadow: 0 0 14px var(--dim);
+      text-shadow: 0 0 8px var(--green);
+    }
+
+    /* HEADER */
+    .rhead {
+      padding: 1.5rem 3.5rem 2rem;
+      opacity: 0;
+      animation: fi .5s .1s forwards;
+    }
+
+    .rlabel {
+      font-size: .62rem;
+      letter-spacing: .28em;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .rlabel::before {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--green);
+      transform: translateY(-2px);
+    }
+
+    .rtitle {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--white);
+      letter-spacing: .03em;
+    }
+
+    /* REVIEW FORM */
+    .review-container {
+      flex: 1;
+      padding: 1rem 3.5rem 4rem;
+      display: flex;
+      justify-content: center;
+      opacity: 0;
+      animation: fup .5s .2s forwards;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 800px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      position: relative;
+    }
+
+    .form-box::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+      opacity: 0.5;
+    }
+
+    .fg {
+      margin-bottom: 2rem;
+    }
+
+    .fg label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--green);
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .fg input[type="text"],
+    textarea,
+    select.styled-select {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border);
+      padding: 1.1rem 1.4rem;
+      color: var(--white);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      outline: none;
+      transition: border-color 0.3s;
+      cursor: none;
+    }
+
+    select.styled-select {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    select.styled-select option {
+      background: #050505;
+      color: var(--white);
+    }
+
+    input[type="text"]:focus,
+    textarea:focus,
+    select.styled-select:focus {
+      border-color: var(--green);
+      box-shadow: inset 0 0 10px rgba(0, 255, 65, 0.05);
+    }
+
+    input[type="text"]::placeholder,
+    textarea::placeholder {
+      color: rgba(222, 222, 222, 0.3);
+    }
+
+    .filter-bar {
+      width: 100%;
+      padding: 0.85rem 3.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      background: transparent;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .filter-bar label {
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: var(--green);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .filter-select {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      padding: 0.5rem 0.9rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      min-width: 140px;
+    }
+
+    .filter-select:focus,
+    .filter-select:hover {
+      border-color: var(--green);
+      box-shadow: inset 0 0 8px rgba(0, 255, 65, 0.05);
+    }
+
+    .filter-select option {
+      background: #050505;
+      color: var(--white);
+    }
+
+    .filter-sep {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .filter-count {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: var(--gray);
+      flex: 1;
+      text-align: right;
+    }
+
+    .filter-count span {
+      color: var(--green);
+    }
+
+    .reviews-list-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 3.5rem 4rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    .review-card {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1.5rem;
+      position: relative;
+      border-top: 3px solid var(--green);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .review-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px var(--dim);
+      border-color: var(--green);
+    }
+
+    .review-card.is-featured {
+      border-top-color: var(--green);
+      box-shadow: 0 0 14px var(--dim), 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .featured-badge {
+      display: inline-block;
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      color: var(--bg);
+      background: var(--green);
+      padding: 0.15rem 0.5rem;
+      margin-bottom: 0.6rem;
+      margin-left: auto;
+      align-self: flex-start;
+      text-transform: uppercase;
+    }
+
+    .fg textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .rating-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .rate-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: rgba(222, 222, 222, 0.5);
+      padding: 1rem 0;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      cursor: none;
+      transition: all .2s;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .rate-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--dim);
+    }
+
+    .rate-btn.active {
+      border-color: var(--green);
+      color: var(--bg);
+      background: var(--green);
+      box-shadow: 0 0 15px var(--dim);
+    }
+
+    .submit-btn {
+      display: inline-block;
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 1.2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: none;
+      transition: all .25s;
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      background: var(--green);
+      color: var(--bg);
+      box-shadow: 0 0 20px var(--dim);
+    }
+
+    /* that scrolly footer thing, keep it grounded */
+    .banner {
+      border-top: 1px solid var(--border);
+      padding: 1.2rem 0;
+      overflow: hidden;
+      background: var(--bg);
+      position: relative;
+      z-index: 20;
+    }
+
+    .banner-track {
+      display: flex;
+      white-space: nowrap;
+      animation: scroll 28s ease-in-out infinite alternate-reverse;
+    }
+
+    .banner-item {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      color: var(--green);
+      opacity: 0.6;
+      padding: 0 2.8rem;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    .banner-dot {
+      opacity: 0.5;
+      margin: 0 0.5rem;
+    }
+
+    @keyframes scroll {
+      from {
+        transform: translateX(0)
+      }
+
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    @keyframes fi {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fup {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+  <canvas id="bg"></canvas>
+  <div class="grid"></div>
+  <div class="vig"></div>
+
+  <div class="page">
+
+    <div class="topbar">
+      <div class="tb-track">
+        <div class="tb-items">
+          <div class="tb-item"><span class="k">SEC</span> 100+ vulnerability vectors</div>
+          <div class="tb-item"><span class="k">FN</span> 50+ executor functions</div>
+          <div class="tb-item"><span class="k">PERF</span> 6-stage stress test</div>
+          <div class="tb-item"><span class="k">BIG</span> Fibonacci big-integer benchmark</div>
+          <div class="tb-item"><span class="k">UI</span> 13 UI library checks</div>
+          <div class="tb-item"><span class="k">LIVE</span> Live VPS sync</div>
+          <div class="tb-item"><span class="k">PRIV</span> VPS IP never exposed</div>
+          <div class="tb-item"><span class="k">SYS</span> ExecEnvHealthCheck v3.2</div>
+        </div>
+        <div class="tb-items">
+          <div class="tb-item"><span class="k">SEC</span> 100+ vulnerability vectors</div>
+          <div class="tb-item"><span class="k">FN</span> 50+ executor functions</div>
+          <div class="tb-item"><span class="k">PERF</span> 6-stage stress test</div>
+          <div class="tb-item"><span class="k">BIG</span> Fibonacci big-integer benchmark</div>
+          <div class="tb-item"><span class="k">UI</span> 13 UI library checks</div>
+          <div class="tb-item"><span class="k">LIVE</span> Live VPS sync</div>
+          <div class="tb-item"><span class="k">PRIV</span> VPS IP never exposed</div>
+          <div class="tb-item"><span class="k">SYS</span> ExecEnvHealthCheck v3.2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="index.html" class="nav-btn">&#8962; HOME</a>
+      <a href="review.html" class="nav-btn">&larr; SUBMIT REVIEW</a>
+    </div>
+
+    <div class="rhead" style="margin-top: 1.5rem; margin-bottom: 1rem;">
+      <div class="rlabel" style="color: var(--green); text-shadow: 0 0 10px var(--dim);">COMMUNITY</div>
+      <div class="rtitle" style="font-size: 3.5rem;">ALL REVIEWS</div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <label>PRODUCT</label>
+      <select class="filter-select" id="f-product">
+        <option value="all">ALL PRODUCTS</option>
+        <option value="Cosmic">COSMIC</option>
+        <option value="Madium">MADIUM</option>
+      </select>
+      <div class="filter-sep"></div>
+      <label>RATING</label>
+      <select class="filter-select" id="f-rating">
+        <option value="all">ALL RATINGS</option>
+        <option value="5">★★★★★ (5)</option>
+        <option value="4">★★★★☆ (4+)</option>
+        <option value="3">★★★☆☆ (3+)</option>
+        <option value="2">★★☆☆☆ (2+)</option>
+        <option value="1">★☆☆☆☆ (1+)</option>
+      </select>
+      <div class="filter-sep"></div>
+      <label>SORT</label>
+      <select class="filter-select" id="f-sort">
+        <option value="newest">NEWEST FIRST</option>
+        <option value="oldest">OLDEST FIRST</option>
+        <option value="highest">HIGHEST RATING</option>
+        <option value="lowest">LOWEST RATING</option>
+        <option value="featured">FEATURED FIRST</option>
+      </select>
+      <div class="filter-count" id="f-count">SHOWING <span>0</span> TRANSMISSIONS</div>
+    </div>
+
+    <div class="reviews-list-container" id="rev-list">
+      <!-- Reviews appended here -->
+    </div>
+
+    <div class="banner">
+      <div class="banner-track">
+        <span class="banner-item">PRIVACY CHECK<span class="banner-dot">◆</span></span>
+        <span class="banner-item">SECURITY SCAN<span class="banner-dot">◆</span></span>
+        <span class="banner-item">PERFORMANCE TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VULNERABILITY ANALYSIS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">EXECUTOR FUNCTIONS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">STRESS TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VPS ISOLATION<span class="banner-dot">◆</span></span>
+        <span class="banner-item">IP EXPOSURE CHECK<span class="banner-dot">◆</span></span>
+        <span class="banner-item">PRIVACY CHECK<span class="banner-dot">◆</span></span>
+        <span class="banner-item">SECURITY SCAN<span class="banner-dot">◆</span></span>
+        <span class="banner-item">PERFORMANCE TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VULNERABILITY ANALYSIS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">EXECUTOR FUNCTIONS<span class="banner-dot">◆</span></span>
+        <span class="banner-item">STRESS TEST<span class="banner-dot">◆</span></span>
+        <span class="banner-item">VPS ISOLATION<span class="banner-dot">◆</span></span>
+        <span class="banner-item">IP EXPOSURE CHECK<span class="banner-dot">◆</span></span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const THEME_COLORS = {
+      'classic': '0, 255, 65',
+      'pink': '255, 0, 255',
+      'cherry': '255, 77, 109',
+      'blue': '0, 240, 255',
+      'purple': '189, 147, 249',
+      'orange': '255, 170, 0',
+      'gold': '255, 215, 0',
+      'frost': '160, 240, 255',
+      'radioactive': '191, 255, 0',
+      'violet': '138, 43, 226',
+      'blood': '220, 20, 60',
+      'mono': '255, 255, 255'
+    };
+    let currentRGB = '0, 255, 65';
+
+    (function () {
+      let s = localStorage.getItem('theme') || 'classic';
+      document.documentElement.setAttribute('data-theme', s);
+      currentRGB = THEME_COLORS[s] || '0, 255, 65';
+    })();
+
+    // we dont do ratings on this page lol
+
+
+    // lil dot that chases ur mouse
+    const cur = document.getElementById('cur'), ring = document.getElementById('cur-ring');
+    let mx = -300, my = -300, rx = -300, ry = -300;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+    (function loop() { rx += (mx - rx) * .13; ry += (my - ry) * .13; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('.back, input, textarea, .rate-btn, .submit-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = ring.style.height = '42px'; ring.style.borderColor = 'var(--green)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = ring.style.height = '28px'; ring.style.borderColor = 'rgba(222,222,222,0.4)'; });
+    });
+
+    // the fancy particles n node lines idk it looks cool
+    const canvas = document.getElementById('bg'), ctx = canvas.getContext('2d');
+    let W, H;
+    function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+    const STARS = Array.from({ length: 180 }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 1 + 0.2, base: Math.random() * .4 + .07, phase: Math.random() * Math.PI * 2, spd: Math.random() * .02 + .006 }));
+    const NODES = Array.from({ length: 55 }, () => ({ x: Math.random() * (innerWidth || 1400), y: Math.random() * (innerHeight || 900), vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4, r: Math.random() * 1.4 + .4 }));
+    const CONN = 150, CPULL = 180, ATT = 0.0012;
+    (function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (const s of STARS) { s.phase += s.spd; ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(${currentRGB},${s.base * (.5 + .5 * Math.sin(s.phase))})`; ctx.fill(); }
+      for (const n of NODES) { const dx = mx - n.x, dy = my - n.y, d = Math.hypot(dx, dy); if (d < CPULL) { const f = ATT * (1 - d / CPULL); n.vx += dx * f; n.vy += dy * f; } n.vx *= .974; n.vy *= .974; n.x += n.vx; n.y += n.vy; if (n.x < 0) { n.x = 0; n.vx *= -1; } if (n.x > W) { n.x = W; n.vx *= -1; } if (n.y < 0) { n.y = 0; n.vy *= -1; } if (n.y > H) { n.y = H; n.vy *= -1; } }
+      for (let i = 0; i < NODES.length; i++) { for (let j = i + 1; j < NODES.length; j++) { const d = Math.hypot(NODES[i].x - NODES[j].x, NODES[i].y - NODES[j].y); if (d < CONN) { ctx.beginPath(); ctx.moveTo(NODES[i].x, NODES[i].y); ctx.lineTo(NODES[j].x, NODES[j].y); ctx.strokeStyle = `rgba(${currentRGB},${(1 - d / CONN) * .14})`; ctx.lineWidth = .5; ctx.stroke(); } } const cd = Math.hypot(NODES[i].x - mx, NODES[i].y - my); if (cd < CPULL) { const t = 1 - cd / CPULL; ctx.beginPath(); ctx.moveTo(NODES[i].x, NODES[i].y); ctx.lineTo(mx, my); ctx.strokeStyle = `rgba(${currentRGB},${t * .55})`; ctx.lineWidth = t * 1.3; ctx.stroke(); } }
+      for (const n of NODES) { const cd = Math.hypot(n.x - mx, n.y - my), close = cd < CPULL, t = close ? 1 - cd / CPULL : 0; ctx.beginPath(); ctx.arc(n.x, n.y, close ? n.r * 2 : n.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(${currentRGB},${close ? .75 : .25})`; ctx.fill(); }
+      requestAnimationFrame(draw);
+    })();
+
+    // where all the review card stuff happens
+    const revList = document.getElementById('rev-list');
+    const fCount = document.getElementById('f-count');
+
+    const ADMIN_IPS = ['105.184.89.165', '88.182.197.202',];
+    window.isAdmin = false;
+
+    window.toggleFeature = function (id) {
+      if (!window.isAdmin) return;
+      const allRevs = JSON.parse(localStorage.getItem('all_reviews') || "[]");
+      const idx = allRevs.findIndex(r => r.id === id);
+      if (idx > -1) {
+        allRevs[idx].featured = !allRevs[idx].featured;
+        localStorage.setItem('all_reviews', JSON.stringify(allRevs));
+        renderReviews();
+      }
+    };
+
+    window.deleteReview = function (id) {
+      if (!window.isAdmin) return;
+      if (!confirm('Permanently delete this review?')) return;
+      const allRevs = JSON.parse(localStorage.getItem('all_reviews') || "[]");
+      const filtered = allRevs.filter(r => r.id !== id);
+      localStorage.setItem('all_reviews', JSON.stringify(filtered));
+      renderReviews();
+    };
+
+    function getFilters() {
+      return {
+        product: document.getElementById('f-product').value,
+        rating: document.getElementById('f-rating').value,
+        sort: document.getElementById('f-sort').value
+      };
+    }
+
+    function renderReviews() {
+      let revs = JSON.parse(localStorage.getItem('all_reviews') || "[]");
+      const { product, rating, sort } = getFilters();
+
+      // filter n sort the revs ig
+      if (product !== 'all') revs = revs.filter(r => r.name === product);
+      if (rating !== 'all') revs = revs.filter(r => parseInt(r.rating) >= parseInt(rating));
+
+      // sort order stuff
+      if (sort === 'newest') revs.sort((a, b) => (b.date || 0) - (a.date || 0));
+      else if (sort === 'oldest') revs.sort((a, b) => (a.date || 0) - (b.date || 0));
+      else if (sort === 'highest') revs.sort((a, b) => parseInt(b.rating) - parseInt(a.rating));
+      else if (sort === 'lowest') revs.sort((a, b) => parseInt(a.rating) - parseInt(b.rating));
+      else if (sort === 'featured') revs.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+
+      // how many r showing rn
+      fCount.innerHTML = `SHOWING <span>${revs.length}</span> TRANSMISSION${revs.length !== 1 ? 'S' : ''}`;
+
+      revList.innerHTML = "";
+      if (revs.length === 0) {
+        const allTotal = JSON.parse(localStorage.getItem('all_reviews') || "[]").length;
+        const msg = allTotal === 0 ? 'DATABASE EMPTY' : 'NO REVIEWS MATCH FILTERS';
+        revList.innerHTML = `<div style="text-align:center; color:var(--gray); font-size:0.7rem; letter-spacing:0.1em; padding: 3rem; border: 1px dashed var(--border); width: 100%;">${msg}</div>`;
+        return;
+      }
+
+      const ww = window.innerWidth;
+      const numCols = ww <= 600 ? 1 : ww <= 900 ? 2 : ww <= 1200 ? 3 : 4;
+      const colDivs = [];
+
+      for (let i = 0; i < numCols; i++) {
+        const col = document.createElement('div');
+        col.style.display = 'flex';
+        col.style.flexDirection = 'column';
+        col.style.gap = '1.5rem';
+        col.style.flex = '1';
+        col.style.minWidth = '0';
+        colDivs.push(col);
+        revList.appendChild(col);
+      }
+
+      revs.forEach((r, i) => {
+        const card = document.createElement('div');
+        card.className = 'review-card' + (r.featured ? ' is-featured' : '');
+
+        const d = new Date(r.date || Date.now());
+        const ds = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+
+        let featuredBadge = r.featured ? `<div class="featured-badge">★ FEATURED</div>` : '';
+
+        let adminHtml = '';
+        if (window.isAdmin) {
+          adminHtml = `
+              <div style="margin-top: 1rem; border-top: 1px solid rgba(222,222,222,0.1); padding-top: 0.8rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
+                 <button onclick="toggleFeature('${r.id}')" style="background: ${r.featured ? 'var(--green)' : 'transparent'}; color: ${r.featured ? '#000' : 'var(--white)'}; border: 1px solid var(--green); cursor: none; padding: 0.4rem 0.9rem; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; font-weight: bold; transition: all 0.15s;">
+                    ${r.featured ? '&#9733; FEATURED' : '&#9734; FEATURE'}
+                 </button>
+                 <button onclick="deleteReview('${r.id}')" style="background: transparent; color: var(--red); border: 1px solid var(--red); cursor: none; padding: 0.4rem 0.9rem; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; font-weight: bold; transition: all 0.15s;" onmouseover="this.style.background='rgba(255,59,59,0.15)'" onmouseout="this.style.background='transparent'">
+                    &#10005; DELETE
+                 </button>
+              </div>
+            `;
+        }
+
+        card.innerHTML = `
+          ${featuredBadge}
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.4rem;">
+             <div style="font-family:'Bebas Neue', sans-serif; font-size:1.6rem; color:var(--white); line-height: 1; letter-spacing:0.05em;">${r.name}</div>
+             <div style="color:var(--green); font-size:1.2rem; letter-spacing: 0.1em; text-shadow: 0 0 12px var(--dim);">${stars}</div>
+          </div>
+          <div style="font-size:0.55rem; color:var(--green); opacity: 0.8; letter-spacing:0.15em; margin-bottom: 1.2rem; text-transform: uppercase;">
+             <span style="opacity: 0.6; color:var(--gray);">LOGGED:</span> ${ds}
+          </div>
+          <div style="font-size:0.75rem; color:#dedede; line-height:1.6; word-break: break-word; flex: 1;">${r.details}</div>
+          ${adminHtml}
+        `;
+
+        colDivs[i % numCols].appendChild(card);
+      });
+    }
+
+    // hook up the dropdown filters
+    ['f-product', 'f-rating', 'f-sort'].forEach(id => {
+      document.getElementById(id).addEventListener('change', renderReviews);
+    });
+
+    let lastCols = window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 2 : window.innerWidth <= 1200 ? 3 : 4;
+    window.addEventListener('resize', () => {
+      const curCols = window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 2 : window.innerWidth <= 1200 ? 3 : 4;
+      if (lastCols !== curCols) {
+        lastCols = curCols;
+        renderReviews();
+      }
+    });
+
+    // show the stuff right away dont wait
+    renderReviews();
+
+    // check if ur on the whitelist, if so show the delete n feature buttons
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        if (ADMIN_IPS.includes(data.ip)) {
+          window.isAdmin = true;
+          renderReviews(); // redo with the admin stuff visible
+        }
+      })
+      .catch(() => { /* not admin, whatever */ });
+
+  </script>
+  <script src="lang.js"></script>
+</body>
+
+</html>
