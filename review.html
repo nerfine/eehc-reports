@@ -104,29 +104,6 @@
       --dim: rgba(255, 255, 255, 0.12);
       --border: rgba(255, 255, 255, 0.14);
     }
-    
-    [data-theme="cyberpunk"] { --bg: #0d0016; --green: #ff00ff; --dim: rgba(255,0,255,0.12); --border: rgba(255,0,255,0.14); }
-    [data-theme="toxic"] { --bg: #0b1405; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
-    [data-theme="nebula"] { --bg: #02001a; --green: #7000ff; --dim: rgba(112,0,255,0.12); --border: rgba(112,0,255,0.14); }
-    [data-theme="sunset"] { --bg: #1a0a00; --green: #ff4500; --dim: rgba(255,69,0,0.12); --border: rgba(255,69,0,0.14); }
-    [data-theme="rainbow"] {
-      --bg: #050c05;
-      --green: #00ff41; 
-      --dim: rgba(0, 255, 65, 0.12);
-      --border: rgba(0, 255, 0, 0.14);
-    }
-    [data-theme="rainbow"] .rtitle, [data-theme="rainbow"] .nav-btn, [data-theme="rainbow"] .k, [data-theme="rainbow"] .rate-btn.active {
-      animation: rainbow-flash 4s linear infinite !important;
-    }
-    @keyframes rainbow-flash {
-      0% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
-      17% { color: #ff8000; filter: drop-shadow(0 0 10px #ff8000); }
-      33% { color: #ffff00; filter: drop-shadow(0 0 10px #ffff00); }
-      50% { color: #00ff00; filter: drop-shadow(0 0 10px #00ff00); }
-      67% { color: #0000ff; filter: drop-shadow(0 0 10px #0000ff); }
-      84% { color: #8000ff; filter: drop-shadow(0 0 10px #8000ff); }
-      100% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
-    }
 
     html,
     body {
@@ -689,12 +666,7 @@
       'radioactive': '191, 255, 0',
       'violet': '138, 43, 226',
       'blood': '220, 20, 60',
-      'mono': '255, 255, 255',
-      'cyberpunk': '255, 0, 255',
-      'toxic': '191, 255, 0',
-      'nebula': '112, 0, 255',
-      'sunset': '255, 69, 0',
-      'rainbow': '0, 255, 65'
+      'mono': '255, 255, 255'
     };
     let currentRGB = '0, 255, 65';
 
@@ -753,10 +725,10 @@
        }
     });
 
-    async function renderFeatured() {
+    function renderFeatured() {
       const featSection = document.getElementById('featured-section');
       const featList = document.getElementById('feat-list');
-      const allRevs = await getMergedReviews();
+      const allRevs = JSON.parse(localStorage.getItem('all_reviews') || '[]');
       const featured = allRevs.filter(r => r.featured === true);
 
       if (featured.length === 0) {
@@ -835,12 +807,10 @@
 
       const revs = JSON.parse(localStorage.getItem('all_reviews') || "[]");
       
-      const isDuplicate = revs.some(r => r.details.toLowerCase() === details.toLowerCase()) || GLOBAL_REVIEWS.some(r => r.details.toLowerCase() === details.toLowerCase());
+      const isDuplicate = revs.some(r => r.details.toLowerCase() === details.toLowerCase());
       if (isDuplicate) return showError("EXACT DUPLICATE DETECTED");
 
       // put it in storage, unfeatured by default obviously
-      VPSSync.postReview(name, parseInt(rating), details); // transmit to vps async
-      
       revs.unshift({ id: Date.now().toString(), name, rating, details, date: Date.now(), featured: false });
       localStorage.setItem('all_reviews', JSON.stringify(revs));
       localStorage.setItem('last_rev_time', Date.now().toString());
@@ -863,15 +833,12 @@
           submitBtn.style.color = '';
           submitBtn.style.borderColor = '';
           submitBtn.dataset.locked = 'false';
-          renderFeatured();
       }, 3000);
     });
 
     renderFeatured();
 
   </script>
-  <script src="vps_sync.js"></script>
-  <script src="reviews_data.js"></script>
   <script src="lang.js"></script>
 </body>
 

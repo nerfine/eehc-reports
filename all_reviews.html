@@ -104,29 +104,6 @@
       --dim: rgba(255, 255, 255, 0.12);
       --border: rgba(255, 255, 255, 0.14);
     }
-    
-    [data-theme="cyberpunk"] { --bg: #0d0016; --green: #ff00ff; --dim: rgba(255,0,255,0.12); --border: rgba(255,0,255,0.14); }
-    [data-theme="toxic"] { --bg: #0b1405; --green: #bfff00; --dim: rgba(191,255,0,0.12); --border: rgba(191,255,0,0.14); }
-    [data-theme="nebula"] { --bg: #02001a; --green: #7000ff; --dim: rgba(112,0,255,0.12); --border: rgba(112,0,255,0.14); }
-    [data-theme="sunset"] { --bg: #1a0a00; --green: #ff4500; --dim: rgba(255,69,0,0.12); --border: rgba(255,69,0,0.14); }
-    [data-theme="rainbow"] {
-      --bg: #050c05;
-      --green: #00ff41; 
-      --dim: rgba(0, 255, 65, 0.12);
-      --border: rgba(0, 255, 65, 0.14);
-    }
-    [data-theme="rainbow"] .rtitle, [data-theme="rainbow"] .nav-btn, [data-theme="rainbow"] .k, [data-theme="rainbow"] .featured-badge {
-      animation: rainbow-flash 4s linear infinite !important;
-    }
-    @keyframes rainbow-flash {
-      0% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
-      17% { color: #ff8000; filter: drop-shadow(0 0 10px #ff8000); }
-      33% { color: #ffff00; filter: drop-shadow(0 0 10px #ffff00); }
-      50% { color: #00ff00; filter: drop-shadow(0 0 10px #00ff00); }
-      67% { color: #0000ff; filter: drop-shadow(0 0 10px #0000ff); }
-      84% { color: #8000ff; filter: drop-shadow(0 0 10px #8000ff); }
-      100% { color: #ff0000; filter: drop-shadow(0 0 10px #ff0000); }
-    }
 
     html,
     body {
@@ -769,12 +746,7 @@
       'radioactive': '191, 255, 0',
       'violet': '138, 43, 226',
       'blood': '220, 20, 60',
-      'mono': '255, 255, 255',
-      'cyberpunk': '255, 0, 255',
-      'toxic': '191, 255, 0',
-      'nebula': '112, 0, 255',
-      'sunset': '255, 69, 0',
-      'rainbow': '0, 255, 65'
+      'mono': '255, 255, 255'
     };
     let currentRGB = '0, 255, 65';
 
@@ -821,26 +793,24 @@
     const ADMIN_IPS = ['105.184.89.165', '88.182.197.202',];
     window.isAdmin = false;
 
-    window.toggleFeature = async function (id) {
+    window.toggleFeature = function (id) {
       if (!window.isAdmin) return;
-      const adminToken = localStorage.getItem('admin_token') || prompt('ADMIN TOKEN REQUIRED:');
-      if (!adminToken) return;
-      localStorage.setItem('admin_token', adminToken);
-
-      const ok = await VPSSync.featureReview(id, adminToken);
-      if (ok) renderReviews();
+      const allRevs = JSON.parse(localStorage.getItem('all_reviews') || "[]");
+      const idx = allRevs.findIndex(r => r.id === id);
+      if (idx > -1) {
+        allRevs[idx].featured = !allRevs[idx].featured;
+        localStorage.setItem('all_reviews', JSON.stringify(allRevs));
+        renderReviews();
+      }
     };
 
-    window.deleteReview = async function (id) {
+    window.deleteReview = function (id) {
       if (!window.isAdmin) return;
-      if (!confirm('Permanently delete this review from VPS?')) return;
-      
-      const adminToken = localStorage.getItem('admin_token') || prompt('ADMIN TOKEN REQUIRED:');
-      if (!adminToken) return;
-      localStorage.setItem('admin_token', adminToken);
-
-      const ok = await VPSSync.deleteReview(id, adminToken);
-      if (ok) renderReviews();
+      if (!confirm('Permanently delete this review?')) return;
+      const allRevs = JSON.parse(localStorage.getItem('all_reviews') || "[]");
+      const filtered = allRevs.filter(r => r.id !== id);
+      localStorage.setItem('all_reviews', JSON.stringify(filtered));
+      renderReviews();
     };
 
     function getFilters() {
@@ -851,9 +821,8 @@
       };
     }
 
-    async function renderReviews() {
-      revList.innerHTML = `<div style="text-align:center; color:var(--green); font-size:0.6rem; letter-spacing:0.2em; padding: 4rem; width:100%; opacity:0.6;">SYNCING WITH VPS...</div>`;
-      let revs = await getMergedReviews();
+    function renderReviews() {
+      let revs = JSON.parse(localStorage.getItem('all_reviews') || "[]");
       const { product, rating, sort } = getFilters();
 
       // filter n sort the revs ig
@@ -963,8 +932,6 @@
       .catch(() => { /* not admin, whatever */ });
 
   </script>
-  <script src="vps_sync.js"></script>
-  <script src="reviews_data.js"></script>
   <script src="lang.js"></script>
 </body>
 
