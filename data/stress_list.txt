@@ -1,0 +1,6 @@
+Very Light
+Light
+Medium
+Heavy
+Very Heavy
+Extreme
