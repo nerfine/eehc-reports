@@ -1,3 +1,6 @@
+"use client"
+
+import { motion } from "motion/react"
 import { ThreeDMarquee } from "@/components/ui/3d-marquee"
 
 const img1 = "https://media.discordapp.net/attachments/1392170085011030180/1525920374775087235/AA5AbUAsybRM1p0gIOkbzhiQ46ybX61_4hSSVPnfPHAowz16uzYrxgy5Hn51X7O_tViRhMZQdTj9J_Ki04EuNhozkvv_S6pwtDH8xljIahweDFRt-l3zoJx357NDnobXXsv9dSDUtKNObgGV0rwmnduvXuEdZEZQWS_azDsz0bmS71E8u-d-IcPHjj4UsHogo7eg56YpyKK3bvMIY6sxgNyMWc_VipYhHC7jrDeeyOWeggMw1280.png?ex=6a552397&is=6a53d217&hm=0dc96a4760176c38b3ea68d42ea4f82721cae55f67d952624c44f67981068bcf&=&format=webp&quality=lossless&width=1251&height=982"
@@ -9,29 +12,60 @@ const marqueeImages = [
   img1,
 ]
 
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12 },
+  },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+}
+
 export function HeroSection() {
   return (
     <section className="mx-auto grid max-w-7xl items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
-      <div className="px-6">
-        <h1 className="text-balance text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
+      <motion.div
+        className="px-6"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.h1
+          variants={fadeUp}
+          className="text-balance text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl"
+        >
           Executor diagnostics. Real results.
-        </h1>
-        <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
+        </motion.h1>
+        <motion.p
+          variants={fadeUp}
+          className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground"
+        >
           ExecutorHealthCheck scans, tests, and benchmarks executors to deliver real security insights you can trust.
-        </p>
-        <div className="mt-9 flex flex-wrap gap-4">
-          <a
+        </motion.p>
+        <motion.div variants={fadeUp} className="mt-9 flex flex-wrap gap-4">
+          <motion.a
             href="/reports"
-            className="rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            className="rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
             View Reports
-          </a>
-        </div>
-      </div>
+          </motion.a>
+        </motion.div>
+      </motion.div>
 
-      <div className="flex justify-end pr-0">
+      <motion.div
+        className="flex justify-end pr-0"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      >
         <ThreeDMarquee images={marqueeImages} />
-      </div>
+      </motion.div>
     </section>
   )
 }

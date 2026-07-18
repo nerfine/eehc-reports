@@ -1,10 +1,10 @@
-export const dynamic = "force-static";
+export const dynamic = "force-static"
 import { NextRequest, NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { getAuthFromRequest } from '@/lib/auth'
 
 const REPORTS_DIR = path.join(process.cwd(), 'components', 'reports')
-const THUMBNAILS_DIR = path.join(process.cwd(), 'public', 'thumbmails')
 
 export async function GET() {
   try {
@@ -22,11 +22,17 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  if (!getAuthFromRequest(request)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const report = await request.json()
+    if (!report.id || typeof report.id !== 'string') {
+      return NextResponse.json({ error: 'Invalid report id' }, { status: 400 })
+    }
+    const safeName = path.basename(`${report.id}.json`)
     await fs.mkdir(REPORTS_DIR, { recursive: true })
-    const filePath = path.join(REPORTS_DIR, `${report.id}.json`)
-    await fs.writeFile(filePath, JSON.stringify(report, null, 2))
+    await fs.writeFile(path.join(REPORTS_DIR, safeName), JSON.stringify(report, null, 2))
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ error: 'Failed to save report' }, { status: 500 })
@@ -34,11 +40,17 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+  if (!getAuthFromRequest(request)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const report = await request.json()
+    if (!report.id || typeof report.id !== 'string') {
+      return NextResponse.json({ error: 'Invalid report id' }, { status: 400 })
+    }
+    const safeName = path.basename(`${report.id}.json`)
     await fs.mkdir(REPORTS_DIR, { recursive: true })
-    const filePath = path.join(REPORTS_DIR, `${report.id}.json`)
-    await fs.writeFile(filePath, JSON.stringify(report, null, 2))
+    await fs.writeFile(path.join(REPORTS_DIR, safeName), JSON.stringify(report, null, 2))
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ error: 'Failed to update report' }, { status: 500 })
@@ -46,10 +58,16 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  if (!getAuthFromRequest(request)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const { id } = await request.json()
-    const filePath = path.join(REPORTS_DIR, `${id}.json`)
-    await fs.unlink(filePath)
+    if (!id || typeof id !== 'string') {
+      return NextResponse.json({ error: 'Invalid id' }, { status: 400 })
+    }
+    const safeName = path.basename(`${id}.json`)
+    await fs.unlink(path.join(REPORTS_DIR, safeName))
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ error: 'Failed to delete report' }, { status: 500 })

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import { X, Plus, Pencil, Upload } from "lucide-react"
 import { Report, getRandomGradient } from "@/lib/reports-context"
 import { useRouter } from "next/navigation"
@@ -87,7 +88,12 @@ export function ReportFormModal({ open, onClose, onSave, editReport }: ReportFor
     try {
       const formData = new FormData()
       formData.append("file", thumbnailFile)
-      const res = await fetch("/api/upload", { method: "POST", body: formData })
+      const session = localStorage.getItem("ehc_session")
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: session ? { Authorization: `Bearer ${session}` } : {},
+        body: formData,
+      })
       const data = await res.json()
       return data.url || thumbnailUrl
     } catch {
@@ -144,10 +150,25 @@ export function ReportFormModal({ open, onClose, onSave, editReport }: ReportFor
   )
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center">
+          <motion.div
+            className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={onClose}
+          />
 
-      <div className="relative w-full max-w-lg mx-4 bg-card border border-border rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto">
+          <motion.div
+            className="relative w-full max-w-lg mx-4 bg-card border border-border rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto"
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
         {/* Header */}
         <div className="flex items-center justify-between p-6 pb-0">
           <div className="flex items-center gap-3">
@@ -268,15 +289,17 @@ export function ReportFormModal({ open, onClose, onSave, editReport }: ReportFor
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-lg border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+            <motion.button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-lg border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" whileTap={{ scale: 0.97 }}>
               Cancel
-            </button>
-            <button type="submit" className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity">
+            </motion.button>
+            <motion.button type="submit" className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
               {isEditing ? "Update Report" : "Create Report"}
-            </button>
+            </motion.button>
           </div>
         </form>
-      </div>
-    </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   )
 }

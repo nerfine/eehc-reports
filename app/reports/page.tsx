@@ -1,11 +1,13 @@
 "use client"
 
 import { useState, useMemo, Fragment } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import { Filter, ChevronDown, FileText, ShieldCheck, Globe, SearchX, RotateCcw, Plus, Pencil, Trash2, MoreVertical } from "lucide-react"
 import Link from "next/link"
 import { useReports, Report } from "@/lib/reports-context"
 import { useAdmin } from "@/lib/admin-context"
 import { ReportFormModal } from "@/components/report-form-modal"
+import { Reveal } from "@/components/reveal"
 
 const PLATFORMS = ["windows", "apple", "android", "macos"]
 const DETECTIONS = ["all", "undetected", "detected", "client-mod-bypass", "possible-banwave", "unknown"]
@@ -121,44 +123,58 @@ export default function ReportsPage() {
     <div className={`flex min-h-[calc(100vh-73px)] transition-[margin] duration-300 ${sidebarOpen ? "mr-[360px]" : ""}`}>
       <div className="flex-1 p-8 max-w-[1280px] mx-auto min-w-0">
         {/* Header */}
-        <div className="flex items-start justify-between gap-5 mb-6">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Reports</h1>
-            <p className="text-muted-foreground text-sm mt-1">Browse and analyze all executor reports.</p>
-          </div>
-          <div className="flex items-center gap-3">
-            {isAdmin && (
-              <button
-                onClick={() => { setEditingReport(null); setFormOpen(true) }}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+        <Reveal>
+          <div className="flex items-start justify-between gap-5 mb-6">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">Reports</h1>
+              <p className="text-muted-foreground text-sm mt-1">Browse and analyze all executor reports.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              {isAdmin && (
+                <motion.button
+                  onClick={() => { setEditingReport(null); setFormOpen(true) }}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Plus className="w-4 h-4" /> New Report
+                </motion.button>
+              )}
+              <motion.button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className={`flex items-center gap-2.5 px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
+                  sidebarOpen
+                    ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10"
+                    : "text-foreground/80 border-border bg-card hover:bg-secondary"
+                }`}
+                whileTap={{ scale: 0.97 }}
               >
-                <Plus className="w-4 h-4" /> New Report
-              </button>
-            )}
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className={`flex items-center gap-2.5 px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
-                sidebarOpen
-                  ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10"
-                  : "text-foreground/80 border-border bg-card hover:bg-secondary"
-              }`}
-            >
-              <Filter className="w-4 h-4" /> Filters
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${sidebarOpen ? "rotate-180" : ""}`} />
-            </button>
+                <Filter className="w-4 h-4" /> Filters
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${sidebarOpen ? "rotate-180" : ""}`} />
+              </motion.button>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
-          <StatCard icon={FileText} label="Total Reports" value={filtered.length}>
-            <span className="flex gap-6 text-sm text-muted-foreground">
-              <span>Internal <b className="text-emerald-400 font-semibold">{internalCount}</b></span>
-              <span>External <b className="text-blue-400 font-semibold">{externalCount}</b></span>
-            </span>
-          </StatCard>
-          <StatCard icon={ShieldCheck} label="Internal Reports" value={internalCount} color="text-emerald-400" />
-          <StatCard icon={Globe} label="External Reports" value={externalCount} color="text-blue-400" />
+          {[
+            { icon: FileText, label: "Total Reports", value: filtered.length, color: undefined, extra: (
+              <span className="flex gap-6 text-sm text-muted-foreground">
+                <span>Internal <b className="text-emerald-400 font-semibold">{internalCount}</b></span>
+                <span>External <b className="text-blue-400 font-semibold">{externalCount}</b></span>
+              </span>
+            )},
+            { icon: ShieldCheck, label: "Internal Reports", value: internalCount, color: "text-emerald-400" },
+            { icon: Globe, label: "External Reports", value: externalCount, color: "text-blue-400" },
+          ].map((card, i) => (
+            <Reveal key={card.label} delay={i * 0.08}>
+              <StatCard icon={card.icon} label={card.label} value={card.value} color={card.color}>
+                {card.extra}
+              </StatCard>
+            </Reveal>
+          ))}
         </div>
 
         {/* Table */}
@@ -184,9 +200,14 @@ export default function ReportsPage() {
                   </td>
                 </tr>
               ) : (
-                filtered.map((r) => (
+                filtered.map((r, i) => (
                   <Fragment key={r.id}>
-                    <tr className="border-b border-border/40 hover:bg-white/[0.02] transition-colors">
+                    <motion.tr
+                      className="border-b border-border/40 hover:bg-white/[0.02] transition-colors"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                    >
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3.5">
                           <div className={`w-[66px] h-[44px] rounded-lg flex items-center justify-center text-white font-bold text-[11px] tracking-wide overflow-hidden ${r.thumbnailUrl ? "" : r.bg}`}>
@@ -225,45 +246,67 @@ export default function ReportsPage() {
                               >
                                 <MoreVertical className="w-4 h-4" />
                               </button>
-                              {menuOpen === r.id && (
-                                <div className="absolute right-0 top-full mt-1 w-36 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden">
-                                  <button
-                                    onClick={() => { handleEdit(r); setMenuOpen(null) }}
-                                    className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                              <AnimatePresence>
+                                {menuOpen === r.id && (
+                                  <motion.div
+                                    className="absolute right-0 top-full mt-1 w-36 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden"
+                                    initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95, y: -4 }}
+                                    transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
                                   >
-                                    <Pencil className="w-3.5 h-3.5" /> Edit
-                                  </button>
-                                  <button
-                                    onClick={() => { setDeleteConfirm(r.id); setMenuOpen(null) }}
-                                    className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
-                                  >
-                                    <Trash2 className="w-3.5 h-3.5" /> Delete
-                                  </button>
-                                </div>
-                              )}
+                                    <button
+                                      onClick={() => { handleEdit(r); setMenuOpen(null) }}
+                                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                                    >
+                                      <Pencil className="w-3.5 h-3.5" /> Edit
+                                    </button>
+                                    <button
+                                      onClick={() => { setDeleteConfirm(r.id); setMenuOpen(null) }}
+                                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" /> Delete
+                                    </button>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
                           )}
                         </div>
                       </td>
-                    </tr>
+                    </motion.tr>
                     {deleteConfirm === r.id && (
-                      <tr className="bg-red-500/5">
+                      <motion.tr
+                        className="bg-red-500/5"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
                         <td colSpan={6} className="px-5 py-3">
                           <div className="flex items-center justify-between">
                             <span className="text-sm text-red-400">
                               Are you sure you want to delete <b>{r.name}</b>?
                             </span>
                             <div className="flex items-center gap-2">
-                              <button onClick={() => handleDelete(r.id)} className="px-3 py-1.5 rounded-md text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors">
+                              <motion.button
+                                onClick={() => handleDelete(r.id)}
+                                className="px-3 py-1.5 rounded-md text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors"
+                                whileTap={{ scale: 0.95 }}
+                              >
                                 Yes, Delete
-                              </button>
-                              <button onClick={() => setDeleteConfirm(null)} className="px-3 py-1.5 rounded-md text-xs font-medium bg-secondary text-muted-foreground border border-border hover:text-foreground transition-colors">
+                              </motion.button>
+                              <motion.button
+                                onClick={() => setDeleteConfirm(null)}
+                                className="px-3 py-1.5 rounded-md text-xs font-medium bg-secondary text-muted-foreground border border-border hover:text-foreground transition-colors"
+                                whileTap={{ scale: 0.95 }}
+                              >
                                 Cancel
-                              </button>
+                              </motion.button>
                             </div>
                           </div>
                         </td>
-                      </tr>
+                      </motion.tr>
                     )}
                   </Fragment>
                 ))
@@ -279,7 +322,12 @@ export default function ReportsPage() {
       </div>
 
       {/* Filter Sidebar */}
-      <div className={`fixed top-[73px] right-0 bottom-0 w-[360px] bg-card border-l border-border overflow-y-auto z-[90] p-6 transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "translate-x-full"}`}>
+      <motion.div
+        className="fixed top-[73px] right-0 bottom-0 w-[360px] bg-card border-l border-border overflow-y-auto z-[90] p-6"
+        initial={false}
+        animate={{ x: sidebarOpen ? 0 : 360 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-base font-bold">Filters</h2>
           <button onClick={resetFilters} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -350,13 +398,14 @@ export default function ReportsPage() {
           </div>
         </FilterSection>
 
-        <button
+        <motion.button
           onClick={() => setSidebarOpen(false)}
           className="w-full mt-1 py-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-sm font-medium flex items-center justify-center gap-2 hover:bg-emerald-500/15 transition-colors"
+          whileTap={{ scale: 0.97 }}
         >
           Apply Filters <Filter className="w-3.5 h-3.5" />
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       <ReportFormModal
         open={formOpen}

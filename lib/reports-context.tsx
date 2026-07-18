@@ -88,9 +88,13 @@ function getRandomGradient() {
 
 async function apiSave(report: Report) {
   try {
+    const session = localStorage.getItem("ehc_session")
     await fetch("/api/reports", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(session ? { Authorization: `Bearer ${session}` } : {}),
+      },
       body: JSON.stringify(report),
     })
   } catch {}
@@ -98,9 +102,13 @@ async function apiSave(report: Report) {
 
 async function apiDelete(id: string) {
   try {
+    const session = localStorage.getItem("ehc_session")
     await fetch("/api/reports", {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(session ? { Authorization: `Bearer ${session}` } : {}),
+      },
       body: JSON.stringify({ id }),
     })
   } catch {}

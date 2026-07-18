@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import { motion } from "motion/react"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useReports } from "@/lib/reports-context"
@@ -8,6 +9,7 @@ import { CheckList } from "@/components/builder/check-list"
 import { PreviewPanel } from "@/components/builder/preview-panel"
 import { JsonModal } from "@/components/builder/json-modal"
 import { FloatingDock } from "@/components/builder/floating-dock"
+import { Reveal } from "@/components/reveal"
 
 const SECURITY_CHECKS = [
   "Clipboard Data Theft","Registry Key Creation","Run Key Persistence",
@@ -235,9 +237,9 @@ export default function BuilderPage() {
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => router.back()} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground">
+            <motion.button onClick={() => router.back()} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground" whileTap={{ scale: 0.9 }}>
               <ArrowLeft className="w-5 h-5" />
-            </button>
+            </motion.button>
             <div>
               <h1 className="text-xl font-bold">Report Builder</h1>
               <p className="text-sm text-muted-foreground">
@@ -391,7 +393,7 @@ function TopBarBtn({
   children: React.ReactNode
 }) {
   return (
-    <button
+    <motion.button
       onClick={onClick}
       className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${
         saved
@@ -400,9 +402,10 @@ function TopBarBtn({
             ? "bg-primary/10 text-primary border-primary/30"
             : "hover:bg-secondary text-muted-foreground hover:text-foreground border-border"
       }`}
+      whileTap={{ scale: 0.97 }}
     >
       {children}
-    </button>
+    </motion.button>
   )
 }
 
@@ -504,22 +507,23 @@ function StressSection({
             <div key={item.name} className="flex items-center justify-between px-4 py-3 rounded-lg border border-border hover:bg-secondary/30 transition-colors">
               <span className="text-sm font-medium">{item.name}</span>
               <div className="flex gap-1.5">
-                {(["pass", "skip", "flag"] as const).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => onSetStatus(i, s)}
-                    className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
-                      item.status === s
-                        ? s === "pass"
-                          ? "bg-emerald-500/20 text-emerald-400"
-                          : s === "flag"
-                            ? "bg-amber-500/20 text-amber-400"
-                            : "bg-secondary text-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                    }`}
-                  >
+                  {(["pass", "skip", "flag"] as const).map((s) => (
+                    <motion.button
+                      key={s}
+                      onClick={() => onSetStatus(i, s)}
+                      className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+                        item.status === s
+                          ? s === "pass"
+                            ? "bg-emerald-500/20 text-emerald-400"
+                            : s === "flag"
+                              ? "bg-amber-500/20 text-amber-400"
+                              : "bg-secondary text-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                      }`}
+                      whileTap={{ scale: 0.9 }}
+                    >
                     {s === "pass" ? "Pass" : s === "skip" ? "Skip" : "Warning"}
-                  </button>
+                    </motion.button>
                 ))}
               </div>
             </div>

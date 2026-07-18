@@ -1,6 +1,7 @@
 "use client"
 
 import { Suspense, useMemo, useState } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import { ArrowLeft, LayoutGrid, Shield, Zap, Palette, Flame, Infinity } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useReports } from "@/lib/reports-context"
@@ -78,9 +79,9 @@ function ReportContent() {
       <div className="sticky top-0 z-20 bg-[#0a0a0c]/90 backdrop-blur-md border-b border-border">
         <div className="max-w-[1160px] mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => router.back()} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground">
+            <motion.button onClick={() => router.back()} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground" whileTap={{ scale: 0.9 }}>
               <ArrowLeft className="w-5 h-5" />
-            </button>
+            </motion.button>
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,199,123,0.8)]" />
               <span className="font-bold">ExecutorHealthCheck</span>
@@ -130,17 +131,27 @@ function ReportContent() {
         {/* Section nav */}
         <nav className="flex gap-1 flex-wrap border-b border-border mb-9">
           {sections.map(s => (
-            <button key={s.id} onClick={() => setActiveSection(s.id)}
-              className={`flex items-center gap-1.5 text-[13px] font-semibold px-4 py-3 border-b-2 transition-colors ${activeSection === s.id ? "text-foreground border-primary" : "text-muted-foreground border-transparent hover:text-foreground"}`}>
+            <motion.button key={s.id} onClick={() => setActiveSection(s.id)}
+              className={`flex items-center gap-1.5 text-[13px] font-semibold px-4 py-3 border-b-2 transition-colors ${activeSection === s.id ? "text-foreground border-primary" : "text-muted-foreground border-transparent hover:text-foreground"}`}
+              whileTap={{ scale: 0.97 }}
+            >
               <s.icon className="w-3.5 h-3.5" />
               {s.label}
-            </button>
+            </motion.button>
           ))}
         </nav>
       </div>
 
       {/* Main Content */}
       <main className="max-w-[1160px] mx-auto px-6 pb-20">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          >
         {/* Overview */}
         {activeSection === "overview" && (
           <section>
@@ -343,7 +354,9 @@ function ReportContent() {
               </div>
             </div>
           </section>
-        )}
+          )}
+        </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Footer */}

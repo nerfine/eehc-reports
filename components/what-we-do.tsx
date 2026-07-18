@@ -1,5 +1,9 @@
-import { ShieldCheck, LineChart, Code2, ArrowRight } from "lucide-react"
+"use client"
+
+import { motion } from "motion/react"
+import { ShieldCheck, LineChart, Code2 } from "lucide-react"
 import { GlareCard } from "@/components/ui/glare-card"
+import { Reveal } from "@/components/reveal"
 
 const features = [
   {
@@ -22,18 +26,27 @@ const features = [
 export function WhatWeDo() {
   return (
     <section className="py-16">
-      <h2 className="text-center text-3xl font-bold tracking-tight sm:text-4xl">What we do</h2>
-      <p className="mx-auto mt-3 max-w-2xl text-pretty text-center text-muted-foreground">
-        Comprehensive testing and analysis to keep executor environments safe and secure.
-      </p>
+      <Reveal>
+        <h2 className="text-center text-3xl font-bold tracking-tight sm:text-4xl">What we do</h2>
+        <p className="mx-auto mt-3 max-w-2xl text-pretty text-center text-muted-foreground">
+          Comprehensive testing and analysis to keep executor environments safe and secure.
+        </p>
+      </Reveal>
 
       <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {features.map(({ icon: Icon, title, description }) => (
-          <GlareCard key={title} className="flex flex-col items-center justify-center p-8">
-            <Icon className="h-12 w-12 text-white" aria-hidden />
-            <p className="text-white font-bold text-xl mt-4">{title}</p>
-            <p className="text-white/70 text-sm mt-2 text-center">{description}</p>
-          </GlareCard>
+        {features.map(({ icon: Icon, title, description }, i) => (
+          <Reveal key={title} delay={i * 0.12}>
+            <motion.div
+              whileHover={{ y: -6, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <GlareCard className="flex flex-col items-center justify-center p-8 h-full">
+                <Icon className="h-12 w-12 text-white" aria-hidden />
+                <p className="text-white font-bold text-xl mt-4">{title}</p>
+                <p className="text-white/70 text-sm mt-2 text-center">{description}</p>
+              </GlareCard>
+            </motion.div>
+          </Reveal>
         ))}
       </div>
     </section>

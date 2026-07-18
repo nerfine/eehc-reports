@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { motion } from "motion/react"
 
 const links = [
   { label: "Home", href: "/" },
@@ -25,23 +26,28 @@ export function SiteNavbar() {
           {links.map((link) => {
             const isActive = pathname === link.href
             return (
-              <li key={link.href}>
+              <li key={link.href} className="relative">
                 <Link
                   href={link.href}
                   className={
                     isActive
-                      ? "relative pb-1 text-foreground after:absolute after:inset-x-0 after:-bottom-[21px] after:h-0.5 after:bg-primary"
-                      : "text-muted-foreground transition-colors hover:text-foreground"
+                      ? "relative pb-1 text-foreground"
+                      : "relative pb-1 text-muted-foreground transition-colors hover:text-foreground"
                   }
                 >
                   {link.label}
+                  {isActive && (
+                    <motion.div
+                      className="absolute inset-x-0 -bottom-[21px] h-0.5 bg-primary"
+                      layoutId="nav-indicator"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </Link>
               </li>
             )
           })}
         </ul>
-
-
       </nav>
     </header>
   )

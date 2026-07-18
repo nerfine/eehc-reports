@@ -1,3 +1,6 @@
+"use client"
+
+import { motion } from "motion/react"
 import {
   FolderOpen,
   Code2,
@@ -12,6 +15,7 @@ import {
   Binary,
   Braces,
 } from "lucide-react"
+import { Reveal } from "@/components/reveal"
 
 const libraries = [
   {
@@ -246,52 +250,56 @@ export default function FunctionsPage() {
     <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-5xl px-6 py-16">
         {/* Header */}
-        <div className="mb-12">
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-              <Code2 className="h-5 w-5 text-primary" />
+        <Reveal>
+          <div className="mb-12">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                <Code2 className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm font-medium text-muted-foreground">
+                sUNC Standard
+              </span>
             </div>
-            <span className="text-sm font-medium text-muted-foreground">
-              sUNC Standard
-            </span>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              Executor Functions
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+              Complete reference of {totalFunctions} executor functions tested
+              under the sUNC (senS&apos; Unified Naming Convention) standard.
+              Organized by library with signatures and descriptions.
+            </p>
+            <div className="mt-6 flex items-center gap-4 text-sm text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-primary" />
+                {libraries.length} Libraries
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-green-500" />
+                {totalFunctions} Functions
+              </span>
+              <a
+                href="https://docs.sunc.su"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-primary transition-colors hover:text-primary/80"
+              >
+                docs.sunc.su ↗
+              </a>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            Executor Functions
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Complete reference of {totalFunctions} executor functions tested
-            under the sUNC (senS&apos; Unified Naming Convention) standard.
-            Organized by library with signatures and descriptions.
-          </p>
-          <div className="mt-6 flex items-center gap-4 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-primary" />
-              {libraries.length} Libraries
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-green-500" />
-              {totalFunctions} Functions
-            </span>
-            <a
-              href="https://docs.sunc.su"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-primary transition-colors hover:text-primary/80"
-            >
-              docs.sunc.su ↗
-            </a>
-          </div>
-        </div>
+        </Reveal>
 
         {/* Library sections */}
         <div className="space-y-8">
-          {libraries.map((lib) => {
+          {libraries.map((lib, i) => {
             const Icon = lib.icon
             return (
-              <section
-                key={lib.name}
-                className={`rounded-xl border ${lib.border} ${lib.bg} overflow-hidden`}
-              >
+              <Reveal key={lib.name} delay={i * 0.06}>
+                <motion.section
+                  className={`rounded-xl border ${lib.border} ${lib.bg} overflow-hidden`}
+                  whileHover={{ scale: 1.005 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                >
                 {/* Library header */}
                 <div className="flex items-center gap-4 px-6 py-5">
                   <div
@@ -360,7 +368,8 @@ export default function FunctionsPage() {
                     </tbody>
                   </table>
                 </div>
-              </section>
+              </motion.section>
+              </Reveal>
             )
           })}
         </div>
