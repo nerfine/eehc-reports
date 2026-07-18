@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Copy, Check, Download } from "lucide-react"
+import { Eye, EyeOff, Copy, Check, Download, Braces } from "lucide-react"
 
 interface FloatingDockProps {
   showPreview: boolean
@@ -26,7 +26,7 @@ export function FloatingDock({
           tooltip="Preview"
           icon={showPreview ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
         />
-        <DockButton onClick={onShowJson} tooltip="JSON" icon={<JsonIcon />} />
+        <DockButton onClick={onShowJson} tooltip="JSON" icon={<Braces className="w-5 h-5" />} />
         <DockButton
           onClick={onCopy}
           tooltip="Copy"
@@ -72,14 +72,5 @@ function DockButton({
       </span>
       {icon}
     </button>
-  )
-}
-
-function JsonIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <polyline points="16 18 22 12 16 6" />
-      <polyline points="8 6 2 12 8 18" />
-    </svg>
   )
 }
