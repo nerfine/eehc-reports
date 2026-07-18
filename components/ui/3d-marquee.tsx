@@ -16,48 +16,88 @@ export const ThreeDMarquee = ({
   });
 
   return (
-    <div
-      className={cn(
-        "mx-auto block h-[600px] overflow-hidden rounded-2xl max-sm:h-100",
-        className,
-      )}
-    >
-      <div className="flex size-full items-center justify-center">
-        <div className="w-[2200px] h-[1720px] shrink-0 scale-50 sm:scale-75 lg:scale-100">
-          <div
-            style={{
-              transform: "rotateX(55deg) rotateY(0deg) rotateZ(-45deg)",
-            }}
-            className="relative top-96 right-[50%] grid size-full origin-top-left grid-cols-4 gap-8 transform-3d"
-          >
-            {chunks.map((subarray, colIndex) => (
-              <div
-                key={colIndex + "marquee"}
-                className={cn(
-                  "flex flex-col items-start gap-8",
-                  colIndex % 2 === 0 ? "marquee-col-down" : "marquee-col-up"
-                )}
-              >
-                <GridLineVertical className="-left-4" offset="80px" />
-                {subarray.map((image, imageIndex) => (
-                  <div className="relative" key={imageIndex + image}>
-                    <GridLineHorizontal className="-top-4" offset="20px" />
-                    <img
-                      key={imageIndex + image}
-                      src={image}
-                      alt={`Image ${imageIndex + 1}`}
-                      className="aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5 hover:shadow-2xl hover:-translate-y-2.5 transition-transform duration-300"
-                      width={970}
-                      height={700}
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
+    <>
+      {/* Desktop: 3D perspective marquee */}
+      <div
+        className={cn(
+          "mx-auto hidden lg:block h-[600px] overflow-hidden rounded-2xl",
+          className,
+        )}
+      >
+        <div className="flex size-full items-center justify-center">
+          <div className="w-[2200px] h-[1720px] shrink-0 scale-100">
+            <div
+              style={{
+                transform: "rotateX(55deg) rotateY(0deg) rotateZ(-45deg)",
+              }}
+              className="relative top-96 right-[50%] grid size-full origin-top-left grid-cols-4 gap-8 transform-3d"
+            >
+              {chunks.map((subarray, colIndex) => (
+                <div
+                  key={colIndex + "marquee"}
+                  className={cn(
+                    "flex flex-col items-start gap-8",
+                    colIndex % 2 === 0 ? "marquee-col-down" : "marquee-col-up"
+                  )}
+                >
+                  <GridLineVertical className="-left-4" offset="80px" />
+                  {subarray.map((image, imageIndex) => (
+                    <div className="relative" key={imageIndex + image}>
+                      <GridLineHorizontal className="-top-4" offset="20px" />
+                      <img
+                        key={imageIndex + image}
+                        src={image}
+                        alt={`Image ${imageIndex + 1}`}
+                        className="aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5 hover:shadow-2xl hover:-translate-y-2.5 transition-transform duration-300"
+                        width={970}
+                        height={700}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Mobile/Tablet: 2D flat marquee grid */}
+      <div
+        className={cn(
+          "mx-auto block lg:hidden overflow-hidden rounded-2xl h-[260px] sm:h-[340px]",
+          className,
+        )}
+      >
+        <div className="grid grid-cols-2 gap-3 p-3 h-full">
+          {[0, 1].map((colIndex) => (
+            <div
+              key={colIndex + "flat-marquee"}
+              className={cn(
+                "flex flex-col gap-3",
+                colIndex % 2 === 0 ? "marquee-col-down" : "marquee-col-up"
+              )}
+            >
+              {chunks[colIndex]?.map((image, imageIndex) => (
+                <img
+                  key={imageIndex + image}
+                  src={image}
+                  alt={`Image ${imageIndex + 1}`}
+                  className="w-full aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5"
+                />
+              ))}
+              {chunks[colIndex]?.map((image, imageIndex) => (
+                <img
+                  key={imageIndex + image + "-dup"}
+                  src={image}
+                  alt={`Image ${imageIndex + 1}`}
+                  className="w-full aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

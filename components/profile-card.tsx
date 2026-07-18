@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Globe, Mail } from "lucide-react"
+import { Globe, Mail, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAdmin } from "@/lib/admin-context"
 import { AdminLoginModal } from "@/components/admin-login-modal"
@@ -60,9 +60,7 @@ export function ProfileCard({
             <div className="absolute inset-0 rounded-full ring-2 ring-white/10 pointer-events-none" />
             {isAdmin && (
               <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-zinc-900 flex items-center justify-center pointer-events-none animate-scale-in">
-                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
+                <Check className="w-3 h-3 text-white" strokeWidth={3} />
               </div>
             )}
           </div>
