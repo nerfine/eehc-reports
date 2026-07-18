@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react"
 import { ArrowLeft, LayoutGrid, Shield, Zap, Palette, Flame, Infinity } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useReports } from "@/lib/reports-context"
+import { Reveal, StaggerContainer, StaggerItem } from "@/components/reveal"
 
 function ReportContent() {
   const router = useRouter()
@@ -98,14 +99,24 @@ function ReportContent() {
       <div className="max-w-[1160px] mx-auto px-6 pt-10">
         <div className="text-xs font-mono uppercase tracking-[0.12em] text-muted-foreground mb-2">Diagnostic Report</div>
         <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
-          <h1 className="text-[34px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-            {report.name} <span className="text-muted-foreground font-medium">— health report</span>
-          </h1>
-          {report.thumbnailUrl && (
-            <div className="w-[88px] h-[88px] rounded-2xl overflow-hidden border border-white/12 shadow-[0_2px_10px_rgba(91,141,239,0.35)]">
-              <img src={report.thumbnailUrl} alt={report.name} className="w-full h-full object-cover" />
-            </div>
-          )}
+          <div className="flex items-center gap-4">
+            {report.thumbnailUrl && (
+              <motion.div
+                className="w-[88px] h-[88px] rounded-2xl overflow-hidden border border-white/12 shadow-[0_2px_10px_rgba(91,141,239,0.35)]"
+                layoutId={`report-thumb-${report.id}`}
+              >
+                <img src={report.thumbnailUrl} alt={report.name} className="w-full h-full object-cover" />
+              </motion.div>
+            )}
+            <motion.h1
+              className="text-[34px] font-extrabold tracking-tight"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+              layoutId={`report-name-${report.id}`}
+            >
+              {report.name}
+            </motion.h1>
+          </div>
+          <span className="text-muted-foreground font-medium text-lg">— health report</span>
         </div>
 
         {/* Meta strip */}
@@ -150,7 +161,7 @@ function ReportContent() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] as number[] }}
           >
         {/* Overview */}
         {activeSection === "overview" && (

@@ -3,7 +3,7 @@
 import { motion } from "motion/react"
 import { ShieldCheck, LineChart, Code2 } from "lucide-react"
 import { GlareCard } from "@/components/ui/glare-card"
-import { Reveal } from "@/components/reveal"
+import { StaggerContainer, StaggerItem } from "@/components/reveal"
 
 const features = [
   {
@@ -26,18 +26,22 @@ const features = [
 export function WhatWeDo() {
   return (
     <section className="py-16">
-      <Reveal>
-        <h2 className="text-center text-3xl font-bold tracking-tight sm:text-4xl">What we do</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-pretty text-center text-muted-foreground">
-          Comprehensive testing and analysis to keep executor environments safe and secure.
-        </p>
-      </Reveal>
+      <StaggerContainer className="text-center">
+        <StaggerItem>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">What we do</h2>
+        </StaggerItem>
+        <StaggerItem>
+          <p className="mx-auto mt-3 max-w-2xl text-pretty text-muted-foreground">
+            Comprehensive testing and analysis to keep executor environments safe and secure.
+          </p>
+        </StaggerItem>
+      </StaggerContainer>
 
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {features.map(({ icon: Icon, title, description }, i) => (
-          <Reveal key={title} delay={i * 0.12}>
+      <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-3" staggerDelay={0.12}>
+        {features.map(({ icon: Icon, title, description }) => (
+          <StaggerItem key={title}>
             <motion.div
-              whileHover={{ y: -6, scale: 1.02 }}
+              whileHover={{ y: -8, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <GlareCard className="flex flex-col items-center justify-center p-8 h-full">
@@ -46,9 +50,9 @@ export function WhatWeDo() {
                 <p className="text-white/70 text-sm mt-2 text-center">{description}</p>
               </GlareCard>
             </motion.div>
-          </Reveal>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
     </section>
   )
 }

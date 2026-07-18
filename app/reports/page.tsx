@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useReports, Report } from "@/lib/reports-context"
 import { useAdmin } from "@/lib/admin-context"
 import { ReportFormModal } from "@/components/report-form-modal"
-import { Reveal } from "@/components/reveal"
+import { Reveal, StaggerContainer, StaggerItem } from "@/components/reveal"
 
 const PLATFORMS = ["windows", "apple", "android", "macos"]
 const DETECTIONS = ["all", "undetected", "detected", "client-mod-bypass", "possible-banwave", "unknown"]
@@ -22,16 +22,18 @@ const SORT_OPTIONS = [
 
 function Pill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
-    <button
+    <motion.button
       onClick={onClick}
       className={`px-3.5 py-2 rounded-lg text-sm border transition-colors ${
         active
           ? "text-emerald-400 border-emerald-500/40 bg-emerald-500/10 font-semibold"
           : "text-muted-foreground border-border bg-secondary/50 hover:text-foreground"
       }`}
+      whileTap={{ scale: 0.96 }}
+      transition={{ type: "spring", stiffness: 500, damping: 25 }}
     >
       {label}
-    </button>
+    </motion.button>
   )
 }
 
@@ -151,14 +153,19 @@ export default function ReportsPage() {
                 whileTap={{ scale: 0.97 }}
               >
                 <Filter className="w-4 h-4" /> Filters
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${sidebarOpen ? "rotate-180" : ""}`} />
+                <motion.div
+                  animate={{ rotate: sidebarOpen ? 180 : 0 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </motion.div>
               </motion.button>
             </div>
           </div>
         </Reveal>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <StaggerContainer className="grid grid-cols-3 gap-4 mb-6">
           {[
             { icon: FileText, label: "Total Reports", value: filtered.length, color: undefined, extra: (
               <span className="flex gap-6 text-sm text-muted-foreground">
@@ -168,14 +175,14 @@ export default function ReportsPage() {
             )},
             { icon: ShieldCheck, label: "Internal Reports", value: internalCount, color: "text-emerald-400" },
             { icon: Globe, label: "External Reports", value: externalCount, color: "text-blue-400" },
-          ].map((card, i) => (
-            <Reveal key={card.label} delay={i * 0.08}>
+          ].map((card) => (
+            <StaggerItem key={card.label}>
               <StatCard icon={card.icon} label={card.label} value={card.value} color={card.color}>
                 {card.extra}
               </StatCard>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
         {/* Table */}
         <div className="bg-card border border-border rounded-xl overflow-hidden">
@@ -206,19 +213,24 @@ export default function ReportsPage() {
                       className="border-b border-border/40 hover:bg-white/[0.02] transition-colors"
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 0.35, delay: i * 0.035, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3.5">
-                          <div className={`w-[66px] h-[44px] rounded-lg flex items-center justify-center text-white font-bold text-[11px] tracking-wide overflow-hidden ${r.thumbnailUrl ? "" : r.bg}`}>
+                          <motion.div
+                            className={`w-[66px] h-[44px] rounded-lg flex items-center justify-center text-white font-bold text-[11px] tracking-wide overflow-hidden ${r.thumbnailUrl ? "" : r.bg}`}
+                            layoutId={`report-thumb-${r.id}`}
+                          >
                             {r.thumbnailUrl ? (
                               <img src={r.thumbnailUrl} alt={r.name} className="w-full h-full object-cover" />
                             ) : (
                               <span className="text-center leading-tight drop-shadow-md">{r.name.toUpperCase()}</span>
                             )}
-                          </div>
+                          </motion.div>
                           <div>
-                            <div className="font-semibold text-sm">{r.name}</div>
+                            <motion.div className="font-semibold text-sm" layoutId={`report-name-${r.id}`}>
+                              {r.name}
+                            </motion.div>
                             <div className="text-xs text-muted-foreground/60">
                               {r.date} • {r.time} • {r.ver}
                             </div>
@@ -431,7 +443,11 @@ function StatCard({
   children?: React.ReactNode
 }) {
   return (
-    <div className="bg-card border border-border rounded-xl p-5">
+    <motion.div
+      className="bg-card border border-border rounded-xl p-5"
+      whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)" }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+    >
       <div className="flex items-start justify-between mb-3.5">
         <span className="text-muted-foreground text-sm">{label}</span>
         <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground">
@@ -440,7 +456,7 @@ function StatCard({
       </div>
       <div className={`text-4xl font-bold tracking-tight mb-3.5 ${color || ""}`}>{value}</div>
       {children}
-    </div>
+    </motion.div>
   )
 }
 
