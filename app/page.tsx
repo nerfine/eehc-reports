@@ -11,8 +11,13 @@ export default function Page() {
       {/* What we do section with profile card to the left */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 overflow-hidden">
         <div className="relative">
-          <ProfileCard className="absolute -left-110 top-5 hidden xl:block" />
+          <div className="hidden xl:block absolute -left-110 top-5">
+            <ProfileCard />
+          </div>
           <WhatWeDo />
+          <div className="xl:hidden flex justify-center mt-8">
+            <ProfileCard />
+          </div>
         </div>
       </div>
       
