@@ -146,24 +146,13 @@
   }
 }
 
-/* ─── View Transitions ─── */
-@keyframes vt-fade-out {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.98); }
+/* ─── Page Transition ─── */
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-@keyframes vt-fade-in {
-  from { opacity: 0; transform: scale(1.01); }
-  to { opacity: 1; transform: scale(1); }
-}
-::view-transition-old(root) {
-  animation: vt-fade-out 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-::view-transition-new(root) {
-  animation: vt-fade-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-::view-transition-old(root),
-::view-transition-new(root) {
-  mix-blend-mode: normal;
+.page-transition-in {
+  animation: page-fade-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* ─── Scroll Reveal ─── */
