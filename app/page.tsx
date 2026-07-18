@@ -9,9 +9,8 @@ export default function Page() {
       <HeroSection />
       
       {/* What we do section with profile card to the left */}
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 overflow-hidden">
         <div className="relative">
-          {/* Profile card - customize position via className */}
           <ProfileCard className="absolute -left-110 top-5 hidden xl:block" />
           <WhatWeDo />
         </div>

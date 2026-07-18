@@ -92,38 +92,38 @@ function ReportContent() {
         </div>
       </div>
 
-      <div className="max-w-[1160px] mx-auto px-6 pt-10">
+      <div className="max-w-[1160px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10">
         <div className="text-xs font-mono uppercase tracking-[0.12em] text-muted-foreground mb-2">Diagnostic Report</div>
         <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             {report.thumbnailUrl && (
-              <div className="w-[88px] h-[88px] rounded-2xl overflow-hidden border border-white/12 shadow-[0_2px_10px_rgba(91,141,239,0.35)]">
+              <div className="w-16 h-16 sm:w-[88px] sm:h-[88px] rounded-2xl overflow-hidden border border-white/12 shadow-[0_2px_10px_rgba(91,141,239,0.35)] shrink-0">
                 <img src={report.thumbnailUrl} alt={report.name} className="w-full h-full object-cover" />
               </div>
             )}
-            <h1 className="text-[34px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+            <h1 className="text-2xl sm:text-[34px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
               {report.name}
             </h1>
           </div>
-          <span className="text-muted-foreground font-medium text-lg">— health report</span>
+          <span className="text-muted-foreground font-medium text-base sm:text-lg">— health report</span>
         </div>
 
-        <div className="grid grid-cols-4 border border-border rounded-[10px] overflow-hidden mb-7">
-          <div className="p-4 border-r border-border">
+        <div className="grid grid-cols-2 md:grid-cols-4 border border-border rounded-[10px] overflow-hidden mb-7">
+          <div className="p-3 sm:p-4 border-r border-border">
             <div className="text-[10.5px] font-mono uppercase tracking-[0.1em] text-muted-foreground mb-1">Timestamp</div>
-            <div className="text-[15px] font-semibold">{report.timestamp || "—"}</div>
+            <div className="text-sm sm:text-[15px] font-semibold">{report.timestamp || "—"}</div>
           </div>
-          <div className="p-4 border-r border-border">
+          <div className="p-3 sm:p-4 border-r border-border">
             <div className="text-[10.5px] font-mono uppercase tracking-[0.1em] text-muted-foreground mb-1">Total Time</div>
-            <div className="text-[15px] font-semibold">—</div>
+            <div className="text-sm sm:text-[15px] font-semibold">—</div>
           </div>
-          <div className="p-4 border-r border-border">
+          <div className="p-3 sm:p-4 border-r border-border hidden sm:block">
             <div className="text-[10.5px] font-mono uppercase tracking-[0.1em] text-muted-foreground mb-1">Memory</div>
-            <div className="text-[15px] font-semibold">—</div>
+            <div className="text-sm sm:text-[15px] font-semibold">—</div>
           </div>
-          <div className="p-4">
+          <div className="p-3 sm:p-4">
             <div className="text-[10.5px] font-mono uppercase tracking-[0.1em] text-muted-foreground mb-1">Overall Score</div>
-            <div className="text-[15px] font-semibold text-emerald-400">{report.security}%</div>
+            <div className="text-sm sm:text-[15px] font-semibold text-emerald-400">{report.security}%</div>
           </div>
         </div>
 
@@ -139,7 +139,7 @@ function ReportContent() {
         </nav>
       </div>
 
-      <main className="max-w-[1160px] mx-auto px-6 pb-20">
+      <main className="max-w-[1160px] mx-auto px-4 sm:px-6 pb-20">
         <div key={activeSection}>
         {/* Overview */}
         {activeSection === "overview" && (
@@ -190,7 +190,8 @@ function ReportContent() {
               <Shield className="w-5 h-5 text-red-500" /> Security
             </h2>
             <div className="border border-border rounded-[10px] overflow-hidden bg-card shadow-[0_1px_0_rgba(255,255,255,0.03)_inset,0_8px_24px_rgba(0,0,0,0.25)]">
-              <table className="w-full border-collapse">
+              <div className="overflow-x-auto">
+              <table className="w-full border-collapse min-w-[500px]">
                 <thead>
                   <tr>
                     <th className="text-left text-[10.5px] font-mono uppercase tracking-[0.08em] text-muted-foreground bg-[#131317] px-5 py-3 border-b border-border w-[35%]">Check</th>
@@ -212,6 +213,7 @@ function ReportContent() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </section>
         )}
@@ -221,7 +223,7 @@ function ReportContent() {
             <h2 className="text-xl font-bold mb-5 flex items-center gap-2" style={{ fontFamily: "'Syne', sans-serif" }}>
               <Zap className="w-5 h-5 text-primary" /> Functions
             </h2>
-            <div className="grid grid-cols-3 gap-3.5 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-6">
               <div className="bg-card border border-border rounded-[10px] p-5">
                 <div className="text-[10.5px] font-mono uppercase tracking-[0.08em] text-muted-foreground mb-2">Present</div>
                 <div className="text-[26px] font-bold text-emerald-400">{fnPresent}</div>
@@ -236,7 +238,8 @@ function ReportContent() {
               </div>
             </div>
             <div className="border border-border rounded-[10px] overflow-hidden bg-card shadow-[0_1px_0_rgba(255,255,255,0.03)_inset,0_8px_24px_rgba(0,0,0,0.25)]">
-              <table className="w-full border-collapse">
+              <div className="overflow-x-auto">
+              <table className="w-full border-collapse min-w-[500px]">
                 <thead>
                   <tr>
                     <th className="text-left text-[10.5px] font-mono uppercase tracking-[0.08em] text-muted-foreground bg-[#131317] px-5 py-3 border-b border-border w-[35%]">Function</th>
@@ -258,6 +261,7 @@ function ReportContent() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </section>
         )}
@@ -338,7 +342,7 @@ function ReportContent() {
         </div>
       </main>
 
-      <footer className="max-w-[1160px] mx-auto px-6 py-8 border-t border-border text-center text-[12px] text-muted-foreground font-mono">
+      <footer className="max-w-[1160px] mx-auto px-4 sm:px-6 py-8 border-t border-border text-center text-[12px] text-muted-foreground font-mono">
         {report.name} — ExecutorHealthCheck report
       </footer>
     </div>

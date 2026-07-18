@@ -112,15 +112,15 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className={`flex min-h-[calc(100vh-73px)] transition-[margin] duration-300 ${sidebarOpen ? "mr-[360px]" : ""}`}>
-      <div className="flex-1 p-8 max-w-[1280px] mx-auto min-w-0">
+    <div className={`flex min-h-[calc(100vh-73px)] transition-[margin] duration-300 ${sidebarOpen ? "lg:mr-[360px]" : ""}`}>
+      <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1280px] mx-auto min-w-0">
         <Reveal>
-          <div className="flex items-start justify-between gap-5 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Reports</h1>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Reports</h1>
               <p className="text-muted-foreground text-sm mt-1">Browse and analyze all executor reports.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {isAdmin && (
                 <button
                   onClick={() => { setEditingReport(null); setFormOpen(true) }}
@@ -144,7 +144,7 @@ export default function ReportsPage() {
           </div>
         </Reveal>
 
-        <StaggerContainer className="grid grid-cols-3 gap-4 mb-6">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           {[
             { icon: FileText, label: "Total Reports", value: filtered.length, color: undefined, extra: (
               <span className="flex gap-6 text-sm text-muted-foreground">
@@ -164,12 +164,19 @@ export default function ReportsPage() {
         </StaggerContainer>
 
         <div className="bg-card border border-border rounded-xl overflow-hidden">
-          <table className="w-full">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px]">
             <thead>
               <tr className="border-b border-border/60">
-                {["REPORT", "EXECUTOR", "TYPE", "PLATFORM", "SECURITY"].map((h) => (
-                  <th key={h} className="text-left text-[11.5px] font-semibold tracking-wider text-muted-foreground uppercase px-5 py-4">
-                    {h}
+                {[
+                  { label: "REPORT", className: "" },
+                  { label: "EXECUTOR", className: "hidden sm:table-cell" },
+                  { label: "TYPE", className: "hidden md:table-cell" },
+                  { label: "PLATFORM", className: "hidden lg:table-cell" },
+                  { label: "SECURITY", className: "" },
+                ].map((h) => (
+                  <th key={h.label} className={`text-left text-[11.5px] font-semibold tracking-wider text-muted-foreground uppercase px-4 sm:px-5 py-4 ${h.className}`}>
+                    {h.label}
                   </th>
                 ))}
                 <th className="text-right text-[11.5px] font-semibold tracking-wider text-muted-foreground uppercase px-5 py-4">ACTIONS</th>
@@ -188,7 +195,7 @@ export default function ReportsPage() {
                 filtered.map((r) => (
                   <Fragment key={r.id}>
                     <tr className="border-b border-border/40 hover:bg-white/[0.02] transition-colors">
-                      <td className="px-5 py-3">
+                      <td className="px-4 sm:px-5 py-3">
                         <div className="flex items-center gap-3.5">
                           <div
                             className={`w-[66px] h-[44px] rounded-lg flex items-center justify-center text-white font-bold text-[11px] tracking-wide overflow-hidden ${r.thumbnailUrl ? "" : r.bg}`}
@@ -207,15 +214,15 @@ export default function ReportsPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-3 text-sm">{r.exec}</td>
-                      <td className="px-5 py-3">
+                      <td className="px-4 sm:px-5 py-3 text-sm hidden sm:table-cell">{r.exec}</td>
+                      <td className="px-4 sm:px-5 py-3 hidden md:table-cell">
                         <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-md ${r.type === "internal" ? "text-emerald-400 bg-emerald-500/10" : "text-blue-400 bg-blue-500/10"}`}>
                           {r.type.charAt(0).toUpperCase() + r.type.slice(1)}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-sm capitalize text-muted-foreground">{r.platform}</td>
-                      <td className="px-5 py-3 text-emerald-400 font-bold">{r.security}%</td>
-                      <td className="px-5 py-3">
+                      <td className="px-4 sm:px-5 py-3 text-sm capitalize text-muted-foreground hidden lg:table-cell">{r.platform}</td>
+                      <td className="px-4 sm:px-5 py-3 text-emerald-400 font-bold">{r.security}%</td>
+                      <td className="px-4 sm:px-5 py-3">
                         <div className="flex items-center justify-end gap-2">
                           <Link href={`/report/view?id=${r.id}`} className="px-3 py-1.5 rounded-md border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
                             View Report
@@ -279,6 +286,7 @@ export default function ReportsPage() {
               )}
             </tbody>
           </table>
+          </div>
           <div className="flex items-center justify-between px-5 py-4 border-t border-border/40">
             <span className="text-sm text-muted-foreground">
               Showing {filtered.length > 0 ? 1 : 0} to {filtered.length} of {filtered.length} reports
@@ -289,7 +297,7 @@ export default function ReportsPage() {
 
       {/* Filter Sidebar */}
       <div
-        className={`fixed top-[73px] right-0 bottom-0 w-[360px] bg-card border-l border-border overflow-y-auto z-[90] p-6 sidebar-slide ${sidebarOpen ? "open" : ""}`}
+        className={`fixed top-[73px] right-0 bottom-0 w-full sm:w-[360px] bg-card border-l border-border overflow-y-auto z-[90] p-4 sm:p-6 sidebar-slide ${sidebarOpen ? "open" : ""}`}
       >
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-base font-bold">Filters</h2>
@@ -400,7 +408,7 @@ function StatCard({
           <Icon className="w-4 h-4" />
         </div>
       </div>
-      <div className={`text-4xl font-bold tracking-tight mb-3.5 ${color || ""}`}>{value}</div>
+      <div className={`text-3xl sm:text-4xl font-bold tracking-tight mb-3.5 ${color || ""}`}>{value}</div>
       {children}
     </div>
   )

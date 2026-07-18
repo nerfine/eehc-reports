@@ -13,12 +13,12 @@ const marqueeImages = [
 
 export function HeroSection() {
   return (
-    <section className="mx-auto grid max-w-7xl items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
-      <div className="px-6 animate-fade-in-up">
-        <h1 className="text-balance text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
+    <section className="mx-auto grid max-w-7xl items-center gap-8 py-12 sm:gap-12 sm:py-16 lg:grid-cols-2 lg:py-24">
+      <div className="px-4 sm:px-6 animate-fade-in-up">
+        <h1 className="text-balance text-3xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
           Executor diagnostics. Real results.
         </h1>
-        <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
+        <p className="mt-5 max-w-md text-base sm:text-lg leading-relaxed text-muted-foreground sm:mt-6">
           ExecutorHealthCheck scans, tests, and benchmarks executors to deliver real security insights you can trust.
         </p>
         <div className="mt-9 flex flex-wrap gap-4">

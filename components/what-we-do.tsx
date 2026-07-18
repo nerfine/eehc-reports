@@ -24,7 +24,7 @@ const features = [
 
 export function WhatWeDo() {
   return (
-    <section className="py-16">
+    <section className="py-10 sm:py-16">
       <StaggerContainer className="text-center">
         <StaggerItem>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">What we do</h2>

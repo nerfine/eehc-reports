@@ -228,14 +228,14 @@ export default function BuilderPage() {
   return (
     <div className="min-h-[calc(100vh-73px)] bg-background">
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => router.back()} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground active-scale-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <button onClick={() => router.back()} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground active-scale-lg shrink-0">
               <ArrowLeft className="w-5 h-5" />
             </button>
-            <div>
-              <h1 className="text-xl font-bold">Report Builder</h1>
-              <p className="text-sm text-muted-foreground">
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-xl font-bold truncate">Report Builder</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">
                 {latestReport?.name || "Report"} — Stage 2: Detailed Checks
               </p>
             </div>
@@ -251,11 +251,11 @@ export default function BuilderPage() {
         </div>
       </div>
 
-      <div className={`max-w-7xl mx-auto px-6 py-8 grid gap-6 ${showPreview ? "grid-cols-[1fr_400px]" : "grid-cols-1"}`}>
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 grid gap-6 ${showPreview ? "lg:grid-cols-[1fr_400px]" : "grid-cols-1"}`}>
         <div className="min-w-0 space-y-6">
           <FibonacciSection target={fibTarget} length={fibLength} onTargetChange={setFibTarget} onLengthChange={setFibLength} />
 
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <SummaryCard label="Security" count={secPassCount} total={secChecks.length} />
             <SummaryCard label="Functions" count={fnPresentCount} total={fnChecks.length} />
             <SummaryCard label="UI Libs" count={uiLoadedCount} total={uiLibs.length} />

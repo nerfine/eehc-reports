@@ -235,7 +235,7 @@ const totalFunctions = libraries.reduce((acc, lib) => acc + lib.functions.length
 export default function FunctionsPage() {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-5xl px-6 py-16">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10 sm:py-16">
         <Reveal>
           <div className="mb-12">
             <div className="mb-4 flex items-center gap-3">
@@ -244,7 +244,7 @@ export default function FunctionsPage() {
               </div>
               <span className="text-sm font-medium text-muted-foreground">sUNC Standard</span>
             </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Executor Functions</h1>
+            <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">Executor Functions</h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
               Complete reference of {totalFunctions} executor functions tested under the sUNC (senS&apos; Unified Naming Convention) standard. Organized by library with signatures and descriptions.
             </p>
@@ -287,6 +287,7 @@ export default function FunctionsPage() {
                   </div>
 
                   <div className="border-t border-border/50">
+                    <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border/50 bg-background/30">
@@ -309,6 +310,7 @@ export default function FunctionsPage() {
                         ))}
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </section>
               </Reveal>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -11,17 +12,20 @@ const links = [
 
 export function SiteNavbar() {
   const pathname = usePathname()
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
 
   return (
-    <header className="border-b border-border/40 animate-fade-in-up">
-      <nav className="relative mx-auto flex max-w-7xl items-center px-6 py-5">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-          <span>
-            Executor<span className="text-primary">Health</span>Check
-          </span>
+    <header className="border-b border-border/40">
+      <nav className="relative mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-4">
+        <Link href="/" className="text-lg font-bold tracking-tight">
+          Executor<span className="text-primary">Health</span>Check
         </Link>
 
-        <ul className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-9 text-sm lg:flex">
+        <ul className="hidden items-center gap-9 text-sm lg:flex">
           {links.map((link) => {
             const isActive = pathname === link.href
             return (
@@ -43,7 +47,39 @@ export function SiteNavbar() {
             )
           })}
         </ul>
+
+        <button
+          onClick={() => setOpen(!open)}
+          className="flex flex-col justify-center items-center w-8 h-8 gap-1.5 lg:hidden"
+          aria-label="Toggle menu"
+        >
+          <span className={`block w-5 h-0.5 bg-foreground transition-transform duration-200 ${open ? "translate-y-2 rotate-45" : ""}`} />
+          <span className={`block w-5 h-0.5 bg-foreground transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
+          <span className={`block w-5 h-0.5 bg-foreground transition-transform duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+        </button>
       </nav>
+
+      <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-out ${open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}`}>
+        <ul className="px-4 pb-4 space-y-1">
+          {links.map((link) => {
+            const isActive = pathname === link.href
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={`block px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                    isActive
+                      ? "bg-secondary text-foreground font-medium"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </header>
   )
 }
