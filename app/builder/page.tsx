@@ -170,7 +170,7 @@ export default function BuilderPage() {
   const applyImportedData = (data: ReturnType<typeof healthcheckToReportData>) => {
     setSecChecks(data.securityChecks.map(({ name, status }) => ({ name, status })))
     setFnChecks(data.functionChecks.map(({ name, status }) => ({ name, status })))
-    setUILibs(data.uiLibs.map((u) => ({ name: u.name, status: u.cat })))
+    setUILibs(data.uiLibs.map((u) => ({ name: u.name, status: mapUILibCat(u.cat) })))
     setStressLevels(data.stressLevels.map(({ name, status }) => ({ name, status })))
     setFibTarget(data.fibonacci.target)
     setFibLength(data.fibonacci.resultLength)
