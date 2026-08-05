@@ -200,117 +200,137 @@ export default function ReportsPage() {
           ))}
         </StaggerContainer>
 
-        {filtered.length === 0 ? (
-          <div className="bg-card border border-border rounded-xl p-16 text-center text-muted-foreground">
-            <SearchX className="w-12 h-12 mx-auto mb-4 text-muted-foreground/40" />
-            <h3 className="text-foreground font-semibold mb-2">No reports found</h3>
-            <p className="text-sm">Try adjusting your filters to see more results.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {filtered.map((r) => (
-              <Fragment key={r.id}>
-                <div className="group bg-card border border-border rounded-xl overflow-hidden hover:border-emerald-500/30 hover-lift transition-colors flex flex-col">
-                  <Link
-                    href={`/report/view?id=${r.id}`}
-                    className={`relative block w-full aspect-video overflow-hidden ${r.thumbnailUrl ? "" : r.bg}`}
-                  >
-                    {r.thumbnailUrl ? (
-                      <img src={r.thumbnailUrl} alt={r.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-white font-bold text-2xl tracking-wide">
-                        <span className="text-center leading-tight drop-shadow-md px-4">{r.name.toUpperCase()}</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                    <span className={`absolute top-3 left-3 inline-block text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm ${r.type === "internal" ? "text-emerald-400 bg-emerald-500/10" : "text-blue-400 bg-blue-500/10"}`}>
-                      {r.type.charAt(0).toUpperCase() + r.type.slice(1)}
-                    </span>
-                    <span className="absolute bottom-3 right-3 text-emerald-400 font-bold text-xl drop-shadow-md">{r.security}%</span>
-                  </Link>
-                  <div className="p-4 sm:p-5 flex flex-col gap-3 flex-1">
-                    <div>
-                      <div className="font-bold text-base sm:text-lg truncate">{r.name}</div>
-                      <div className="text-xs text-muted-foreground/70 mt-0.5 capitalize">
-                        {r.platform} <span className="text-muted-foreground/40 mx-1">•</span> {r.exec}
-                      </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground/60">{r.date} • {r.time} • {r.ver}</div>
-                    <div className="flex items-center justify-between mt-auto pt-1">
-                      <Link href={`/report/view?id=${r.id}`} className="px-3 py-2 rounded-md border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors min-h-[44px] inline-flex items-center">
-                        View Report
-                      </Link>
-                      {isAdmin && (
-                        <div className="relative">
-                          <button
-                            onClick={() => setMenuOpen(menuOpen === r.id ? null : r.id)}
-                            className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+        <div className="bg-card border border-border rounded-xl overflow-hidden">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[720px]">
+            <thead>
+              <tr className="border-b border-border/60">
+                {[
+                  { label: "REPORT", className: "" },
+                  { label: "EXECUTOR", className: "hidden sm:table-cell" },
+                  { label: "TYPE", className: "hidden md:table-cell" },
+                  { label: "PLATFORM", className: "hidden lg:table-cell" },
+                  { label: "SECURITY", className: "" },
+                ].map((h) => (
+                  <th key={h.label} className={`text-left text-[11.5px] font-semibold tracking-wider text-muted-foreground uppercase px-4 sm:px-5 py-4 ${h.className}`}>
+                    {h.label}
+                  </th>
+                ))}
+                <th className="text-right text-[11.5px] font-semibold tracking-wider text-muted-foreground uppercase px-5 py-4">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-16 text-muted-foreground">
+                    <SearchX className="w-12 h-12 mx-auto mb-4 text-muted-foreground/40" />
+                    <h3 className="text-foreground font-semibold mb-2">No reports found</h3>
+                    <p className="text-sm">Try adjusting your filters to see more results.</p>
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((r) => (
+                  <Fragment key={r.id}>
+                    <tr className="border-b border-border/40 hover:bg-white/[0.02] transition-colors">
+                      <td className="px-4 sm:px-5 py-5 sm:py-6">
+                        <div className="flex items-center gap-4">
+                          <Link
+                            href={`/report/view?id=${r.id}`}
+                            className={`block w-[104px] h-[64px] rounded-lg flex items-center justify-center text-white font-bold text-[12px] tracking-wide overflow-hidden shrink-0 transition-transform hover:scale-[1.04] ${r.thumbnailUrl ? "" : r.bg}`}
                           >
-                            <MoreVertical className="w-4 h-4" />
-                          </button>
-                          {menuOpen === r.id && (
-                            <div className="absolute right-0 bottom-full mb-1 w-36 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden animate-scale-in">
+                            {r.thumbnailUrl ? (
+                              <img src={r.thumbnailUrl} alt={r.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-center leading-tight drop-shadow-md">{r.name.toUpperCase()}</span>
+                            )}
+                          </Link>
+                          <div className="min-w-0">
+                            <div className="font-semibold text-base sm:text-lg">{r.name}</div>
+                            <div className="text-sm text-muted-foreground/60 mt-1">
+                              {r.date} • {r.time} • {r.ver}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 sm:px-5 py-5 sm:py-6 text-base hidden sm:table-cell">{r.exec}</td>
+                      <td className="px-4 sm:px-5 py-5 sm:py-6 hidden md:table-cell">
+                        <span className={`inline-block text-sm font-semibold px-3 py-1.5 rounded-md ${r.type === "internal" ? "text-emerald-400 bg-emerald-500/10" : "text-blue-400 bg-blue-500/10"}`}>
+                          {r.type.charAt(0).toUpperCase() + r.type.slice(1)}
+                        </span>
+                      </td>
+                      <td className="px-4 sm:px-5 py-5 sm:py-6 text-base capitalize text-muted-foreground hidden lg:table-cell">{r.platform}</td>
+                      <td className="px-4 sm:px-5 py-5 sm:py-6 text-emerald-400 font-bold text-lg">{r.security}%</td>
+                      <td className="px-4 sm:px-5 py-5 sm:py-6">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link href={`/report/view?id=${r.id}`} className="px-3 py-2 rounded-md border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors min-h-[44px] inline-flex items-center">
+                            View Report
+                          </Link>
+                          {isAdmin && (
+                            <div className="relative">
                               <button
-                                onClick={() => { handleEdit(r); setMenuOpen(null) }}
-                                className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                                onClick={() => setMenuOpen(menuOpen === r.id ? null : r.id)}
+                                className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
                               >
-                                <Pencil className="w-3.5 h-3.5" /> Edit
+                                <MoreVertical className="w-4 h-4" />
                               </button>
-                              <button
-                                onClick={() => { setDeleteConfirm(r.id); setMenuOpen(null) }}
-                                className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" /> Delete
-                              </button>
+                              {menuOpen === r.id && (
+                                <div className="absolute right-0 top-full mt-1 w-36 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden animate-scale-in">
+                                  <button
+                                    onClick={() => { handleEdit(r); setMenuOpen(null) }}
+                                    className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                                  >
+                                    <Pencil className="w-3.5 h-3.5" /> Edit
+                                  </button>
+                                  <button
+                                    onClick={() => { setDeleteConfirm(r.id); setMenuOpen(null) }}
+                                    className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" /> Delete
+                                  </button>
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Fragment>
-            ))}
+                      </td>
+                    </tr>
+                    {deleteConfirm === r.id && (
+                      <tr className="bg-red-500/5 animate-fade-in-up">
+                        <td colSpan={6} className="px-5 py-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-red-400">
+                              Are you sure you want to delete <b>{r.name}</b>?
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleDelete(r.id)}
+                                className="px-3 py-2 rounded-md text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors active-scale-sm min-h-[44px]"
+                              >
+                                Yes, Delete
+                              </button>
+                              <button
+                                onClick={() => setDeleteConfirm(null)}
+                                className="px-3 py-2 rounded-md text-xs font-medium bg-secondary text-muted-foreground border border-border hover:text-foreground transition-colors active-scale-sm min-h-[44px]"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                ))
+              )}
+            </tbody>
+          </table>
           </div>
-        )}
-
-        <div className="text-sm text-muted-foreground mt-5">
-          Showing {filtered.length > 0 ? 1 : 0} to {filtered.length} of {filtered.length} reports
+          <div className="flex items-center justify-between px-5 py-4 border-t border-border/40">
+            <span className="text-sm text-muted-foreground">
+              Showing {filtered.length > 0 ? 1 : 0} to {filtered.length} of {filtered.length} reports
+            </span>
+          </div>
         </div>
-
-        {deleteConfirm && (() => {
-          const target = filtered.find((x) => x.id === deleteConfirm)
-          return (
-            <div
-              onClick={() => setDeleteConfirm(null)}
-              className="fixed inset-0 z-[95] bg-black/60 flex items-center justify-center p-4 animate-fade-in-up"
-            >
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="bg-card border border-border rounded-xl p-6 max-w-sm w-full shadow-2xl animate-scale-in"
-              >
-                <h3 className="font-bold mb-2">Delete report?</h3>
-                <p className="text-sm text-muted-foreground mb-5">
-                  Are you sure you want to delete <b>{target?.name}</b>? This cannot be undone.
-                </p>
-                <div className="flex items-center justify-end gap-2">
-                  <button
-                    onClick={() => setDeleteConfirm(null)}
-                    className="px-3 py-2 rounded-md text-xs font-medium bg-secondary text-muted-foreground border border-border hover:text-foreground transition-colors active-scale-sm min-h-[44px]"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => handleDelete(deleteConfirm)}
-                    className="px-3 py-2 rounded-md text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors active-scale-sm min-h-[44px]"
-                  >
-                    Yes, Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          )
-        })()}
       </div>
 
       {/* Filter Sidebar Backdrop */}
