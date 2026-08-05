@@ -1,0 +1,189 @@
+.td-name { font-weight: normal; letter-spacing: 1px; font-size: 12px; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
+Clipboard Data TheftSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Registry Key CreationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Run Key PersistenceSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Registry EnumerationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Installed Software EnumerationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},UAC Bypass AttemptSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Admin Rights CheckSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Service CreationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Scheduled Task CreationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},WMI Event SubscriptionSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},WiFi Password ExtractionSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Saved RDP CredentialsSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Winlogon Registry PersistenceSKIPPEDExecutor does not support OS commandsVIEW DETAIL-- Test skipped at runtime
+},BITS Job AbuseSKIPPEDExecutor does not support OS commandsVIEW DETAIL-- Test skipped at runtime
+},COM Hijacking PersistenceSKIPPEDExecutor does not support OS commandsVIEW DETAIL-- Test skipped at runtime
+},Process List EnumerationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Process TerminationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Anti-Virus DetectionSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Symbolic Link CreationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Hidden Folder CreationSKIPPEDExecutor does not support functionVIEW DETAIL-- Test skipped at runtime
+},Local Network ScanningSKIPPEDexecutor_crashVIEW DETAIL-- Test skipped at runtime
+},Port Scanning CapabilitySKIPPEDexecutor_crashVIEW DETAIL-- Test skipped at runtime
+},HttpRbxApiService:PostAsync()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},HttpRbxApiService:PostAsyncFullUrl()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},HttpRbxApiService:GetAsyncFullUrl()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PerformPurchaseV2()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptBundlePurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptGamePassPurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptProductPurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptPurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptRobloxPurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptThirdPartyPurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PerformPurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:GetRobuxBalance()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptNativePurchaseWithLocalPlayer()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptNativePurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MarketplaceService:PromptCollectiblesPurchase()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},GuiService:OpenBrowserWindow()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},GuiService:OpenNativeOverlay()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},GuiService:OpenBrowserWindow()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},BrowserService:EmitHybridEvent()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},BrowserService:ExecuteJavaScript()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},BrowserService:OpenBrowserWindow()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},BrowserService:OpenNativeOverlay()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},BrowserService:ReturnToJavaScript()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},BrowserService:SendCommand()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:Call()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:GetLast()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:GetMessageId()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:GetProtocolMethodRequestMessageId()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:GetProtocolMethodResponseMessageId()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:MakeRequest()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:Publish()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:PublishProtocolMethodRequest()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:PublishProtocolMethodResponse()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:Subscribe()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:SubscribeToProtocolMethodRequest()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:SubscribeToProtocolMethodResponse()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},OpenCloudService:HttpRequestAsync()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},ScriptContext:AddCoreScriptLocal()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},DataModel:Load()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},DataModel:OpenScreenshotsFolder()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},DataModel:OpenVideosFolder()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},OmniRecommendationsService:MakeRequest()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Players:ReportAbuse()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Players:ReportAbuseV3()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},CoreGui:TakeScreenshot()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Robux API AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},ScriptContext:AddCoreScriptLocalMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},MessageBusService:Publish (URL)MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},os.execute()MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},ContentProvider:PreloadAsyncMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},listfiles() root accessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},System32 Access AttemptMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},User Directory EnumerationMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Program Files Write AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Startup Folder PersistenceMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Browser Data AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},System: OS/IO Library RCEMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},File System: UNC Path BypassMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Network: file:// Protocol AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},System: Console Spam/FreezeMITIGATEDWARNING: Allowed setting massive console titleVIEW DETAIL-- Test passed (mitigated)
+},System: FFI ExposureMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Process Injection AttemptMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},DLL Injection TestMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Data Exfiltration TestMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Environment Variable AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Hidden File CreationMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Chrome Password TheftMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Discord Token ExtractionMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Steam Session HijackingMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},SSH Key TheftMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Browser Cookie ExtractionMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Cryptocurrency Wallet TheftMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Module Script InjectionMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},CoreGui AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Plugin Security BypassMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Require HijackingMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Metatable Protection BypassMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Memory Dump CapabilityMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Stack Trace ManipulationMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Heap Spray DetectionMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Temp Folder Write AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},AppData Roaming AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Desktop File AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Downloads Folder EnumerationMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Documents Folder AccessMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},File Extension SpoofingMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},Path Traversal (Relative)MITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},File Overwrite ProtectionMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},WebSocket ConnectionMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},FTP Connection AttemptMITIGATEDnilVIEW DETAIL-- Test passed (mitigated)
+},IP Geolocation LeakMITIGATEDWARNING: IP geolocation accessibleVIEW DETAIL-- Test passed (mitigated)
+FUNCTIONCATEGORYSTATUSDrawingMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: Drawing
+endappendfileMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: appendfile
+endcheckcallerEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: checkcaller
+endcrypt.base64decodeEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: crypt.base64decode
+endcrypt.base64encodeEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: crypt.base64encode
+endcrypt.decryptEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: crypt.decrypt
+endcrypt.encryptEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: crypt.encrypt
+endcrypt.generatebytesEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: crypt.generatebytes
+endcrypt.generatekeyEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: crypt.generatekey
+endcrypt.hashEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: crypt.hash
+enddecompileMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: decompile
+enddelfileMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: delfile
+enddumpstringEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: dumpstring
+endgetcallingscriptEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getcallingscript
+endgetconnectionsEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getconnections
+endgetconstantDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getconstant
+endgetconstantsDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getconstants
+endgetfenvEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getfenv
+endgetgcEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getgc
+endgetgenvEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getgenv
+endgethiddenpropertyMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: gethiddenproperty
+endgetinfoDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getinfo
+endgetinstancesEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getinstances
+endgetloadedmodulesEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getloadedmodules
+endgetmenvEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getmenv
+endgetnamecallmethodEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getnamecallmethod
+endgetnilinstancesEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getnilinstances
+endgetprotoDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getproto
+endgetprotosDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getprotos
+endgetrawmetatableEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getrawmetatable
+endgetregEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getreg
+endgetscriptsEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getscripts
+endgetsenvEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: getsenv
+endgetstackDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getstack
+endgetupvalueDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getupvalue
+endgetupvaluesDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: getupvalues
+endhookfunctionEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: hookfunction
+endislclosureEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: islclosure
+endisreadonlyEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: isreadonly
+endlistfilesMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: listfiles
+endloadfileMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: loadfile
+endloadstringEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: loadstring
+endmakefolderMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: makefolder
+endnewcclosureEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: newcclosure
+endreadfileMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: readfile
+endreplaceclosureEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: replaceclosure
+endrequestEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: request
+endsetconstantDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: setconstant
+endsetfflagEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: setfflag
+endsethiddenpropertyMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: sethiddenproperty
+endsetmetatableDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: setmetatable
+endsetnamecallmethodEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: setnamecallmethod
+endsetreadonlyEXECUTOR FUNCTIONSPRESENTVIEW DETAIL-- Function: setreadonly
+endsetstackDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: setstack
+endsetupvalueDEBUG FUNCTIONSPRESENTVIEW DETAIL-- Function: setupvalue
+endwritefileMISC FUNCTIONSPRESENTVIEW DETAIL-- Function: writefile
+OrionLibLOADEDVIEW DETAIL-- Library: OrionLib
+-- It is injected into the executor environment and ready to use.RayfieldLOADEDVIEW DETAIL-- Library: Rayfield
+-- It is injected into the executor environment and ready to use.SiriusLibLOADEDVIEW DETAIL-- Library: SiriusLib
+-- It is injected into the executor environment and ready to use.WallyV3LOADEDVIEW DETAIL-- Library: WallyV3
+-- It is injected into the executor environment and ready to use.ReGuiFAILEDVIEW DETAIL-- Library: ReGui
+-- Error detail: ReGui - TimeoutBracketLOADEDVIEW DETAIL-- Library: Bracket
+-- It is injected into the executor environment and ready to use.ObsidianLOADEDVIEW DETAIL-- Library: Obsidian
+-- It is injected into the executor environment and ready to use.LinoriaLibLOADEDVIEW DETAIL-- Library: LinoriaLib
+-- It is injected into the executor environment and ready to use.Darius (Wax)LOADEDVIEW DETAIL-- Library: Darius (Wax)
+-- It is injected into the executor environment and ready to use.Darius (Min)LOADEDVIEW DETAIL-- Library: Darius (Min)
+-- It is injected into the executor environment and ready to use.Darius (RBXM)LOADEDVIEW DETAIL-- Library: Darius (RBXM)
+-- It is injected into the executor environment and ready to use.Linoria (wis-h)LOADEDVIEW DETAIL-- Library: Linoria (wis-h)
+-- It is injected into the executor environment and ready to use.MonolithFAILEDVIEW DETAIL-- Library: Monolith
+Very Light10,0000.002s5,332,872/sPASSVIEW DETAIL-- Stage: Very Light
+endLight100,0000.018s5,714,077/sPASSVIEW DETAIL-- Stage: Light
+endMedium500,0000.092s5,412,284/sPASSVIEW DETAIL-- Stage: Medium
+endHeavy1,000,0000.184s5,431,868/sPASSVIEW DETAIL-- Stage: Heavy
+endVery Heavy10,000,0001.795s5,570,800/sPASSVIEW DETAIL-- Stage: Very Heavy
+endExtreme50,000,0009.175s5,449,858/sPASSVIEW DETAIL-- Stage: Extreme

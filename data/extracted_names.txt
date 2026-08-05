@@ -1,0 +1,189 @@
+.td-name { font-weight: normal; letter-spacing: 1px; font-size: 12px; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
+Clipboard Data Theft
+Registry Key Creation
+Run Key Persistence
+Registry Enumeration
+Installed Software Enumeration
+UAC Bypass Attempt
+Admin Rights Check
+Service Creation
+Scheduled Task Creation
+WMI Event Subscription
+WiFi Password Extraction
+Saved RDP Credentials
+Winlogon Registry Persistence
+BITS Job Abuse
+COM Hijacking Persistence
+Process List Enumeration
+Process Termination
+Anti-Virus Detection
+Symbolic Link Creation
+Hidden Folder Creation
+Local Network Scanning
+Port Scanning Capability
+HttpRbxApiService:PostAsync()
+HttpRbxApiService:PostAsyncFullUrl()
+HttpRbxApiService:GetAsyncFullUrl()
+MarketplaceService:PerformPurchaseV2()
+MarketplaceService:PromptBundlePurchase()
+MarketplaceService:PromptGamePassPurchase()
+MarketplaceService:PromptProductPurchase()
+MarketplaceService:PromptPurchase()
+MarketplaceService:PromptRobloxPurchase()
+MarketplaceService:PromptThirdPartyPurchase()
+MarketplaceService:PerformPurchase()
+MarketplaceService:GetRobuxBalance()
+MarketplaceService:PromptNativePurchaseWithLocalPlayer()
+MarketplaceService:PromptNativePurchase()
+MarketplaceService:PromptCollectiblesPurchase()
+GuiService:OpenBrowserWindow()
+GuiService:OpenNativeOverlay()
+GuiService:OpenBrowserWindow()
+BrowserService:EmitHybridEvent()
+BrowserService:ExecuteJavaScript()
+BrowserService:OpenBrowserWindow()
+BrowserService:OpenNativeOverlay()
+BrowserService:ReturnToJavaScript()
+BrowserService:SendCommand()
+MessageBusService:Call()
+MessageBusService:GetLast()
+MessageBusService:GetMessageId()
+MessageBusService:GetProtocolMethodRequestMessageId()
+MessageBusService:GetProtocolMethodResponseMessageId()
+MessageBusService:MakeRequest()
+MessageBusService:Publish()
+MessageBusService:PublishProtocolMethodRequest()
+MessageBusService:PublishProtocolMethodResponse()
+MessageBusService:Subscribe()
+MessageBusService:SubscribeToProtocolMethodRequest()
+MessageBusService:SubscribeToProtocolMethodResponse()
+OpenCloudService:HttpRequestAsync()
+ScriptContext:AddCoreScriptLocal()
+DataModel:Load()
+DataModel:OpenScreenshotsFolder()
+DataModel:OpenVideosFolder()
+OmniRecommendationsService:MakeRequest()
+Players:ReportAbuse()
+Players:ReportAbuseV3()
+CoreGui:TakeScreenshot()
+Robux API Access
+ScriptContext:AddCoreScriptLocal
+MessageBusService:Publish (URL)
+os.execute()
+ContentProvider:PreloadAsync
+listfiles() root access
+System32 Access Attempt
+User Directory Enumeration
+Program Files Write Access
+Startup Folder Persistence
+Browser Data Access
+System: OS/IO Library RCE
+File System: UNC Path Bypass
+Network: file:// Protocol Access
+System: Console Spam/Freeze
+System: FFI Exposure
+Process Injection Attempt
+DLL Injection Test
+Data Exfiltration Test
+Environment Variable Access
+Hidden File Creation
+Chrome Password Theft
+Discord Token Extraction
+Steam Session Hijacking
+SSH Key Theft
+Browser Cookie Extraction
+Cryptocurrency Wallet Theft
+Module Script Injection
+CoreGui Access
+Plugin Security Bypass
+Require Hijacking
+Metatable Protection Bypass
+Memory Dump Capability
+Stack Trace Manipulation
+Heap Spray Detection
+Temp Folder Write Access
+AppData Roaming Access
+Desktop File Access
+Downloads Folder Enumeration
+Documents Folder Access
+File Extension Spoofing
+Path Traversal (Relative)
+File Overwrite Protection
+WebSocket Connection
+FTP Connection Attempt
+IP Geolocation Leak
+Drawing
+appendfile
+checkcaller
+crypt.base64decode
+crypt.base64encode
+crypt.decrypt
+crypt.encrypt
+crypt.generatebytes
+crypt.generatekey
+crypt.hash
+decompile
+delfile
+dumpstring
+getcallingscript
+getconnections
+getconstant
+getconstants
+getfenv
+getgc
+getgenv
+gethiddenproperty
+getinfo
+getinstances
+getloadedmodules
+getmenv
+getnamecallmethod
+getnilinstances
+getproto
+getprotos
+getrawmetatable
+getreg
+getscripts
+getsenv
+getstack
+getupvalue
+getupvalues
+hookfunction
+islclosure
+isreadonly
+listfiles
+loadfile
+loadstring
+makefolder
+newcclosure
+readfile
+replaceclosure
+request
+setconstant
+setfflag
+sethiddenproperty
+setmetatable
+setnamecallmethod
+setreadonly
+setstack
+setupvalue
+writefile
+OrionLib
+Rayfield
+SiriusLib
+WallyV3
+ReGui
+Bracket
+Obsidian
+LinoriaLib
+Darius (Wax)
+Darius (Min)
+Darius (RBXM)
+Linoria (wis-h)
+Monolith
+Very Light
+Light
+Medium
+Heavy
+Very Heavy
+Extreme

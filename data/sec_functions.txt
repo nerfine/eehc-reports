@@ -1,0 +1,514 @@
+<section class="sec" id="functions">
+  <div class="sh">
+    <div class="sh-title">FUNCTIONS</div>
+    <div class="sh-meta">56 CHECKED · 56 PRESENT · 0 MISSING</div>
+  </div>
+  <div class="stat-grid" style="margin-bottom:24px">
+    <div class='stat-card stat-pass'><div class='stat-val'>56</div><div class='stat-label'>PRESENT</div><div class='stat-bar'></div></div>    <div class='stat-card stat-fail'><div class='stat-val'>0</div><div class='stat-label'>MISSING</div><div class='stat-bar'></div></div>    <div class='stat-card stat-pass'><div class='stat-val'>100%</div><div class='stat-label'>COVERAGE</div><div class='stat-sub'>56 checked</div><div class='stat-bar'></div></div>  </div>
+  <div class='tbl-wrap'><table><thead><tr><th class='th-accent'></th><th>FUNCTION</th><th>CATEGORY</th><th>STATUS</th><th></th></tr></thead><tbody><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>Drawing</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p114',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p114'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: Drawing
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if Drawing then
+    print("Drawing is available")
+else
+    print("Drawing is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>appendfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p115',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p115'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: appendfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if appendfile then
+    print("appendfile is available")
+else
+    print("appendfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>checkcaller</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p116',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p116'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: checkcaller
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if checkcaller then
+    print("checkcaller is available")
+else
+    print("checkcaller is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.base64decode</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p117',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p117'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.base64decode
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.base64decode then
+    print("crypt.base64decode is available")
+else
+    print("crypt.base64decode is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.base64encode</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p118',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p118'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.base64encode
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.base64encode then
+    print("crypt.base64encode is available")
+else
+    print("crypt.base64encode is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.decrypt</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p119',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p119'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.decrypt
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.decrypt then
+    print("crypt.decrypt is available")
+else
+    print("crypt.decrypt is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.encrypt</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p120',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p120'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.encrypt
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.encrypt then
+    print("crypt.encrypt is available")
+else
+    print("crypt.encrypt is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.generatebytes</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p121',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p121'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.generatebytes
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.generatebytes then
+    print("crypt.generatebytes is available")
+else
+    print("crypt.generatebytes is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.generatekey</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p122',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p122'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.generatekey
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.generatekey then
+    print("crypt.generatekey is available")
+else
+    print("crypt.generatekey is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>crypt.hash</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p123',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p123'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: crypt.hash
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if crypt.hash then
+    print("crypt.hash is available")
+else
+    print("crypt.hash is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>decompile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p124',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p124'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: decompile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if decompile then
+    print("decompile is available")
+else
+    print("decompile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>delfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p125',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p125'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: delfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if delfile then
+    print("delfile is available")
+else
+    print("delfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>dumpstring</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p126',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p126'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: dumpstring
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if dumpstring then
+    print("dumpstring is available")
+else
+    print("dumpstring is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getcallingscript</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p127',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p127'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getcallingscript
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getcallingscript then
+    print("getcallingscript is available")
+else
+    print("getcallingscript is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getconnections</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p128',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p128'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getconnections
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getconnections then
+    print("getconnections is available")
+else
+    print("getconnections is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getconstant</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p129',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p129'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getconstant
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getconstant then
+    print("getconstant is available")
+else
+    print("getconstant is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getconstants</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p130',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p130'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getconstants
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getconstants then
+    print("getconstants is available")
+else
+    print("getconstants is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getfenv</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p131',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p131'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getfenv
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getfenv then
+    print("getfenv is available")
+else
+    print("getfenv is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getgc</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p132',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p132'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getgc
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getgc then
+    print("getgc is available")
+else
+    print("getgc is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getgenv</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p133',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p133'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getgenv
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getgenv then
+    print("getgenv is available")
+else
+    print("getgenv is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>gethiddenproperty</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p134',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p134'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: gethiddenproperty
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if gethiddenproperty then
+    print("gethiddenproperty is available")
+else
+    print("gethiddenproperty is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getinfo</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p135',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p135'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getinfo
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getinfo then
+    print("getinfo is available")
+else
+    print("getinfo is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getinstances</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p136',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p136'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getinstances
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getinstances then
+    print("getinstances is available")
+else
+    print("getinstances is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getloadedmodules</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p137',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p137'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getloadedmodules
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getloadedmodules then
+    print("getloadedmodules is available")
+else
+    print("getloadedmodules is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getmenv</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p138',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p138'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getmenv
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getmenv then
+    print("getmenv is available")
+else
+    print("getmenv is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getnamecallmethod</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p139',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p139'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getnamecallmethod
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getnamecallmethod then
+    print("getnamecallmethod is available")
+else
+    print("getnamecallmethod is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getnilinstances</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p140',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p140'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getnilinstances
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getnilinstances then
+    print("getnilinstances is available")
+else
+    print("getnilinstances is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getproto</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p141',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p141'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getproto
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getproto then
+    print("getproto is available")
+else
+    print("getproto is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getprotos</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p142',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p142'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getprotos
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getprotos then
+    print("getprotos is available")
+else
+    print("getprotos is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getrawmetatable</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p143',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p143'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getrawmetatable
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getrawmetatable then
+    print("getrawmetatable is available")
+else
+    print("getrawmetatable is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getreg</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p144',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p144'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getreg
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getreg then
+    print("getreg is available")
+else
+    print("getreg is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getscripts</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p145',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p145'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getscripts
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getscripts then
+    print("getscripts is available")
+else
+    print("getscripts is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getsenv</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p146',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p146'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getsenv
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getsenv then
+    print("getsenv is available")
+else
+    print("getsenv is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getstack</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p147',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p147'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getstack
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getstack then
+    print("getstack is available")
+else
+    print("getstack is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getupvalue</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p148',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p148'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getupvalue
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getupvalue then
+    print("getupvalue is available")
+else
+    print("getupvalue is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>getupvalues</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p149',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p149'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: getupvalues
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if getupvalues then
+    print("getupvalues is available")
+else
+    print("getupvalues is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>hookfunction</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p150',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p150'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: hookfunction
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if hookfunction then
+    print("hookfunction is available")
+else
+    print("hookfunction is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>islclosure</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p151',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p151'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: islclosure
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if islclosure then
+    print("islclosure is available")
+else
+    print("islclosure is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>isreadonly</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p152',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p152'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: isreadonly
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if isreadonly then
+    print("isreadonly is available")
+else
+    print("isreadonly is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>listfiles</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p153',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p153'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: listfiles
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if listfiles then
+    print("listfiles is available")
+else
+    print("listfiles is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>loadfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p154',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p154'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: loadfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if loadfile then
+    print("loadfile is available")
+else
+    print("loadfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>loadstring</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p155',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p155'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: loadstring
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if loadstring then
+    print("loadstring is available")
+else
+    print("loadstring is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>makefolder</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p156',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p156'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: makefolder
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if makefolder then
+    print("makefolder is available")
+else
+    print("makefolder is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>newcclosure</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p157',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p157'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: newcclosure
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if newcclosure then
+    print("newcclosure is available")
+else
+    print("newcclosure is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>readfile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p158',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p158'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: readfile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if readfile then
+    print("readfile is available")
+else
+    print("readfile is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>replaceclosure</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p159',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p159'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: replaceclosure
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if replaceclosure then
+    print("replaceclosure is available")
+else
+    print("replaceclosure is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>request</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p160',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p160'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: request
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if request then
+    print("request is available")
+else
+    print("request is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setconstant</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p161',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p161'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setconstant
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setconstant then
+    print("setconstant is available")
+else
+    print("setconstant is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setfflag</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p162',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p162'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setfflag
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setfflag then
+    print("setfflag is available")
+else
+    print("setfflag is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>sethiddenproperty</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p163',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p163'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: sethiddenproperty
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if sethiddenproperty then
+    print("sethiddenproperty is available")
+else
+    print("sethiddenproperty is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setmetatable</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p164',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p164'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setmetatable
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setmetatable then
+    print("setmetatable is available")
+else
+    print("setmetatable is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setnamecallmethod</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p165',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p165'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setnamecallmethod
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setnamecallmethod then
+    print("setnamecallmethod is available")
+else
+    print("setnamecallmethod is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setreadonly</td><td class='td-cat'>EXECUTOR FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p166',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p166'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setreadonly
+-- Category: EXECUTOR FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setreadonly then
+    print("setreadonly is available")
+else
+    print("setreadonly is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setstack</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p167',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p167'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setstack
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setstack then
+    print("setstack is available")
+else
+    print("setstack is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>setupvalue</td><td class='td-cat'>DEBUG FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p168',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p168'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: setupvalue
+-- Category: DEBUG FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if setupvalue then
+    print("setupvalue is available")
+else
+    print("setupvalue is NOT available")
+end</pre></td></tr><tr class='row row-pass'><td class='td-accent accent-pass'></td><td class='td-name'>writefile</td><td class='td-cat'>MISC FUNCTIONS</td><td><span class='tag tag-pass'>PRESENT</span></td><td><button class='vbtn vbtn-pass' onclick="toggle('p169',this)">VIEW DETAIL</button></td></tr><tr class='det-row' id='p169'><td colspan='5' class='det-cell accent-pass'><pre class='det-pre'>-- Function: writefile
+-- Category: MISC FUNCTIONS
+-- Status:   PRESENT (loaded by executor)
+
+-- Check:
+if writefile then
+    print("writefile is available")
+else
+    print("writefile is NOT available")
+end</pre></td></tr></tbody></table></div></section>
+
+<section class="sec" id="ui">

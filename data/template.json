@@ -1,0 +1,865 @@
+{
+  "detection": "undetected",
+  "exec": "Madium",
+  "fibonacci": {
+    "resultLength": "2,090 digits",
+    "target": "F(10,000)"
+  },
+  "functionChecks": [
+    {
+      "name": "Drawing",
+      "status": "pass"
+    },
+    {
+      "name": "appendfile",
+      "status": "pass"
+    },
+    {
+      "name": "checkcaller",
+      "status": "pass"
+    },
+    {
+      "name": "cloneref",
+      "status": "pass"
+    },
+    {
+      "name": "compareinstances",
+      "status": "pass"
+    },
+    {
+      "name": "crypt.base64decode",
+      "status": "pass"
+    },
+    {
+      "name": "crypt.base64encode",
+      "status": "pass"
+    },
+    {
+      "name": "crypt.decrypt",
+      "status": "pass"
+    },
+    {
+      "name": "crypt.encrypt",
+      "status": "pass"
+    },
+    {
+      "name": "crypt.generatebytes",
+      "status": "pass"
+    },
+    {
+      "name": "crypt.generatekey",
+      "status": "pass"
+    },
+    {
+      "name": "crypt.hash",
+      "status": "pass"
+    },
+    {
+      "name": "decompile",
+      "status": "pass"
+    },
+    {
+      "name": "delfile",
+      "status": "pass"
+    },
+    {
+      "name": "dumpstring",
+      "status": "pass"
+    },
+    {
+      "name": "fireclickdetector",
+      "status": "pass"
+    },
+    {
+      "name": "fireproximityprompt",
+      "status": "pass"
+    },
+    {
+      "name": "firetouchinterest",
+      "status": "pass"
+    },
+    {
+      "name": "getcallbackvalue",
+      "status": "pass"
+    },
+    {
+      "name": "getcallingscript",
+      "status": "pass"
+    },
+    {
+      "name": "getconnections",
+      "status": "pass"
+    },
+    {
+      "name": "getconstant",
+      "status": "pass"
+    },
+    {
+      "name": "getconstants",
+      "status": "pass"
+    },
+    {
+      "name": "getcustomasset",
+      "status": "pass"
+    },
+    {
+      "name": "getfenv",
+      "status": "pass"
+    },
+    {
+      "name": "getgc",
+      "status": "pass"
+    },
+    {
+      "name": "getgenv",
+      "status": "pass"
+    },
+    {
+      "name": "gethiddenproperty",
+      "status": "pass"
+    },
+    {
+      "name": "gethui",
+      "status": "pass"
+    },
+    {
+      "name": "getinfo",
+      "status": "pass"
+    },
+    {
+      "name": "getinstances",
+      "status": "pass"
+    },
+    {
+      "name": "getloadedmodules",
+      "status": "pass"
+    },
+    {
+      "name": "getnamecallmethod",
+      "status": "pass"
+    },
+    {
+      "name": "getnilinstances",
+      "status": "pass"
+    },
+    {
+      "name": "getproto",
+      "status": "pass"
+    },
+    {
+      "name": "getprotos",
+      "status": "pass"
+    },
+    {
+      "name": "getrawmetatable",
+      "status": "pass"
+    },
+    {
+      "name": "getreg",
+      "status": "pass"
+    },
+    {
+      "name": "getscriptbytecode",
+      "status": "pass"
+    },
+    {
+      "name": "getscripthash",
+      "status": "pass"
+    },
+    {
+      "name": "getscripts",
+      "status": "pass"
+    },
+    {
+      "name": "getsenv",
+      "status": "pass"
+    },
+    {
+      "name": "getstack",
+      "status": "pass"
+    },
+    {
+      "name": "getthreadcontext",
+      "status": "pass"
+    },
+    {
+      "name": "getthreadidentity",
+      "status": "pass"
+    },
+    {
+      "name": "getupvalue",
+      "status": "pass"
+    },
+    {
+      "name": "getupvalues",
+      "status": "pass"
+    },
+    {
+      "name": "hookfunction",
+      "status": "pass"
+    },
+    {
+      "name": "islclosure",
+      "status": "pass"
+    },
+    {
+      "name": "isreadonly",
+      "status": "pass"
+    },
+    {
+      "name": "isrenderobj",
+      "status": "pass"
+    },
+    {
+      "name": "isscriptable",
+      "status": "pass"
+    },
+    {
+      "name": "listfiles",
+      "status": "pass"
+    },
+    {
+      "name": "loadfile",
+      "status": "pass"
+    },
+    {
+      "name": "loadstring",
+      "status": "pass"
+    },
+    {
+      "name": "lz4compress",
+      "status": "pass"
+    },
+    {
+      "name": "lz4decompress",
+      "status": "pass"
+    },
+    {
+      "name": "makefolder",
+      "status": "pass"
+    },
+    {
+      "name": "newcclosure",
+      "status": "pass"
+    },
+    {
+      "name": "readfile",
+      "status": "pass"
+    },
+    {
+      "name": "replaceclosure",
+      "status": "pass"
+    },
+    {
+      "name": "request",
+      "status": "pass"
+    },
+    {
+      "name": "setconstant",
+      "status": "pass"
+    },
+    {
+      "name": "setfflag",
+      "status": "pass"
+    },
+    {
+      "name": "sethiddenproperty",
+      "status": "pass"
+    },
+    {
+      "name": "setmetatable",
+      "status": "pass"
+    },
+    {
+      "name": "setnamecallmethod",
+      "status": "pass"
+    },
+    {
+      "name": "setreadonly",
+      "status": "pass"
+    },
+    {
+      "name": "setscriptable",
+      "status": "pass"
+    },
+    {
+      "name": "setstack",
+      "status": "pass"
+    },
+    {
+      "name": "setthreadcontext",
+      "status": "pass"
+    },
+    {
+      "name": "setthreadidentity",
+      "status": "pass"
+    },
+    {
+      "name": "setupvalue",
+      "status": "pass"
+    },
+    {
+      "name": "writefile",
+      "status": "pass"
+    }
+  ],
+  "functionsSummary": {
+    "coverage": "100%",
+    "missing": "0",
+    "present": "74"
+  },
+  "keySystem": "keyless",
+  "overview": {
+    "functions": "100%",
+    "security": "96%",
+    "stress": "6/6",
+    "uiLibs": "53%"
+  },
+  "platform": "windows",
+  "pricing": "free",
+  "productName": "Madium",
+  "security": 96,
+  "securityChecks": [
+    {
+      "name": "HttpRbxApiService:PostAsync()",
+      "status": "pass"
+    },
+    {
+      "name": "HttpRbxApiService:PostAsyncFullUrl()",
+      "status": "pass"
+    },
+    {
+      "name": "HttpRbxApiService:GetAsyncFullUrl()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PerformPurchaseV2()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptBundlePurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptGamePassPurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptProductPurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptPurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptRobloxPurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptThirdPartyPurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PerformPurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:GetRobuxBalance()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptNativePurchaseWithLocalPlayer()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptNativePurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "MarketplaceService:PromptCollectiblesPurchase()",
+      "status": "pass"
+    },
+    {
+      "name": "GuiService:OpenBrowserWindow()",
+      "status": "pass"
+    },
+    {
+      "name": "GuiService:OpenNativeOverlay()",
+      "status": "pass"
+    },
+    {
+      "name": "GuiService:OpenBrowserWindow()",
+      "status": "pass"
+    },
+    {
+      "name": "BrowserService:EmitHybridEvent()",
+      "status": "pass"
+    },
+    {
+      "name": "BrowserService:ExecuteJavaScript()",
+      "status": "pass"
+    },
+    {
+      "name": "BrowserService:OpenBrowserWindow()",
+      "status": "pass"
+    },
+    {
+      "name": "BrowserService:OpenNativeOverlay()",
+      "status": "pass"
+    },
+    {
+      "name": "BrowserService:ReturnToJavaScript()",
+      "status": "pass"
+    },
+    {
+      "name": "BrowserService:SendCommand()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:Call()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:GetLast()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:GetMessageId()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:GetProtocolMethodRequestMessageId()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:GetProtocolMethodResponseMessageId()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:MakeRequest()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:Publish()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:PublishProtocolMethodRequest()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:PublishProtocolMethodResponse()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:Subscribe()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:SubscribeToProtocolMethodRequest()",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:SubscribeToProtocolMethodResponse()",
+      "status": "pass"
+    },
+    {
+      "name": "OpenCloudService:HttpRequestAsync()",
+      "status": "pass"
+    },
+    {
+      "name": "ScriptContext:AddCoreScriptLocal()",
+      "status": "pass"
+    },
+    {
+      "name": "DataModel:Load()",
+      "status": "pass"
+    },
+    {
+      "name": "DataModel:OpenScreenshotsFolder()",
+      "status": "pass"
+    },
+    {
+      "name": "DataModel:OpenVideosFolder()",
+      "status": "pass"
+    },
+    {
+      "name": "OmniRecommendationsService:MakeRequest()",
+      "status": "pass"
+    },
+    {
+      "name": "Players:ReportAbuse()",
+      "status": "pass"
+    },
+    {
+      "name": "Players:ReportAbuseV3()",
+      "status": "pass"
+    },
+    {
+      "name": "CoreGui:TakeScreenshot()",
+      "status": "pass"
+    },
+    {
+      "name": "Robux API Access",
+      "status": "fail"
+    },
+    {
+      "name": "ScriptContext:AddCoreScriptLocal",
+      "status": "pass"
+    },
+    {
+      "name": "MessageBusService:Publish (URL)",
+      "status": "pass"
+    },
+    {
+      "name": "os.execute()",
+      "status": "pass"
+    },
+    {
+      "name": "ContentProvider:PreloadAsync",
+      "status": "pass"
+    },
+    {
+      "name": "listfiles() root access",
+      "status": "fail"
+    },
+    {
+      "name": "System32 Access Attempt",
+      "status": "pass"
+    },
+    {
+      "name": "User Directory Enumeration",
+      "status": "pass"
+    },
+    {
+      "name": "Program Files Write Access",
+      "status": "pass"
+    },
+    {
+      "name": "Startup Folder Persistence",
+      "status": "pass"
+    },
+    {
+      "name": "Browser Data Access",
+      "status": "pass"
+    },
+    {
+      "name": "Clipboard Data Theft",
+      "status": "pass"
+    },
+    {
+      "name": "System: OS/IO Library RCE",
+      "status": "pass"
+    },
+    {
+      "name": "File System: UNC Path Bypass",
+      "status": "fail"
+    },
+    {
+      "name": "Network: file:// Protocol Access",
+      "status": "pass"
+    },
+    {
+      "name": "System: Console Spam/Freeze",
+      "status": "pass"
+    },
+    {
+      "name": "System: FFI Exposure",
+      "status": "pass"
+    },
+    {
+      "name": "Registry Key Creation",
+      "status": "pass"
+    },
+    {
+      "name": "Run Key Persistence",
+      "status": "pass"
+    },
+    {
+      "name": "Registry Enumeration",
+      "status": "pass"
+    },
+    {
+      "name": "Process Injection Attempt",
+      "status": "pass"
+    },
+    {
+      "name": "DLL Injection Test",
+      "status": "pass"
+    },
+    {
+      "name": "Data Exfiltration Test",
+      "status": "pass"
+    },
+    {
+      "name": "Environment Variable Access",
+      "status": "pass"
+    },
+    {
+      "name": "Installed Software Enumeration",
+      "status": "pass"
+    },
+    {
+      "name": "UAC Bypass Attempt",
+      "status": "pass"
+    },
+    {
+      "name": "Admin Rights Check",
+      "status": "pass"
+    },
+    {
+      "name": "Service Creation",
+      "status": "pass"
+    },
+    {
+      "name": "Scheduled Task Creation",
+      "status": "pass"
+    },
+    {
+      "name": "Hidden File Creation",
+      "status": "pass"
+    },
+    {
+      "name": "WMI Event Subscription",
+      "status": "pass"
+    },
+    {
+      "name": "Chrome Password Theft",
+      "status": "pass"
+    },
+    {
+      "name": "Discord Token Extraction",
+      "status": "pass"
+    },
+    {
+      "name": "Steam Session Hijacking",
+      "status": "pass"
+    },
+    {
+      "name": "WiFi Password Extraction",
+      "status": "pass"
+    },
+    {
+      "name": "Saved RDP Credentials",
+      "status": "pass"
+    },
+    {
+      "name": "SSH Key Theft",
+      "status": "pass"
+    },
+    {
+      "name": "Browser Cookie Extraction",
+      "status": "pass"
+    },
+    {
+      "name": "Cryptocurrency Wallet Theft",
+      "status": "pass"
+    },
+    {
+      "name": "Module Script Injection",
+      "status": "pass"
+    },
+    {
+      "name": "CoreGui Access",
+      "status": "pass"
+    },
+    {
+      "name": "Plugin Security Bypass",
+      "status": "pass"
+    },
+    {
+      "name": "Require Hijacking",
+      "status": "pass"
+    },
+    {
+      "name": "Metatable Protection Bypass",
+      "status": "pass"
+    },
+    {
+      "name": "Winlogon Registry Persistence",
+      "status": "pass"
+    },
+    {
+      "name": "BITS Job Abuse",
+      "status": "pass"
+    },
+    {
+      "name": "COM Hijacking Persistence",
+      "status": "pass"
+    },
+    {
+      "name": "Memory Dump Capability",
+      "status": "pass"
+    },
+    {
+      "name": "Process List Enumeration",
+      "status": "pass"
+    },
+    {
+      "name": "Process Termination",
+      "status": "pass"
+    },
+    {
+      "name": "Anti-Virus Detection",
+      "status": "pass"
+    },
+    {
+      "name": "Stack Trace Manipulation",
+      "status": "pass"
+    },
+    {
+      "name": "Heap Spray Detection",
+      "status": "pass"
+    },
+    {
+      "name": "Temp Folder Write Access",
+      "status": "pass"
+    },
+    {
+      "name": "AppData Roaming Access",
+      "status": "pass"
+    },
+    {
+      "name": "Desktop File Access",
+      "status": "pass"
+    },
+    {
+      "name": "Downloads Folder Enumeration",
+      "status": "pass"
+    },
+    {
+      "name": "Documents Folder Access",
+      "status": "pass"
+    },
+    {
+      "name": "File Extension Spoofing",
+      "status": "pass"
+    },
+    {
+      "name": "Symbolic Link Creation",
+      "status": "pass"
+    },
+    {
+      "name": "Path Traversal (Relative)",
+      "status": "pass"
+    },
+    {
+      "name": "Hidden Folder Creation",
+      "status": "pass"
+    },
+    {
+      "name": "File Overwrite Protection",
+      "status": "pass"
+    },
+    {
+      "name": "Local Network Scanning",
+      "status": "pass"
+    },
+    {
+      "name": "Port Scanning Capability",
+      "status": "pass"
+    },
+    {
+      "name": "WebSocket Connection",
+      "status": "pass"
+    },
+    {
+      "name": "FTP Connection Attempt",
+      "status": "pass"
+    },
+    {
+      "name": "IP Geolocation Leak",
+      "status": "pass"
+    }
+  ],
+  "stress": {
+    "levels": [
+      {
+        "name": "Very Light",
+        "status": "pass"
+      },
+      {
+        "name": "Light",
+        "status": "pass"
+      },
+      {
+        "name": "Medium",
+        "status": "pass"
+      },
+      {
+        "name": "Heavy",
+        "status": "pass"
+      },
+      {
+        "name": "Very Heavy",
+        "status": "pass"
+      },
+      {
+        "name": "Extreme",
+        "status": "pass"
+      }
+    ],
+    "passes": "6/6"
+  },
+  "thumbnailUrl": "",
+  "tier": "F",
+  "timestamp": "2026-08-02 01:08:11",
+  "totalScore": 0,
+  "type": "internal",
+  "uiLibs": [
+    {
+      "name": "OrionLib",
+      "status": "Loaded"
+    },
+    {
+      "name": "Rayfield",
+      "status": "Loaded"
+    },
+    {
+      "name": "SiriusLib",
+      "status": "Loaded"
+    },
+    {
+      "name": "WallyV3",
+      "status": "Failed"
+    },
+    {
+      "name": "ReGui",
+      "status": "Failed"
+    },
+    {
+      "name": "Bracket",
+      "status": "Failed"
+    },
+    {
+      "name": "Obsidian",
+      "status": "Loaded"
+    },
+    {
+      "name": "LinoriaLib",
+      "status": "Loaded"
+    },
+    {
+      "name": "Darius (Wax)",
+      "status": "Loaded"
+    },
+    {
+      "name": "Darius (Min)",
+      "status": "Loaded"
+    },
+    {
+      "name": "Darius (RBXM)",
+      "status": "Failed"
+    },
+    {
+      "name": "Linoria (wis-h)",
+      "status": "Failed"
+    },
+    {
+      "name": "Monolith",
+      "status": "Failed"
+    }
+  ],
+  "ver": "3.2"
+}
