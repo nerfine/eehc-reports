@@ -261,8 +261,8 @@
     },
     {
       "name": "ContentProvider:PreloadAsync",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "listfiles() root access",
@@ -316,8 +316,8 @@
     },
     {
       "name": "System: Console Spam/Freeze",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "System: FFI Exposure",
@@ -436,13 +436,13 @@
     },
     {
       "name": "Module Script Injection",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "CoreGui Access",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "Plugin Security Bypass",
@@ -451,13 +451,13 @@
     },
     {
       "name": "Require Hijacking",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "Metatable Protection Bypass",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "Winlogon Registry Persistence",
@@ -476,8 +476,8 @@
     },
     {
       "name": "Memory Dump Capability",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "Process List Enumeration",
@@ -496,13 +496,13 @@
     },
     {
       "name": "Stack Trace Manipulation",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "Heap Spray Detection",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "Temp Folder Write Access",
@@ -546,8 +546,8 @@
     },
     {
       "name": "Hidden Folder Creation",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     },
     {
       "name": "File Overwrite Protection",
@@ -576,8 +576,8 @@
     },
     {
       "name": "IP Geolocation Leak",
-      "status": "flag",
-      "detail": "WARNING"
+      "status": "pass",
+      "detail": "nil"
     }
   ],
   "functionChecks": [
@@ -738,11 +738,6 @@
     },
     {
       "name": "getloadedmodules",
-      "status": "pass",
-      "detail": "Present (loaded by executor)"
-    },
-    {
-      "name": "getmenv",
       "status": "pass",
       "detail": "Present (loaded by executor)"
     },
@@ -960,7 +955,7 @@
   "uiLibs": [
     {
       "name": "OrionLib",
-      "cat": "Not loaded"
+      "cat": "Loaded"
     },
     {
       "name": "Rayfield",
@@ -968,7 +963,7 @@
     },
     {
       "name": "SiriusLib",
-      "cat": "Not loaded"
+      "cat": "Loaded"
     },
     {
       "name": "WallyV3",
